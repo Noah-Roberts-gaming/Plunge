@@ -1,5 +1,6 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+from itertools import cycle
 import random
 import json
 
@@ -14,12 +15,22 @@ with open('auth.json', 'r') as f:
 # Displays that the bot is ready
 @client.event
 async def on_ready():
+    change_status.start()
     print('Bot is ready.')
 
-    # await client.change_presence(
-    #     status=discord.Status.online, 
-    #     activity=discord.Game('')
-    # )
+# Gets the amount of drops
+def getDrops():
+    with open('info.json', 'r') as f:
+        drops = json.load(f)
+    
+    return drops["drops"]
+
+# Loops every 10 seconds and updates the game presence
+@tasks.loop(seconds=10)
+async def change_status():
+    await client.change_presence(
+        activity=discord.Game('Dropped ' + str(getDrops()) + " times!")
+    )
 
 # Creates the prefixes default value
 # @client.event
@@ -53,6 +64,14 @@ async def help(ctx):
 # Command to let the user know where to drop using the drop command
 @client.command()
 async def drop(ctx):
+    with open('info.json', 'r') as f:
+        drops = json.load(f)
+    
+    drops["drops"] += 1
+
+    with open('info.json', 'w') as f:
+        json.dump(drops, f, indent=4)
+
     locations = ['Catty Corner', 'Frenzy Farm', 'Holly Hedges', 'Lazy Lake', 'Misty Meadows', 'Pleasant Park', 'Retail Row', 'Rickety Rig', 'Risky Reels', 'Salty Springs', 'Steamy Stacks', 'Sweaty Sands', 'The Authority', 'The Fortilla', 'The Grotto', 'The Shark']
     await ctx.send("You are dropping at: " + random.choice(locations))
 
@@ -61,5 +80,9 @@ async def drop(ctx):
 async def invite(ctx):
     embed=discord.Embed(title="Plunge Invite Link", description="If you'd like to invite this bot to your own server, [click here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) for an invite", color=0xfd5d5d)
     await ctx.send(embed=embed)
+
+@client.command()
+async def botservers(ctx):
+    await ctx.send("I'm in " + str(len(client.guilds)) + " servers")
 
 client.run(data['token'])

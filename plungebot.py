@@ -2,6 +2,13 @@ import discord
 from discord.ext import commands, tasks
 import random
 import json
+import asyncio
+
+
+
+#TODO: Print when the bot joins a new server, leaves a servers, etc.
+
+
 
 # The prefix for all the commands
 prefix = "p."
@@ -12,10 +19,41 @@ client.remove_command('help')
 with open('auth.json', 'r') as f:
     data = json.load(f)
 
+
+# Loops every 10 seconds and updates the game presence ("Playing Dropped 84 Times")
+#@tasks.loop(seconds=10)
+async def change_status():
+    while True:
+        await client.change_presence(
+            activity=discord.Game('Dropped ' + str(getDrops()) + " times!")
+        )
+
+        await asyncio.sleep(15)
+
+        guilds = str(len([g for g in client.guilds]))  # Gets length of all client's guilds
+        
+        users = 0
+        for guild in client.guilds:
+            users += len(guild.members)        # Gets how many users are in all of the guilds combined
+
+        await client.change_presence(
+            activity=discord.Activity(type=discord.ActivityType.watching, name=f"s: {guilds} • u: {users}")
+        )
+
+        await asyncio.sleep(15)
+
+        await client.change_presence(
+            activity=discord.Game(' p.help • p.drop • p.invite')
+        )
+
+        await asyncio.sleep(15)
+
+
 # Displays that the bot is ready
 @client.event
 async def on_ready():
-    change_status.start()
+    #change_status.start()
+    client.loop.create_task(change_status())
     print('Bot is ready.')
 
 # Gets the amount of drops
@@ -31,13 +69,6 @@ def isDev(id):
     else:
         return False
 
-# TODO: Cycle through the presences Servers, Drops, P.help, Funny message???
-# Loops every 10 seconds and updates the game presence ("Playing Dropped 84 Times")
-@tasks.loop(seconds=10)
-async def change_status():
-    await client.change_presence(
-        activity=discord.Game('Dropped ' + str(getDrops()) + " times!")
-    )
 
 # Command Not Found Error Handler
 @client.event
@@ -57,23 +88,42 @@ async def help(ctx, setting = None):
         embed=discord.Embed(title="Plunge", description="List of Commands", color=0xfd5d5d)
         embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
         embed.add_field(name="General", value=f"`{prefix}drop`, `{prefix}help`, `{prefix}suggest`, `{prefix}invite`, `{prefix}discord`", inline=False)
+        embed.add_field(name="Info", value=f"To get more help on a command or see the command's function, try: `p.help (command)`", inline=False)
         embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     elif setting.lower() == "drop":
-        # Code
-        return
+        embed=discord.Embed(title="Plunge", description="Drop Command", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.add_field(name="Description:", value=f"Gives you a random location to drop in Fortnite!", inline=False)
+        embed.add_field(name="Usage:", value="`p.drop`", inline=False)
+        embed.set_footer(text="p.invite • Invites this bot to your server")
+        await ctx.send(embed=embed)
     elif setting.lower() == "suggest":
-        # Code
-        return
+        embed=discord.Embed(title="Plunge", description="Suggest Command", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.add_field(name="Description:", value=f"Adds a suggestion for the developers to review.", inline=False)
+        embed.add_field(name="Usage:", value="`p.suggest (suggestion)`", inline=False)
+        embed.set_footer(text="p.invite • Invites this bot to your server")
+        await ctx.send(embed=embed)
     elif setting.lower() == "invite":
-        # Code
-        return
+        embed=discord.Embed(title="Plunge", description="Invite Command", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.add_field(name="Description:", value=f"Gives you a link to invite this bot to your server!", inline=False)
+        embed.add_field(name="Usage:", value="`p.invite`", inline=False)
+        await ctx.send(embed=embed)
     elif setting.lower() == "discord" or setting.lower() == "server" or setting.lower() == "join":
-        # Code
-        return
+        embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`", inline=False)
+        embed.set_footer(text="p.invite • Invites this bot to your server")
+        await ctx.send(embed=embed)
     else:
-        # Invalid Setting
-        return
+        embed=discord.Embed(title="Plunge", description="Invalid Command Setting", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.add_field(name="Try:", value=f"`p.help` or `p.help (command)`", inline=False)
+        await ctx.send(embed=embed)
         
 
 # Command to let the user know where to drop using the drop command

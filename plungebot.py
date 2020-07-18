@@ -4,12 +4,6 @@ import random
 import json
 import asyncio
 
-
-
-#TODO: Print when the bot joins a new server, leaves a servers, etc.
-
-
-
 # The prefix for all the commands
 prefix = "p."
 client = commands.Bot(command_prefix = prefix, case_insensitive=True)
@@ -18,7 +12,6 @@ client.remove_command('help')
 # Reads the Auth.json File
 with open('auth.json', 'r') as f:
     data = json.load(f)
-
 
 # Loops every 10 seconds and updates the game presence ("Playing Dropped 84 Times")
 #@tasks.loop(seconds=10)
@@ -48,7 +41,6 @@ async def change_status():
 
         await asyncio.sleep(15)
 
-
 # Displays that the bot is ready
 @client.event
 async def on_ready():
@@ -69,7 +61,6 @@ def isDev(id):
     else:
         return False
 
-
 # Command Not Found Error Handler
 @client.event
 async def on_command_error(ctx, error):
@@ -79,6 +70,7 @@ async def on_command_error(ctx, error):
         embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
         await ctx.send(embed=embed)
 
+# TODO: When the bot is directly mentioned "@Plunge", give a description about what the bot is about in an embed (Use the description from the discord developer portal)
 
 # Help Command
 # p.help
@@ -125,7 +117,6 @@ async def help(ctx, setting = None):
         embed.add_field(name="Try:", value=f"`p.help` or `p.help (command)`", inline=False)
         await ctx.send(embed=embed)
         
-
 # Command to let the user know where to drop using the drop command
 # p.drop
 @client.command()
@@ -220,7 +211,9 @@ async def server(ctx):
     embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
     embed.set_footer(text="p.invite • Invites this bot to your server")
     await ctx.send(embed=embed)
-    
+
+# Command that leaves a suggestion for the bot
+# p.suggest (suggestion)  
 @client.command()
 async def suggest(ctx, *, suggestion = None):
     if suggestion is None:

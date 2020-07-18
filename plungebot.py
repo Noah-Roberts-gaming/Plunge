@@ -70,10 +70,15 @@ async def on_command_error(ctx, error):
         embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
         await ctx.send(embed=embed)
 
-# TODO: When the bot is directly mentioned "@Plunge", give a description about what the bot is about in an embed (Use the description from the discord developer portal)
-# @client.event
-# async def on_message(ctx):
-#     return
+# When the bot is directly mentioned "@Plunge", give a description about what the bot is about
+@client.event
+async def on_message(message):
+    if message.content == '<@!732864657932681278>':
+        embed=discord.Embed(title="Plunge", description=f"Hey {message.author.mention}, can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command `p.drop`, Plunge will randomly select a location for you to drop in Fortnite, making your next drop stress free.", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.set_footer(text="Created by The Plunge Team")
+        await message.channel.send(embed=embed)
+    await client.process_commands(message)
 
 # Help Command
 # p.help
@@ -212,18 +217,23 @@ async def servers(ctx):
     embed.add_field(name="Plunge is in:", value=f"{str(len(client.guilds))} servers", inline=False)
     await ctx.send(embed=embed)
 
-# TODO: Make a command to check if the user has the bot added to their server
+# Command to verify they added the bot to the server
 @client.command()
-@commands.check(isDev)
-async def getusers(ctx):
-    return
-    # Fetch all the guilds the bot is apart of
+@commands.has_permissions(manage_guild=True)
+async def verify(ctx):
+    ourGuild = client.get_guild(733551377611096195)
 
-    # Loop through the users who have Admin/Manage Server permissions in the guild
+    users = []
 
-    # Return the guildID/Name and the corresponding userid's/names
+    for user in ourGuild.members:
+        users.append(user.id)
 
-    # Possibly automatically promote those users in the Plunge Development server to the User Role ("I think the bot would need the Manage Roles Permissions as well")
+    if (ctx.author.id in users):
+        await ourGuild.get_member(ctx.author.id).add_roles(ourGuild.get_role(733559654210207885), reason="Used the verify command")
+        await ourGuild.get_member(ctx.author.id).remove_roles(ourGuild.get_role(733558248401272832), reason="Used the verify command")
+
+        await ctx.send('Youre in')
+
 
 # Command to join the developer discord
 # p.server, p.join, p.discord

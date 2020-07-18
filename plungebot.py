@@ -55,8 +55,8 @@ def getDrops():
     
     return drops["drops"]
 
-def isDev(id):
-    if id == 260698008595726336 or id == 534099020230950923 or id == 290530439331053579:
+def isDev(ctx):
+    if ctx.author.id == 260698008595726336 or ctx.author.id == 534099020230950923 or ctx.author.id == 290530439331053579:
         return True 
     else:
         return False
@@ -71,6 +71,9 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)
 
 # TODO: When the bot is directly mentioned "@Plunge", give a description about what the bot is about in an embed (Use the description from the discord developer portal)
+# @client.event
+# async def on_message(ctx):
+#     return
 
 # Help Command
 # p.help
@@ -79,7 +82,7 @@ async def help(ctx, setting = None):
     if setting is None:
         embed=discord.Embed(title="Plunge", description="List of Commands", color=0xfd5d5d)
         embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
-        embed.add_field(name="General", value=f"`{prefix}drop`, `{prefix}help`, `{prefix}suggest`, `{prefix}invite`, `{prefix}discord`", inline=False)
+        embed.add_field(name="General", value=f"`{prefix}drop`, `{prefix}help`, `{prefix}feedback`, `{prefix}invite`, `{prefix}discord`", inline=False)
         embed.add_field(name="Info", value=f"To get more help on a command or see the command's function, try: `p.help (command)`", inline=False)
         embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
@@ -90,11 +93,12 @@ async def help(ctx, setting = None):
         embed.add_field(name="Usage:", value="`p.drop`", inline=False)
         embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
-    elif setting.lower() == "suggest":
-        embed=discord.Embed(title="Plunge", description="Suggest Command", color=0xfd5d5d)
+    elif setting.lower() == "suggest" or setting.lower() == "feedback":
+        embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
         embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
-        embed.add_field(name="Description:", value=f"Adds a suggestion for the developers to review.", inline=False)
-        embed.add_field(name="Usage:", value="`p.suggest (suggestion)`", inline=False)
+        embed.add_field(name="Description:", value=f"Sends feedback to the developers to review. -- Can also be used to submit suggestions.", inline=False)
+        embed.add_field(name="Usage:", value="`p.feedback (feedback)`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.feedback`, `p.suggest`", inline=False)
         embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     elif setting.lower() == "feedback":
@@ -110,12 +114,12 @@ async def help(ctx, setting = None):
         embed.add_field(name="Description:", value=f"Gives you a link to invite this bot to your server!", inline=False)
         embed.add_field(name="Usage:", value="`p.invite`", inline=False)
         await ctx.send(embed=embed)
-    elif setting.lower() == "discord" or setting.lower() == "server" or setting.lower() == "join":
+    elif setting.lower() == "discord" or setting.lower() == "server" or setting.lower() == "join" or setting.lower() == "support":
         embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
         embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`, `p.support`", inline=False)
         embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     else:
@@ -201,14 +205,25 @@ async def invite(ctx):
 # Command to see how many servers the bot is in
 # p.servers, p.botservers, p.botserver
 @client.command(aliases=['botservers', 'botserver'])
+@commands.check(isDev)
 async def servers(ctx):
-    if isDev(ctx.author.id):
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
-        embed.add_field(name="Plunge is in:", value=f"{str(len(client.guilds))} servers", inline=False)
-        await ctx.send(embed=embed)
-    else:
-        return
+    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+    embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+    embed.add_field(name="Plunge is in:", value=f"{str(len(client.guilds))} servers", inline=False)
+    await ctx.send(embed=embed)
+
+# TODO: Make a command to check if the user has the bot added to their server
+@client.command()
+@commands.check(isDev)
+async def getusers(ctx):
+    return
+    # Fetch all the guilds the bot is apart of
+
+    # Loop through the users who have Admin/Manage Server permissions in the guild
+
+    # Return the guildID/Name and the corresponding userid's/names
+
+    # Possibly automatically promote those users in the Plunge Development server to the User Role ("I think the bot would need the Manage Roles Permissions as well")
 
 # Command to join the developer discord
 # p.server, p.join, p.discord

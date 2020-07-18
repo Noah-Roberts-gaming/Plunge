@@ -97,6 +97,13 @@ async def help(ctx, setting = None):
         embed.add_field(name="Usage:", value="`p.suggest (suggestion)`", inline=False)
         embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
+    elif setting.lower() == "feedback":
+        embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
+        embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
+        embed.add_field(name="Description:", value=f"Adds feedback for the developers to review.", inline=False)
+        embed.add_field(name="Usage:", value="`p.feedback (your feedback)`", inline=False)
+        embed.set_footer(text="p.invite • Invites this bot to your server")
+        await ctx.send(embed=embed)
     elif setting.lower() == "invite":
         embed=discord.Embed(title="Plunge", description="Invite Command", color=0xfd5d5d)
         embed.set_thumbnail(url="https://i.imgur.com/tdbgl13.png")
@@ -214,7 +221,7 @@ async def server(ctx):
 
 # Command that leaves a suggestion for the bot
 # p.suggest (suggestion)  
-@client.command()
+@client.command(aliases=['feedback'])
 async def suggest(ctx, *, suggestion = None):
     if suggestion is None:
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)

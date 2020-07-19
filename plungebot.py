@@ -72,6 +72,15 @@ async def on_command_error(ctx, error):
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
         await ctx.send(embed=embed)
+    elif isinstance(error, commands.MissingPermissions):
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Missing Permissions", value="To verify for the User role in the Plunge Development server, you need to be an administrator or have permissions to manage the server you are currently in.", inline=False)
+        embed.add_field(name="To Verify", value="[Invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to a server you own or are administrator of and use `p.verify` there.", inline=False)
+        await ctx.send(embed=embed)
+    else:
+        raise error
+
 
 # When the bot is directly mentioned "@Plunge", give a description about what the bot is about
 @client.event
@@ -214,20 +223,34 @@ async def invite(ctx):
 # Command to see how many servers the bot is in
 # p.servers, p.botservers, p.botserver
 @client.command(aliases=['botservers', 'botserver'])
-@commands.check(isDev)
 async def servers(ctx):
     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
     embed.add_field(name="Plunge is in:", value=f"{str(len(client.guilds))} servers", inline=False)
     await ctx.send(embed=embed)
 
+# Function to get the keys (users ID) from the userInfo.json
+async def getKeys(json):
+    items = []
+    for key, value in json:
+        items.append(key)
+
+    return items
+
+# Function to get the values (server ID) from the userInfo.json
+async def getValues(json):
+    items = []
+    for key, value in json:
+        items.append(value)
+    
+    return items
+
 # Command to verify they added the bot to the server
 # p.verify
-# TODO: remove @commands.has_permissions(manage_guild=True) and manually check if the ctx.author has the manage_guild permission..
-# if they do, do the following code.... else give them a message saying, you must have this bot in your own server to get promoted to a user role
 @client.command()
-@commands.has_permissions(manage_guild=True)
+@commands.has_guild_permissions(manage_guild=True)
 async def verify(ctx):
+    # print(ctx.guild.get_member(ctx.author.id).guild_permissions) # This returns the value of your permissions Elyxirs -> value=2147483647
     ourGuild = client.get_guild(733551377611096195)
 
     users = []
@@ -238,31 +261,58 @@ async def verify(ctx):
     if (ctx.author.id in users):
         await ourGuild.get_member(ctx.author.id).add_roles(ourGuild.get_role(733559654210207885), reason="Used the verify command")
         await ourGuild.get_member(ctx.author.id).remove_roles(ourGuild.get_role(733558248401272832), reason="Used the verify command")
-        # TODO: Make the promoted to user message pretty
-        # TODO: Save the ctx.guild.id and tie it to the ctx.author.id.... Store this in json formatted like this https://discordapp.com/channels/733551377611096195/733552092110913648/733997899742052404
-        await ctx.send('Youre in')
 
+        with open('userInfo.json', 'r') as f:
+            userInfo = json.load(f)
 
+        keys = await getKeys(userInfo.items())
 
-# TODO: Make a command to remove users from the USER ROLE IN OUR GUILD if the bot is no longer in the guild
-# 1: guildIDs = Grab the current guilds that the bot is in and store it in a variable
+        # if the user is already verified tell them... else verify them
+        if (str(ctx.author.id) in keys):
+            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+            embed.set_thumbnail(url=logourl)
+            embed.add_field(name="Already Verified", value=f"{ctx.author.mention}, you are already verified and have the User role in the Plunge Development server.\n\nHead over to the Plunge Development server to see!", inline=False)
+            await ctx.send(embed=embed)
+        else:
+            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+            embed.set_thumbnail(url=logourl)
+            embed.add_field(name=f"Verified", value=f"{ctx.author.mention}, you are now verified and have the User role in the Plunge Development server.\n\nHead over to the Plunge Development server to see!", inline=False)
+            await ctx.send(embed=embed)
 
-# 2: guildkeys = Grab all the Guild ID keys from the JSON REFERENCE?? --> https://stackoverflow.com/questions/15789059/python-json-only-get-keys-in-first-level
-# open and read the json and save the keys from that  in its own list
+        # Update the users info in the userInfo.json anyway
+        userInfo[str(ctx.author.id)] = str(ctx.guild.id)
 
-# 3: for k in guildkeys
-    # 4: if k not in guildIDS
-        # 5: Remove the server from the json file including the user
+        with open('userInfo.json', 'w') as f:
+            json.dump(userInfo, f, indent=4)
+    else:
+        embed=discord.Embed(title="Plunge", description=f"{ctx.author.mention}, you are not in the Plunge Development server. [Click here](https://discord.gg/mjr6nUU) to join!\n\nAfter you are in the Plunge Development server, run the `p.verify` command again to get your role.", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        await ctx.send(embed=embed)
 
-# 6: userids = get all the userid's in the user role from our server
+# On guild removed, it removes the users role in Plunge development and removes them from the userInfo.json and sends the users effected a dm.
+@client.event
+async def on_guild_remove(guild):
+    ourGuild = client.get_guild(733551377611096195)
 
-# 7: usersjson = get all the userId's from the already opened json above??? and store them in their own list variable
+    with open('userInfo.json', 'r') as f:
+        userInfo = json.load(f)
 
-# 8: for user in userids
-    # 9: if user not in usersjson
-        #10: remove their role from the server
+    for key, value in list(userInfo.items()):
+        if (value == str(guild.id)):
+            userInfo.pop(key)
 
+            with open('userInfo.json', 'w') as f:
+                json.dump(userInfo, f, indent=4)
 
+            await ourGuild.get_member(int(key)).remove_roles(ourGuild.get_role(733559654210207885), reason="They removed the bot from their server.")
+            await ourGuild.get_member(int(key)).add_roles(ourGuild.get_role(733558248401272832), reason="They removed the bot from their server.")
+
+            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+            embed.set_thumbnail(url=logourl)
+            embed.add_field(name="Verification Revoked", value="Hey, looks like you are no longer verified. The bot is no longer in the server you were verified in. Unfortunately, you have lost the User role in the Plunge Development server.\n\nYou can [invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to another server and use the `p.verify` command to get back the User role.", inline=False)
+
+            await ourGuild.get_member(int(key)).send(embed=embed)
+    
 # Command to join the developer discord
 # p.server, p.join, p.discord
 @client.command(aliases=['join', 'discord'])

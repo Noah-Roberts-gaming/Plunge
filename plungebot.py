@@ -6,6 +6,7 @@ import asyncio
 
 # The prefix for all the commands
 prefix = "p."
+activeBattles = []
 client = commands.Bot(command_prefix = prefix, case_insensitive=True)
 client.remove_command('help')
 
@@ -16,8 +17,7 @@ logourl = "https://i.imgur.com/tdbgl13.png"
 with open('auth.json', 'r') as f:
     data = json.load(f)
 
-# Loops every 10 seconds and updates the game presence ("Playing Dropped 84 Times")
-#@tasks.loop(seconds=10)
+# Updates and cycles the bots status
 async def change_status():
     while True:
         await client.change_presence(
@@ -109,17 +109,16 @@ async def help(ctx, setting = None):
         embed.add_field(name="Description:", value=f"Gives you a random location to drop in Fortnite!", inline=False)
         embed.add_field(name="Usage:", value="`p.drop`", inline=False)
         await ctx.send(embed=embed)
-    elif setting.lower() == "suggest" or setting.lower() == "feedback":
-        embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
+    elif setting.lower() == "suggest":
+        embed=discord.Embed(title="Plunge", description="Suggest Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Sends feedback to the developers to review. -- Can also be used to submit suggestions.", inline=False)
-        embed.add_field(name="Usage:", value="`p.feedback (feedback)`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.feedback`, `p.suggest`", inline=False)
+        embed.add_field(name="Description:", value=f"Sends your suggestion to the developers to review.", inline=False)
+        embed.add_field(name="Usage:", value="`p.suggest (your suggestion)`", inline=False)
         await ctx.send(embed=embed)
     elif setting.lower() == "feedback":
         embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Adds feedback for the developers to review.", inline=False)
+        embed.add_field(name="Description:", value=f"Sends your feedback for the developers to review.", inline=False)
         embed.add_field(name="Usage:", value="`p.feedback (your feedback)`", inline=False)
         await ctx.send(embed=embed)
     elif setting.lower() == "invite":
@@ -136,13 +135,13 @@ async def help(ctx, setting = None):
         embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`, `p.support`", inline=False)
         await ctx.send(embed=embed)
     elif setting.lower() == "verify":
-        embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
+        embed=discord.Embed(title="Plunge", description="Verify Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Description:", value=f"Verifies that you have the bot in your server, giving you the User Role in the Plunge Development server.", inline=False)
         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
         await ctx.send(embed=embed)
     elif setting.lower() == "giveaway":
-        embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
+        embed=discord.Embed(title="Plunge", description="Giveaway Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Description:", value=f"Displays information about the current giveaway.", inline=False)
         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
@@ -331,13 +330,13 @@ async def server(ctx):
     await ctx.send(embed=embed)
 
 # Command that leaves a suggestion for the bot
-# p.suggest (suggestion)  
+# p.suggest (suggestion)  p.feedback (feedback)
 @client.command(aliases=['feedback'])
 async def suggest(ctx, *, suggestion = None):
     if suggestion is None:
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Invalid Command Format", value="Try: `p.suggest (suggestion)`", inline=False)
+        embed.add_field(name="Invalid Command Format", value="Try: `p.suggest (suggestion)` or `p.feedback (feedback)`", inline=False)
         await ctx.send(embed=embed)
     else:
         # On Suggestion command, ping private discord channel 733592146308890675 with the details
@@ -366,6 +365,108 @@ async def giveaway(ctx):
     embed.add_field(name="To Qualify", value="1. Join the [Plunge Development server](https://discord.gg/mjr6nUU) and be sure to read the server rules.\n\n2. You need the Plunge bot in a server you own or are administrator of. Use `p.invite` or invite the bot by clicking [here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot).\n\n3. In your server, run the `p.verify` command. This will give you the User role in the Plunge Development server.\n\n4. Head back over to the giveaways channel in the [Plunge Development server](https://discord.gg/mjr6nUU) and enter the giveaway.", inline=False)
     embed.add_field(name="Note", value="If the bot is removed from the server where you used `p.verify` you will lose the User role in the Plunge Development server.", inline=False)
     await ctx.send(embed=embed)
+
+#####################################################################
+#####################################################################
+##                                                                 ##
+##                      Battle Royale                              ##
+##                                                                 ##
+#####################################################################
+#####################################################################
+
+# Command that simulates a battle royale
+# p.battle
+@client.command()
+async def battle(ctx, param = None):
+    if ctx.guild.id in list(activeBattles):
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle In Progress", value="There is a battle in progress, please wait until the current battle is complete", inline=False)
+        await ctx.send(embed=embed)
+    else:
+        activeBattles.append(ctx.guild.id)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 30 seconds!", inline=False)
+        msg = await ctx.send(embed=embed)
+        await msg.add_reaction('<:plunge:734656507194507275>')
+
+        await asyncio.sleep(10)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 20 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(10)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 10 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(5)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 5 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(1)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 4 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(1)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 3 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(1)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 2 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(1)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 1 seconds!", inline=False)
+        await msg.edit(embed=embed)
+
+        await asyncio.sleep(1)
+
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle In Progress...", value="Good Luck Everyone!", inline=False)
+        await msg.edit(embed=embed)
+
+        cache_msg = discord.utils.get(client.cached_messages, id = msg.id)
+        
+        for reaction in cache_msg.reactions:
+            if str(reaction.emoji) == '<:plunge:734656507194507275>':
+                users = await reaction.users().flatten()
+                for user in users:
+                    print(user.name)
+                    await ctx.send(user.name)
+
+        activeBattles.remove(ctx.guild.id)
+
 
 # Runs the bot
 client.run(data['token'])

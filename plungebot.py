@@ -378,12 +378,14 @@ async def giveaway(ctx):
 # p.battle
 @client.command()
 async def battle(ctx, param = None):
+    # If the guild has an active battle royale... tell them.... Else start a battle royale
     if ctx.guild.id in list(activeBattles):
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Battle In Progress", value="There is a battle in progress, please wait until the current battle is complete", inline=False)
         await ctx.send(embed=embed)
     else:
+        # add the guild to the active battles check
         activeBattles.append(ctx.guild.id)
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
@@ -456,15 +458,22 @@ async def battle(ctx, param = None):
         embed.add_field(name="Battle In Progress...", value="Good Luck Everyone!", inline=False)
         await msg.edit(embed=embed)
 
+        # Caches your message so you can get the reactions
         cache_msg = discord.utils.get(client.cached_messages, id = msg.id)
         
+        # loops through the reactions
         for reaction in cache_msg.reactions:
+            # if reaction is the plunge emoji...
             if str(reaction.emoji) == '<:plunge:734656507194507275>':
+                # Grabs the users that used that reaction
                 users = await reaction.users().flatten()
+                # loops through each user
                 for user in users:
                     print(user.name)
                     await ctx.send(user.name)
 
+
+        # removes the guild from the active battles check (this comes last)
         activeBattles.remove(ctx.guild.id)
 
 

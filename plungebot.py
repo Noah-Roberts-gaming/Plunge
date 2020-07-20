@@ -73,11 +73,7 @@ async def on_command_error(ctx, error):
         embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
         await ctx.send(embed=embed)
     elif isinstance(error, commands.MissingPermissions):
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Missing Permissions", value="To verify for the User role in the Plunge Development server, you need to be an administrator or have permissions to manage the server you are currently in.", inline=False)
-        embed.add_field(name="To Verify", value="[Invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to a server you own or are administrator of and use `p.verify` there.", inline=False)
-        await ctx.send(embed=embed)
+        pass
     else:
         raise error
 
@@ -127,12 +123,33 @@ async def help(ctx, setting = None):
         embed.add_field(name="Description:", value=f"Gives you a link to invite this bot to your server!", inline=False)
         embed.add_field(name="Usage:", value="`p.invite`", inline=False)
         await ctx.send(embed=embed)
-    elif setting.lower() == "discord" or setting.lower() == "server" or setting.lower() == "join" or setting.lower() == "support":
+    elif setting.lower() == "discord":
         embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`, `p.support`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.server`, `p.join`, `p.support`", inline=False)
+        await ctx.send(embed=embed)
+    elif setting.lower() == "server":
+        embed=discord.Embed(title="Plunge", description="Server Command", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.discord`, `p.join`, `p.support`", inline=False)
+        await ctx.send(embed=embed)
+    elif setting.lower() == "join":
+        embed=discord.Embed(title="Plunge", description="Join Command", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.support`", inline=False)
+        await ctx.send(embed=embed)
+    elif setting.lower() == "support":
+        embed=discord.Embed(title="Plunge", description="Support Command", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`", inline=False)
         await ctx.send(embed=embed)
     elif setting.lower() == "verify":
         embed=discord.Embed(title="Plunge", description="Verify Command", color=0xfd5d5d)
@@ -297,6 +314,15 @@ async def verify(ctx):
         embed.set_thumbnail(url=logourl)
         await ctx.send(embed=embed)
 
+@verify.error
+async def verify_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Missing Permissions", value="To verify for the User role in the Plunge Development server, you need to be an administrator or have permissions to manage the server you are currently in.", inline=False)
+        embed.add_field(name="To Verify", value="[Invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to a server you own or are administrator of and use `p.verify` there.", inline=False)
+        await ctx.send(embed=embed)
+
 # On guild removed, it removes the users role in Plunge development and removes them from the userInfo.json and sends the users effected a dm.
 @client.event
 async def on_guild_remove(guild):
@@ -345,14 +371,14 @@ async def suggest(ctx, *, suggestion = None):
         # Response to user's message
         reply=discord.Embed(title="Plunge", color=0xfd5d5d)
         reply.set_thumbnail(url=logourl)
-        reply.add_field(name="Suggestion Sent", value="Thanks for submitting your suggestion!", inline=False)
+        reply.add_field(name=f"Sent", value=f"Thanks for your submission!", inline=False)
         reply.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=reply)
         
         # Suggestion added to suggestions channel
         suggested=discord.Embed(title="Plunge", description=f"Submitted by {ctx.author.name}#{ctx.author.discriminator}", color=0xfd5d5d)
         suggested.set_thumbnail(url=ctx.author.avatar_url)
-        suggested.add_field(name="Suggestion", value=suggestion, inline=False)
+        suggested.add_field(name="Suggestion / Feedback", value=suggestion, inline=False)
         await channelId.send(embed=suggested)
 
 # Command that gives the user information about the giveaway

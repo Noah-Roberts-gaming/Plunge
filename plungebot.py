@@ -100,16 +100,14 @@ async def help(ctx, setting = None):
     if setting is None:
         embed=discord.Embed(title="Plunge", description="List of Commands", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="General", value=f"`{prefix}drop`, `{prefix}help`, `{prefix}feedback`, `{prefix}invite`, `{prefix}discord`", inline=False)
+        embed.add_field(name="General", value=f"`{prefix}drop` `{prefix}help` `{prefix}feedback` `{prefix}invite` `{prefix}discord` `{prefix}verify` `{prefix}giveaway`", inline=False)
         embed.add_field(name="Info", value=f"To get more help on a command or see the command's function, try: `p.help (command)`", inline=False)
-        embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     elif setting.lower() == "drop":
         embed=discord.Embed(title="Plunge", description="Drop Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Description:", value=f"Gives you a random location to drop in Fortnite!", inline=False)
         embed.add_field(name="Usage:", value="`p.drop`", inline=False)
-        embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     elif setting.lower() == "suggest" or setting.lower() == "feedback":
         embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
@@ -117,14 +115,12 @@ async def help(ctx, setting = None):
         embed.add_field(name="Description:", value=f"Sends feedback to the developers to review. -- Can also be used to submit suggestions.", inline=False)
         embed.add_field(name="Usage:", value="`p.feedback (feedback)`", inline=False)
         embed.add_field(name="Aliases:", value="`p.feedback`, `p.suggest`", inline=False)
-        embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     elif setting.lower() == "feedback":
         embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Description:", value=f"Adds feedback for the developers to review.", inline=False)
         embed.add_field(name="Usage:", value="`p.feedback (your feedback)`", inline=False)
-        embed.set_footer(text="p.invite • Invites this bot to your server")
         await ctx.send(embed=embed)
     elif setting.lower() == "invite":
         embed=discord.Embed(title="Plunge", description="Invite Command", color=0xfd5d5d)
@@ -138,7 +134,18 @@ async def help(ctx, setting = None):
         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
         embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`, `p.support`", inline=False)
-        embed.set_footer(text="p.invite • Invites this bot to your server")
+        await ctx.send(embed=embed)
+    elif setting.lower() == "verify":
+        embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Description:", value=f"Verifies that you have the bot in your server, giving you the User Role in the Plunge Development server.", inline=False)
+        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+        await ctx.send(embed=embed)
+    elif setting.lower() == "giveaway":
+        embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Description:", value=f"Displays information about the current giveaway.", inline=False)
+        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
         await ctx.send(embed=embed)
     else:
         embed=discord.Embed(title="Plunge", description="Invalid Command Setting", color=0xfd5d5d)
@@ -162,6 +169,9 @@ async def drop(ctx):
     locations = ['Catty Corner', 'Frenzy Farm', 'Holly Hedges', 'Lazy Lake', 'Misty Meadows', 'Pleasant Park', 'Retail Row', 'Rickety Rig', 'Salty Springs', 'Steamy Stacks', 'Sweaty Sands', 'The Authority', 'The Fortilla', 'Risky Reels', 'The Yacht', 'Dirty Docks', 'Broken Castle', 'Pirate Barge']
     location = random.choice(locations)
 
+
+
+    # locationurl = f'http://www.genplus.xyz/plunge/images/{location.replace(" ", "%20")}.png'
     locationurl = ''
 
     # Based on the location, set the image url
@@ -209,7 +219,6 @@ async def drop(ctx):
     embed.add_field(name="You are dropping at:", value=location, inline=False)
     embed.set_thumbnail(url=logourl)
     embed.set_image(url=locationurl)
-    embed.set_footer(text="p.invite • Invites this bot to your server")
     await ctx.send(embed=embed)
 
 # Command to invite the bot to your server
@@ -319,7 +328,6 @@ async def on_guild_remove(guild):
 async def server(ctx):
     embed=discord.Embed(title="Plunge Development", description="To join our discord, [click here](https://discord.gg/mjr6nUU) for an invite", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
-    embed.set_footer(text="p.invite • Invites this bot to your server")
     await ctx.send(embed=embed)
 
 # Command that leaves a suggestion for the bot
@@ -347,6 +355,17 @@ async def suggest(ctx, *, suggestion = None):
         suggested.set_thumbnail(url=ctx.author.avatar_url)
         suggested.add_field(name="Suggestion", value=suggestion, inline=False)
         await channelId.send(embed=suggested)
+
+# Command that gives the user information about the giveaway
+# p.giveaway 
+@client.command()
+async def giveaway(ctx):
+    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+    embed.set_thumbnail(url=logourl)
+    embed.add_field(name="Giveaway Information", value="Giving away `3x Discord Nitro` in the Plunge Development server.\n", inline=False)
+    embed.add_field(name="To Qualify", value="1. Join the [Plunge Development server](https://discord.gg/mjr6nUU) and be sure to read the server rules.\n\n2. You need the Plunge bot in a server you own or are administrator of. Use `p.invite` or invite the bot by clicking [here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot).\n\n3. In your server, run the `p.verify` command. This will give you the User role in the Plunge Development server.\n\n4. Head back over to the giveaways channel in the [Plunge Development server](https://discord.gg/mjr6nUU) and enter the giveaway.", inline=False)
+    embed.add_field(name="Note", value="If the bot is removed from the server where you used `p.verify` you will lose the User role in the Plunge Development server.", inline=False)
+    await ctx.send(embed=embed)
 
 # Runs the bot
 client.run(data['token'])

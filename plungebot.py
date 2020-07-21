@@ -97,7 +97,7 @@ async def help(ctx, setting = None):
     if setting is None:
         embed=discord.Embed(title="Plunge", description="List of Commands", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="General", value=f"`{prefix}drop` `{prefix}help` `{prefix}feedback` `{prefix}invite` `{prefix}discord` `{prefix}verify` `{prefix}giveaway`", inline=False)
+        embed.add_field(name="General", value=f"`{prefix}drop` `{prefix}battle` `{prefix}help` `{prefix}feedback` `{prefix}invite` `{prefix}discord` `{prefix}verify` `{prefix}giveaway`", inline=False)
         embed.add_field(name="Info", value=f"To get more help on a command or see the command's function, try: `p.help (command)`", inline=False)
         await ctx.send(embed=embed)
     elif setting.lower() == "drop":
@@ -105,6 +105,13 @@ async def help(ctx, setting = None):
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Description:", value=f"Gives you a random location to drop in Fortnite!", inline=False)
         embed.add_field(name="Usage:", value="`p.drop`", inline=False)
+        await ctx.send(embed=embed)
+    elif setting.lower() == "battle":
+        embed=discord.Embed(title="Plunge", description="Battle Command", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Description:", value=f"Starts a simulated battle royale for your server.", inline=False)
+        embed.add_field(name="Usage:", value="`p.battle`", inline=False)
+        embed.set_footer(text="p.stats • view your battle royale stats")
         await ctx.send(embed=embed)
     elif setting.lower() == "suggest":
         embed=discord.Embed(title="Plunge", description="Suggest Command", color=0xfd5d5d)
@@ -494,7 +501,7 @@ async def battle(ctx):
                 # Grabs the users that used that reaction
                 users = await reaction.users().flatten()
 
-                # If the list is larger than or equal to 5 TODO: Change the minimum players back to 5
+                # If the list is larger than or equal to 5 TODO: Change the minimum players back (Decide on minimum players)
                 if len(users) > 1:
                     await msg.delete(delay=None)
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
@@ -517,7 +524,7 @@ async def battle(ctx):
 
 # Battle function
 async def battleStart(ctx, users):
-    # TODO: More custom messages... more related to fortnite???? 
+    # TODO: More custom messages... more related to fortnite I guess...
 
     weapons = ['a Pistol', 'a Pickaxe', 'an Assault Rifle', 'an Auto Rifle', 'a Sniper Rifle', 'a Paintball Gun', 'a Rock', 'an Arrow', 'a Blow Dart Gun', 'a Rocket Launcher', 
     'a Grenade', 'a Grenade Launcher', 'a Shotgun', 'Hand to Hand Combat', 'a Submachine Gun', 'a Light Machine Gun', 'a Stick', 'an Eye Poke', 'a Karate Chop']
@@ -582,6 +589,8 @@ async def battleStart(ctx, users):
         await updateStats(ctx, player)
 
 # Method that creates a new user object for json if they are not in the list
+# TODO: Don't Pass the entire context... just pass the ctx.guild.id
+# TODO: Check if the user is already in the list for faster response time
 async def newUser(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
@@ -628,6 +637,7 @@ async def newUser(ctx, user):
                 json.dump(data, f, indent=4)
 
 # Method that gets the current Game Kills
+# TODO: Don't pass the ctx just pass ctx.guild.id
 async def getGameKills(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
@@ -635,6 +645,7 @@ async def getGameKills(ctx, user):
     return data[str(user.id)][str(ctx.guild.id)]['currentGameKills']
 
 # Method that updates your stats at the end of the game
+# TODO: Don't pass the ctx just pass ctx.guild.id and Grab the user.id
 async def updateStats(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
@@ -654,6 +665,7 @@ async def updateStats(ctx, user):
         json.dump(data, f, indent=4)
 
 # Method that updates the users kills
+# TODO: Don't pass the ctx just pass ctx.guild.id
 async def addKill(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
@@ -665,6 +677,7 @@ async def addKill(ctx, user):
         json.dump(data, f, indent=4)
 
 # Method that updates the users wins
+# TODO: Don't pass the ctx just pass ctx.guild.id
 async def addWin(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
@@ -675,6 +688,7 @@ async def addWin(ctx, user):
         json.dump(data, f, indent=4)
 
 # Method that updates the users deaths
+# TODO: Don't pass the ctx just pass ctx.guild.id
 async def addDeath(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)

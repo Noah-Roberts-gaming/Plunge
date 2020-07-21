@@ -427,53 +427,53 @@ async def battle(ctx):
 
         await asyncio.sleep(10)
 
-        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        # embed.set_thumbnail(url=logourl)
-        # embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        # embed.add_field(name="Ready Up!", value="We are starting in 20 seconds!", inline=False)
-        # await msg.edit(embed=embed)
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 20 seconds!", inline=False)
+        await msg.edit(embed=embed)
 
-        # await asyncio.sleep(10)
+        await asyncio.sleep(10)
 
-        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        # embed.set_thumbnail(url=logourl)
-        # embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        # embed.add_field(name="Ready Up!", value="We are starting in 10 seconds!", inline=False)
-        # await msg.edit(embed=embed)
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 10 seconds!", inline=False)
+        await msg.edit(embed=embed)
 
-        # await asyncio.sleep(5)
+        await asyncio.sleep(5)
 
-        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        # embed.set_thumbnail(url=logourl)
-        # embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        # embed.add_field(name="Ready Up!", value="We are starting in 5 seconds!", inline=False)
-        # await msg.edit(embed=embed)
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 5 seconds!", inline=False)
+        await msg.edit(embed=embed)
 
-        # await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
-        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        # embed.set_thumbnail(url=logourl)
-        # embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        # embed.add_field(name="Ready Up!", value="We are starting in 4 seconds!", inline=False)
-        # await msg.edit(embed=embed)
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 4 seconds!", inline=False)
+        await msg.edit(embed=embed)
 
-        # await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
-        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        # embed.set_thumbnail(url=logourl)
-        # embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        # embed.add_field(name="Ready Up!", value="We are starting in 3 seconds!", inline=False)
-        # await msg.edit(embed=embed)
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 3 seconds!", inline=False)
+        await msg.edit(embed=embed)
 
-        # await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
-        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        # embed.set_thumbnail(url=logourl)
-        # embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        # embed.add_field(name="Ready Up!", value="We are starting in 2 seconds!", inline=False)
-        # await msg.edit(embed=embed)
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 2 seconds!", inline=False)
+        await msg.edit(embed=embed)
 
-        # await asyncio.sleep(1)
+        await asyncio.sleep(1)
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
@@ -530,19 +530,7 @@ async def battleStart(ctx, users):
     'sunk in quick sand', 'was trampled by rhinos', 'died from the unknown', 'fell in the void', 'got a deadly infection', 'was squashed',
     'was poisoned', 'choked on raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
 
-    # with open('userStats.json', 'r') as f:
-    #     data = json.load(f)
-
-    # userStatsKeys = await getKeys(data.items())
-
-    # userStatsValues = await getValues(data.items())
-
-    # print(f'{userStatsKeys}')
-
-    # print(f'{userStatsValues.keys()}')
-
-    # print(data.keys())
-
+    # Checks the users in the list... removes Plunge Bot
     for user in list(users):
         if user.id == 732864657932681278:
             users.remove(user)
@@ -551,8 +539,10 @@ async def battleStart(ctx, users):
             await newUser(ctx, user)
 
     newList = users
+    
 
     totalPlayers = len(list(newList))
+    PlayersForXp = list(newList)
     
     # TODO: Track stats
     while len(newList) > 1:
@@ -562,12 +552,15 @@ async def battleStart(ctx, users):
 
         # TODO: Send users a custom messages based on their placement
         if user1 == user2:
+            await addDeath(ctx, user1)
             await asyncio.sleep(4) # TODO: Randomly select the message delay between 2 numbers
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(funny)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
             await ctx.send(embed=embed)
         else:
+            await addKill(ctx, user1)
+            await addDeath(ctx, user2)
             await asyncio.sleep(4) # TODO: Randomly select the message delay between 2 numbers
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(eliminations)} {user2.mention} with {random.choice(weapons)}', inline=False)
@@ -576,8 +569,10 @@ async def battleStart(ctx, users):
         
         # Updates the list by removing the user that got eliminated
         newList.remove(user2)
-    
+
     await asyncio.sleep(2)
+
+    await addWin(ctx, newList[0])
 
     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
@@ -598,10 +593,10 @@ async def newUser(ctx, user):
         serverId = {}
     
         serverId[ctx.guild.id] = {
-            'wins': '0',
-            'kills': '0',
-            'deaths': '0',
-            'totalExp': '0'
+            'wins': 0,
+            'kills': 0,
+            'deaths': 0,
+            'totalExp': 0
         }
 
         data[str(user.id)] = serverId
@@ -623,10 +618,10 @@ async def newUser(ctx, user):
             print(f'{ctx.guild.name} is not {list(data[str(user.id)].keys())}')
 
             serverId = {
-                'wins': '0',
-                'kills': '0',
-                'deaths': '0',
-                'totalExp': '0'
+                'wins': 0,
+                'kills': 0,
+                'deaths': 0,
+                'totalExp': 0
             }
 
             data[str(user.id)][str(ctx.guild.id)] = serverId
@@ -634,9 +629,69 @@ async def newUser(ctx, user):
             with open('userStats.json', 'w') as f:
                 json.dump(data, f, indent=4)
 
+# Method that updates the users kills
+async def addKill(ctx, user):
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
 
-# TODO: Make a stats command when the stats are correctly stored
+    data[str(user.id)][str(ctx.guild.id)]['kills'] += 1
 
+    with open('userStats.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Method that updates the users wins
+async def addWin(ctx, user):
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
+
+    data[str(user.id)][str(ctx.guild.id)]['wins'] += 1
+
+    with open('userStats.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Method that updates the users deaths
+async def addDeath(ctx, user):
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
+
+    data[str(user.id)][str(ctx.guild.id)]['deaths'] += 1
+
+    with open('userStats.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Method that updates the users totalExp
+
+# Method that calculates the users level
+
+# Method that calculates the users remaining experience to level
+
+# Method that calculates the total games played
+
+# Make a stats command when the stats are correctly stored
+@client.command()
+async def stats(ctx):
+    avatarUrl = client.get_user(ctx.author.id).avatar_url
+
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
+
+    wins = data[str(ctx.author.id)][str(ctx.guild.id)]['wins']
+    kills = data[str(ctx.author.id)][str(ctx.guild.id)]['kills']
+    deaths = data[str(ctx.author.id)][str(ctx.guild.id)]['deaths']
+    if kills > 0 and deaths > 0:
+        kd = kills / deaths
+    elif deaths == 0:
+        kd = kills
+    else:
+        kd = 0
+    totalExp = data[str(ctx.author.id)][str(ctx.guild.id)]['totalExp']
+    gamesPlayed = deaths + wins
+
+    embed=discord.Embed(title="Plunge Battle Royale Stats", color=0xfd5d5d)
+    embed.set_thumbnail(url=avatarUrl)
+    embed.add_field(name=f"Level {totalExp}", value=f"{ctx.author.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}", inline=False)
+    embed.set_footer(text=f"Levels... Coming Soon...")
+    await ctx.send(embed=embed)
 
 # Runs the bot
 client.run(data['token'])

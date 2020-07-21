@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, tasks
 import random
+import math
 import json
 import asyncio
 
@@ -544,7 +545,6 @@ async def battleStart(ctx, users):
     totalPlayers = len(list(newList))
     PlayersForXp = list(newList)
     
-    # TODO: Track stats
     while len(newList) > 1:
         user1 = random.choice(users)
 
@@ -577,9 +577,12 @@ async def battleStart(ctx, users):
     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
     # TODO: Display the amount of kills
-    embed.add_field(name="Battle Royale Victory", value=f'The winner of {ctx.guild.name}\'s Battle Royale is {newList[0].mention}\n\n{newList[0].mention} had [] kills', inline=False)
+    embed.add_field(name="Battle Royale Victory", value=f'The winner of {ctx.guild.name}\'s Battle Royale is {newList[0].mention}\n\n{newList[0].mention} had {await getGameKills(ctx, newList[0])} kills', inline=False)
     embed.set_footer(text=f"{totalPlayers} players participated")
     await ctx.send(embed=embed)
+
+    for player in PlayersForXp:
+        await updateStats(ctx, player)
 
 # Method that creates a new user object for json if they are not in the list
 async def newUser(ctx, user):
@@ -596,7 +599,9 @@ async def newUser(ctx, user):
             'wins': 0,
             'kills': 0,
             'deaths': 0,
-            'totalExp': 0
+            'currentGameKills': 0,
+            'totalExp': 0,
+            'color': ''
         }
 
         data[str(user.id)] = serverId
@@ -621,7 +626,9 @@ async def newUser(ctx, user):
                 'wins': 0,
                 'kills': 0,
                 'deaths': 0,
-                'totalExp': 0
+                'currentGameKills': 0,
+                'totalExp': 0,
+                'color': ''
             }
 
             data[str(user.id)][str(ctx.guild.id)] = serverId
@@ -629,12 +636,39 @@ async def newUser(ctx, user):
             with open('userStats.json', 'w') as f:
                 json.dump(data, f, indent=4)
 
+# Method that gets the current Game Kills
+async def getGameKills(ctx, user):
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
+
+    return data[str(user.id)][str(ctx.guild.id)]['currentGameKills']
+
+# Method that updates your stats at the end of the game
+async def updateStats(ctx, user):
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
+
+    data[str(user.id)][str(ctx.guild.id)]['currentGameKills'] = 0
+
+    wins = data[str(ctx.author.id)][str(ctx.guild.id)]['wins']
+    kills = data[str(ctx.author.id)][str(ctx.guild.id)]['kills']
+    deaths = data[str(ctx.author.id)][str(ctx.guild.id)]['deaths']
+    gamesPlayed = deaths + wins
+
+    totalExp = gamesPlayed * 10 + wins * 100 + kills * 25
+
+    data[str(ctx.author.id)][str(ctx.guild.id)]['totalExp'] = totalExp
+
+    with open('userStats.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
 # Method that updates the users kills
 async def addKill(ctx, user):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
 
     data[str(user.id)][str(ctx.guild.id)]['kills'] += 1
+    data[str(user.id)][str(ctx.guild.id)]['currentGameKills'] += 1
 
     with open('userStats.json', 'w') as f:
         json.dump(data, f, indent=4)
@@ -659,17 +693,13 @@ async def addDeath(ctx, user):
     with open('userStats.json', 'w') as f:
         json.dump(data, f, indent=4)
 
-# Method that updates the users totalExp
-
-# Method that calculates the users level
-
-# Method that calculates the users remaining experience to level
-
-# Method that calculates the total games played
+# TODO: Method that calculates the users remaining experience to level and possibly display it??
 
 # Make a stats command when the stats are correctly stored
 @client.command()
 async def stats(ctx):
+    await newUser(ctx, ctx.author)
+
     avatarUrl = client.get_user(ctx.author.id).avatar_url
 
     with open('userStats.json', 'r') as f:
@@ -678,6 +708,7 @@ async def stats(ctx):
     wins = data[str(ctx.author.id)][str(ctx.guild.id)]['wins']
     kills = data[str(ctx.author.id)][str(ctx.guild.id)]['kills']
     deaths = data[str(ctx.author.id)][str(ctx.guild.id)]['deaths']
+
     if kills > 0 and deaths > 0:
         kd = kills / deaths
     elif deaths == 0:
@@ -685,12 +716,24 @@ async def stats(ctx):
     else:
         kd = 0
     totalExp = data[str(ctx.author.id)][str(ctx.guild.id)]['totalExp']
+
     gamesPlayed = deaths + wins
+
+    level = totalExp/100
+
+    loss = gamesPlayed - wins
+
+    if wins > 0 and loss > 0:
+        winloss = wins / loss
+    elif loss == 0:
+        winloss = wins
+    else:
+        winloss = 0
 
     embed=discord.Embed(title="Plunge Battle Royale Stats", color=0xfd5d5d)
     embed.set_thumbnail(url=avatarUrl)
-    embed.add_field(name=f"Level {totalExp}", value=f"{ctx.author.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}", inline=False)
-    embed.set_footer(text=f"Levels... Coming Soon...")
+    embed.add_field(name=f"Level: {math.floor(level)}", value=f"{ctx.author.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin/Loss: {round(winloss, 2)}", inline=False)
+    embed.set_footer(text=f"Stats for: {ctx.guild.name}")
     await ctx.send(embed=embed)
 
 # Runs the bot

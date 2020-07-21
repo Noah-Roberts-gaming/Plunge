@@ -40,7 +40,13 @@ async def change_status():
         await asyncio.sleep(15)
 
         await client.change_presence(
-            activity=discord.Game(' p.help • p.drop • p.invite')
+            activity=discord.Game(' p.help • p.verify • p.invite')
+        )
+
+        await asyncio.sleep(15)
+
+        await client.change_presence(
+            activity=discord.Game(' p.drop • p.battle • p.stats')
         )
 
         await asyncio.sleep(15)

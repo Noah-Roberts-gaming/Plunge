@@ -495,7 +495,7 @@ async def battle(ctx):
                 users = await reaction.users().flatten()
 
                 # If the list is larger than or equal to 5 TODO: Change the minimum players back to 5
-                if len(users) > 5:
+                if len(users) > 1:
                     await msg.delete(delay=None)
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
@@ -550,6 +550,7 @@ async def battleStart(ctx, users):
 
         # TODO: Send users a custom messages based on their placement??
         if user1 == user2:
+            # TODO: Higher chance of not dying in a funny way if users < 5
             await addDeath(ctx, user1)
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(funny)}', inline=False)
@@ -596,7 +597,7 @@ async def newUser(ctx, user):
             'deaths': 0,
             'currentGameKills': 0,
             'totalExp': 0,
-            'color': ''
+            'color': 2433568
         }
 
         data[str(user.id)] = serverId
@@ -618,7 +619,7 @@ async def newUser(ctx, user):
                 'deaths': 0,
                 'currentGameKills': 0,
                 'totalExp': 0,
-                'color': ''
+                'color': 2433568
             }
 
             data[str(user.id)][str(ctx.guild.id)] = serverId
@@ -720,7 +721,9 @@ async def stats(ctx):
     else:
         winloss = 0
 
-    embed=discord.Embed(title="Plunge Battle Royale Stats", color=0xfd5d5d)
+    color = data[str(ctx.author.id)][str(ctx.guild.id)]['color']
+
+    embed=discord.Embed(title="Plunge Battle Royale Stats", color=color)
     embed.set_thumbnail(url=avatarUrl)
     embed.add_field(name=f"Level: {math.floor(level)}", value=f"{ctx.author.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin/Loss: {round(winloss, 2)}", inline=False)
     embed.set_footer(text=f"Stats for: {ctx.guild.name}")

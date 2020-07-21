@@ -1,48 +1,12 @@
 {
     "534099020230950923": {
         "733551377611096195": {
-            "wins": 0,
-            "kills": 0,
-            "deaths": 1,
-            "currentGameKills": 0,
-            "totalExp": 0,
-            "color": ""
-        },
-        "700563937891975289": {
-            "wins": 0,
-            "kills": 0,
-            "deaths": 1,
-            "currentGameKills": 0,
-            "totalExp": 10,
-            "color": ""
-        }
-    },
-    "260698008595726336": {
-        "733551377611096195": {
-            "wins": 0,
+            "wins": 1,
             "kills": 0,
             "deaths": 0,
             "currentGameKills": 0,
-            "totalExp": 0,
-            "color": ""
-        },
-        "700563937891975289": {
-            "wins": 1,
-            "kills": 0,
-            "deaths": 1,
-            "currentGameKills": 0,
-            "totalExp": 120,
-            "color": ""
-        }
-    },
-    "295382022350962690": {
-        "700563937891975289": {
-            "wins": 1,
-            "kills": 1,
-            "deaths": 0,
-            "currentGameKills": 0,
-            "totalExp": 0,
-            "color": ""
+            "totalExp": 110,
+            "color": 2433568
         }
     }
 }

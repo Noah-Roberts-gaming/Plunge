@@ -403,7 +403,9 @@ async def giveaway(ctx):
 # Command that simulates a battle royale
 # p.battle
 @client.command()
-async def battle(ctx, param = None):
+async def battle(ctx):
+    emoji = client.get_emoji(734656507194507275)
+
     # If the guild has an active battle royale... tell them.... Else start a battle royale
     if ctx.guild.id in list(activeBattles):
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
@@ -416,7 +418,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 30 seconds!", inline=False)
         msg = await ctx.send(embed=embed)
         await msg.add_reaction('<:plunge:734656507194507275>')
@@ -425,7 +427,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 20 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -433,7 +435,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 10 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -441,7 +443,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 5 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -449,7 +451,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 4 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -457,7 +459,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 3 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -465,7 +467,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 2 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -473,7 +475,7 @@ async def battle(ctx, param = None):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value="React to the message below to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 1 seconds!", inline=False)
         await msg.edit(embed=embed)
 
@@ -493,14 +495,61 @@ async def battle(ctx, param = None):
             if str(reaction.emoji) == '<:plunge:734656507194507275>':
                 # Grabs the users that used that reaction
                 users = await reaction.users().flatten()
-                # loops through each user
-                for user in users:
-                    print(user.name)
-                    await ctx.send(user.name)
+
+                # If the list is larger than or equal to 5 TODO: Change the minimum players back to 5
+                if len(users) >= 2:
+                    await battleStart(ctx, users)
+                    # Pass the ctx and users list into the battle function
+                else:
+                    # TODO: Make the message pretty
+                    print('battle not starting need at least 5 players')
+                
 
 
         # removes the guild from the active battles check (this comes last)
         activeBattles.remove(ctx.guild.id)
+
+# Battle function
+async def battleStart(ctx, users):
+    # TODO: More custom messages... more related to fortnite
+
+    weapons = ['a Pistol', 'a Pickaxe', 'an Assault Rifle', 'an Auto Rifle', 'a Sniper Rifle', 'a Paintball Gun', 'a Rock', 'an Arrow', 'a Blow Dart Gun', 'a Rocket Launcher', 
+    'a Grenade', 'a Grenade Launcher', 'a Shotgun', 'Hand to Hand Combat', 'a Submachine Gun', 'a Light Machine Gun', 'a Stick', 'an Eye Poke', 'a Karate Chop']
+
+    eliminations = ['eliminated', 'destroyed', 'annihilated', 'obliterated', 'got rid of', 'beamed', 'ended', 'finished off', 'murdered', 'killed', 'erased']
+
+    funny = ['took an arrow to the knee', 'forgot they can\'t fly', 'starved to death', 'was eliminated for cheating', 
+    'went off the deep end', 'drowned', 'fell', 'died', 'mysteriously disappeared', 'fled from battle', 'was pecked to death by a bird',
+    'sunk in quick sand', 'was trampled by rhinos', 'died from the unknown', 'fell in the void', 'got a deadly infection', 'was squashed',
+    'was poisoned', 'choked on raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
+
+    newList = users
+    
+    # TODO: Track stats
+    while len(newList) > 1:
+        user1 = random.choice(users)
+
+        user2 = random.choice(users)
+
+        # TODO: Send custom messages based on their placement
+        if user1 == user2:
+            await asyncio.sleep(4) # TODO: Randomly select the message delay between 2 numbers
+            # TODO: Make the message pretty
+            await ctx.send(f'{user1.mention} {random.choice(funny)}')
+        else:
+            await asyncio.sleep(4) # TODO: Randomly select the message delay between 2 numbers
+            # TODO: Make the message pretty
+            await ctx.send(f'{user1.mention} {random.choice(eliminations)} {user2.mention} with {random.choice(weapons)}')
+        
+        # Updates the list by removing the user that got eliminated
+        newList.remove(user2)
+    
+    await asyncio.sleep(2)
+    # TODO: Make the message pretty
+    await ctx.send(f'The winner of The {ctx.guild.name} Battle Royale is {newList[0].mention}')
+    # TODO: Give a battle overview of the winner, displaying their kills
+
+# TODO: Make a stats command when the stats are correctly stored
 
 
 # Runs the bot

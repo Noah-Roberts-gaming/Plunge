@@ -495,7 +495,7 @@ async def battle(ctx):
                 users = await reaction.users().flatten()
 
                 # If the list is larger than or equal to 5 TODO: Change the minimum players back to 5
-                if len(users) >= 2:
+                if len(users) > 5:
                     await msg.delete(delay=None)
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
@@ -512,14 +512,12 @@ async def battle(ctx):
                     embed.add_field(name="Battle Cancelled", value="Sorrry, you need a minimum of 5 players to begin a Battle Royale.", inline=False)
                     await ctx.send(embed=embed)
                 
-
-
         # removes the guild from the active battles check (this comes last)
         activeBattles.remove(ctx.guild.id)
 
 # Battle function
 async def battleStart(ctx, users):
-    # TODO: More custom messages... more related to fortnite
+    # TODO: More custom messages... more related to fortnite???? 
 
     weapons = ['a Pistol', 'a Pickaxe', 'an Assault Rifle', 'an Auto Rifle', 'a Sniper Rifle', 'a Paintball Gun', 'a Rock', 'an Arrow', 'a Blow Dart Gun', 'a Rocket Launcher', 
     'a Grenade', 'a Grenade Launcher', 'a Shotgun', 'Hand to Hand Combat', 'a Submachine Gun', 'a Light Machine Gun', 'a Stick', 'an Eye Poke', 'a Karate Chop']
@@ -529,13 +527,12 @@ async def battleStart(ctx, users):
     funny = ['took an arrow to the knee', 'forgot they can\'t fly', 'starved to death', 'was eliminated for cheating', 
     'went off the deep end', 'drowned', 'fell', 'died', 'mysteriously disappeared', 'fled from battle', 'was pecked to death by a bird',
     'sunk in quick sand', 'was trampled by rhinos', 'died from the unknown', 'fell in the void', 'got a deadly infection', 'was squashed',
-    'was poisoned', 'choked on raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
+    'was poisoned', 'choked on a raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
 
     # Checks the users in the list... removes Plunge Bot
     for user in list(users):
         if user.id == 732864657932681278:
             users.remove(user)
-            print('removed plunge')
         else:
             await newUser(ctx, user)
 
@@ -547,13 +544,13 @@ async def battleStart(ctx, users):
     
     while len(newList) > 1:
         user1 = random.choice(users)
-
         user2 = random.choice(users)
 
-        # TODO: Send users a custom messages based on their placement
+        await asyncio.sleep(6) # TODO: Randomly select the message delay between 2 numbers
+
+        # TODO: Send users a custom messages based on their placement??
         if user1 == user2:
             await addDeath(ctx, user1)
-            await asyncio.sleep(4) # TODO: Randomly select the message delay between 2 numbers
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(funny)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
@@ -561,7 +558,6 @@ async def battleStart(ctx, users):
         else:
             await addKill(ctx, user1)
             await addDeath(ctx, user2)
-            await asyncio.sleep(4) # TODO: Randomly select the message delay between 2 numbers
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(eliminations)} {user2.mention} with {random.choice(weapons)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
@@ -570,7 +566,7 @@ async def battleStart(ctx, users):
         # Updates the list by removing the user that got eliminated
         newList.remove(user2)
 
-    await asyncio.sleep(2)
+    await asyncio.sleep(3)
 
     await addWin(ctx, newList[0])
 
@@ -591,7 +587,6 @@ async def newUser(ctx, user):
     
     # if user is not in the list add a brand new user
     if str(user.id) not in list(data.keys()):
-        print(f'{user.name} not in {list(data.keys())}')
 
         serverId = {}
     
@@ -609,19 +604,14 @@ async def newUser(ctx, user):
         with open('userStats.json', 'w') as f:
             json.dump(data, f, indent=4)
 
-        print(f'Added {user.name} to the list')
     # If user is in the list, check if the guild id is in the users guilds list
     else:
-        print(f'{user.name} IS in {list(data.keys())}')
-
         # If the guild is in the users guilds list do nothing
         if str(ctx.guild.id) in list(data[str(user.id)].keys()):
-            print(f'{ctx.guild.name} is in {list(data[str(user.id)].keys())}')
+            print(f'User already added for this server')
         
         # If the guild is not in the users guilds list, add new server stats
         else:
-            print(f'{ctx.guild.name} is not {list(data[str(user.id)].keys())}')
-
             serverId = {
                 'wins': 0,
                 'kills': 0,
@@ -695,7 +685,7 @@ async def addDeath(ctx, user):
 
 # TODO: Method that calculates the users remaining experience to level and possibly display it??
 
-# Make a stats command when the stats are correctly stored
+# Command that fetches your stats for the server you are in
 @client.command()
 async def stats(ctx):
     await newUser(ctx, ctx.author)
@@ -735,6 +725,8 @@ async def stats(ctx):
     embed.add_field(name=f"Level: {math.floor(level)}", value=f"{ctx.author.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin/Loss: {round(winloss, 2)}", inline=False)
     embed.set_footer(text=f"Stats for: {ctx.guild.name}")
     await ctx.send(embed=embed)
+
+# TODO: Add a method that calculates universal stats no matter what server you are in.
 
 # Runs the bot
 client.run(data['token'])

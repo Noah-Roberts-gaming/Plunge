@@ -1,11 +1,103 @@
 {
     "534099020230950923": {
         "733551377611096195": {
+            "wins": 3,
+            "kills": 2,
+            "deaths": 4,
+            "currentGameKills": 0,
+            "totalExp": 110,
+            "color": 2433568
+        },
+        "299742581972271104": {
+            "wins": 3,
+            "kills": 2,
+            "deaths": 4,
+            "currentGameKills": 0,
+            "totalExp": 110,
+            "color": 2433568
+        }
+    },
+    "290530439331053579": {
+        "733551377611096195": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 1,
+            "currentGameKills": 0,
+            "totalExp": 0,
+            "color": 2433568
+        }
+    },
+    "260698008595726336": {
+        "733551377611096195": {
+            "wins": 6,
+            "kills": 3,
+            "deaths": 2,
+            "currentGameKills": 0,
+            "totalExp": 755,
+            "color": 2433568
+        },
+        "299742581972271104": {
+            "wins": 6,
+            "kills": 5,
+            "deaths": 2,
+            "currentGameKills": 0,
+            "totalExp": 805,
+            "color": 2433568
+        },
+        "700563937891975289": {
+            "wins": 2,
+            "kills": 0,
+            "deaths": 0,
+            "currentGameKills": 0,
+            "totalExp": 220,
+            "color": 2433568
+        }
+    },
+    "307721249700839425": {
+        "700563937891975289": {
             "wins": 1,
             "kills": 0,
             "deaths": 0,
             "currentGameKills": 0,
             "totalExp": 110,
+            "color": 2433568
+        }
+    },
+    "732864657932681278": {
+        "733551377611096195": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "currentGameKills": 0,
+            "totalExp": 0,
+            "color": 2433568
+        }
+    },
+    "295382022350962690": {
+        "299742581972271104": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "currentGameKills": 0,
+            "totalExp": 0,
+            "color": 2433568
+        },
+        "700563937891975289": {
+            "wins": 1,
+            "kills": 0,
+            "deaths": 0,
+            "currentGameKills": 0,
+            "totalExp": 110,
+            "color": 2433568
+        }
+    },
+    "488900014798536705": {
+        "299742581972271104": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 1,
+            "currentGameKills": 0,
+            "totalExp": 0,
             "color": 2433568
         }
     }

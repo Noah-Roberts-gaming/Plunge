@@ -8,6 +8,7 @@ import asyncio
 # The prefix for all the commands
 prefix = "p."
 activeBattles = []
+activeUsers = []
 client = commands.Bot(command_prefix = prefix, case_insensitive=True)
 client.remove_command('help')
 
@@ -22,7 +23,7 @@ with open('auth.json', 'r') as f:
 async def change_status():
     while True:
         await client.change_presence(
-            activity=discord.Game('Dropped ' + str(getDrops()) + " times!")
+            activity=discord.Game('Dropped ' + str(getInfo('drops')) + " times!")
         )
 
         await asyncio.sleep(15)
@@ -46,6 +47,12 @@ async def change_status():
         await asyncio.sleep(15)
 
         await client.change_presence(
+            activity=discord.Game('Hosted ' + str(getInfo('battles')) + " battles!")
+        )
+
+        await asyncio.sleep(15)
+
+        await client.change_presence(
             activity=discord.Game(' p.drop • p.battle • p.stats')
         )
 
@@ -59,11 +66,11 @@ async def on_ready():
     print('Bot is ready.')
 
 # Gets the amount of drops
-def getDrops():
+def getInfo(info):
     with open('info.json', 'r') as f:
         drops = json.load(f)
     
-    return drops["drops"]
+    return drops[info]
 
 def isDev(ctx):
     if ctx.author.id == 260698008595726336 or ctx.author.id == 534099020230950923 or ctx.author.id == 290530439331053579:
@@ -90,6 +97,7 @@ async def on_command_error(ctx, error):
 async def on_message(message):
     if message.content == '<@!732864657932681278>':
         embed=discord.Embed(title="Plunge", description=f"Hey {message.author.mention}, can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command `p.drop`, Plunge will randomly select a location for you to drop in Fortnite, making your next drop stress free.", color=0xfd5d5d)
+        embed.add_field(name="!! Special !!", value="We are currently hosting a giveaway!\nDo `p.giveaway` for information on how to qualify.",inline=False)
         embed.add_field(name="Info", value="Use `p.help` to get started", inline=False)
         embed.set_thumbnail(url=logourl)
         embed.set_footer(text="Created by The Plunge Team")
@@ -182,8 +190,12 @@ async def help(ctx, setting = None):
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Try:", value=f"`p.help` or `p.help (command)`", inline=False)
         await ctx.send(embed=embed)
+
         
 # Command to let the user know where to drop using the drop command
+# Can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  
+# Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command 
+# "p.drop", Plunge will randomly select a location for you to drop in Fortnite, making your next drop stress free.
 # p.drop
 @client.command()
 async def drop(ctx):
@@ -250,6 +262,34 @@ async def drop(ctx):
     embed.set_thumbnail(url=logourl)
     embed.set_image(url=locationurl)
     await ctx.send(embed=embed)
+
+
+    #####################################################################
+    #####################################################################
+    ##                                                                 ##
+    ##                      Server Commands                            ##
+    ##                                                                 ##
+    #####################################################################
+    #####################################################################
+
+@client.command()
+async def updates(ctx):
+    if isDev(ctx):
+        updates = client.get_channel(733858209046986863) # Gets #updates channel in Plunge Development
+        embed=discord.Embed(title="Plunge (BETA v1.0.0)", description="Bot Released with features", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Added", value="`p.drop` - Gives a random location to drop in Fortnite!\n`p.battle` - Starts a simulated battle royale for your server.\n`p.help` - Shows a list of all commands\n", inline=False)
+        await updates.send(embed=embed)
+    else:
+        # If people are trying to use this command and are not dev, tell them its an unknown command
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
+        await ctx.send(embed=embed)
+
+    #####################################################################
+    #####################################################################
+
 
 # Command to invite the bot to your server
 # p.invite
@@ -416,6 +456,41 @@ async def giveaway(ctx):
 #####################################################################
 #####################################################################
 
+# NEED ATLEAST 20 Players to start
+# TODO: IF user is in a battle, don't start battle
+# TODO: React if you want to battle as: A group (No Rewards earned or stats counted) OR with Bots (Rewards + Stats counted)
+# TODO: Add Crate Rewards
+
+# TODO: Add 2 Perks Slots (+threat, +gold, +xp)
+
+# TODO: Randomly Find Crates in games 1 in 200 chance
+
+# TODO: Match summary (kills, xp, gold, items if any)
+# TODO: Add a currency system
+
+
+# TODO: Add distance before the battle engagement to determine which weapons will get a boost
+
+
+# Gets weapon Range value in a list
+    # l = range(20,30)
+    # z = []
+    # for i in l:
+    #     z.append(i)
+    # print(z)
+
+# TODO: Add a shop with items
+######### ITEMS/SHOP ITEMS ##########
+#  TIERS: Common - 0, Uncommon - 1, Rare - 2, Epic - 3, Legendary - 4, POSSIBLY MYTHIC - 5 (NOT RELEASED)
+#  
+#  Weapon Categories: Shotgun, Smg, Ar, Sniper
+#
+#  
+#
+#
+
+# TODO: Add special Umbrella when you win
+
 # Command that simulates a battle royale
 # p.battle
 @client.command()
@@ -542,6 +617,14 @@ async def battleStart(ctx, users):
     'sunk in quick sand', 'was trampled by rhinos', 'died from the unknown', 'fell in the void', 'got a deadly infection', 'was squashed',
     'was poisoned', 'choked on a raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
 
+    with open('info.json', 'r') as info:
+        battles = json.load(info)
+    
+    battles["battles"] += 1
+
+    with open('info.json', 'w') as info:
+        json.dump(battles, info, indent=4)
+
     # Checks the users in the list... removes Plunge Bot
     for user in list(users):
         if user.id == 732864657932681278:
@@ -559,11 +642,19 @@ async def battleStart(ctx, users):
         user1 = random.choice(users)
         user2 = random.choice(users)
 
-        await asyncio.sleep(6) # TODO: Randomly select the message delay between 2 numbers
+        await asyncio.sleep(random.randint(4,8)) # Randomly select the message delay between 4-8 numbers
 
         # TODO: Send users a custom messages based on their placement??
+
+        # Prevents them from randomly dying without getting eleminated when its in the final 5
+        if len(newList) <= 5:
+            i = 0
+            while i < 3 and user1 == user2:
+                user1 = random.choice(newList)
+                user2 = random.choice(newList)
+                i+=1
+
         if user1 == user2:
-            # TODO: Higher chance of not dying in a funny way if users < 5
             await addDeath(ctx, user1)
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(funny)}', inline=False)
@@ -708,17 +799,72 @@ async def addDeath(ctx, user):
 
 # Command that fetches your stats for the server you are in
 @client.command()
-async def stats(ctx):
+async def stats(ctx, param1 = None, param2 = None):
     await newUser(ctx, ctx.author)
 
-    avatarUrl = client.get_user(ctx.author.id).avatar_url
+    # If no parameters are passed in, 
+    if param1 == None and param2 == None:
 
+        # Creates User if it doesn't exist
+        await newUser(ctx, ctx.author)
+
+        # Display the users stats for this server
+        await displayServerStats(ctx, ctx.author.id)
+
+    elif param1.lower() == 'all' and param2 == None:
+
+        # Creates User if it doesn't exist
+        await newUser(ctx, ctx.author)
+
+        # Display all the users stats
+        await displayAllStats(ctx, ctx.author.id)
+
+    elif param1 is not None and param2 == None:
+        # Formats the Mention as a user ID
+        param1 = param1.translate(dict.fromkeys(map(ord, '!@<>')))
+        # Get the user object
+        user = client.get_user(int(param1))
+
+        if user is not None:
+            # Creates stats for the user in this current server if it does not exist
+            await newUser(ctx, user)
+
+            # Display
+            await displayServerStats(ctx, user.id)
+        else:
+            print('User not found')
+
+    elif param1.lower() == 'all' and param2 is not None:
+        # Formats the Mention as a user ID
+        param2 = param2.translate(dict.fromkeys(map(ord, '!@<>')))
+        # Get the user object
+        user = client.get_user(int(param2))
+
+        if user is not None:
+            # Creates stats for the user in this current server if it does not exist
+            await newUser(ctx, user)
+
+            # Display
+            await displayAllStats(ctx, user.id)
+        else:
+            print('User not found')
+    
+
+
+async def displayServerStats(ctx, authorId):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
 
-    wins = data[str(ctx.author.id)][str(ctx.guild.id)]['wins']
-    kills = data[str(ctx.author.id)][str(ctx.guild.id)]['kills']
-    deaths = data[str(ctx.author.id)][str(ctx.guild.id)]['deaths']
+    wins = data[str(authorId)][str(ctx.guild.id)]['wins']
+    kills = data[str(authorId)][str(ctx.guild.id)]['kills']
+    deaths = data[str(authorId)][str(ctx.guild.id)]['deaths']
+    totalExp = data[str(authorId)][str(ctx.guild.id)]['totalExp']
+
+    # Gets the user
+    user = client.get_user(authorId)
+
+    # Gets the users avatar image
+    avatarUrl = user.avatar_url
 
     if kills > 0 and deaths > 0:
         kd = kills / deaths
@@ -726,30 +872,76 @@ async def stats(ctx):
         kd = kills
     else:
         kd = 0
-    totalExp = data[str(ctx.author.id)][str(ctx.guild.id)]['totalExp']
 
     gamesPlayed = deaths + wins
 
     level = totalExp/100
 
-    loss = gamesPlayed - wins
-
-    if wins > 0 and loss > 0:
-        winloss = wins / loss
-    elif loss == 0:
-        winloss = wins
+    if wins > 0 and gamesPlayed > 0:
+        winperc = wins / gamesPlayed * 100
+    elif gamesPlayed == 0:
+        winperc = 0
     else:
-        winloss = 0
+        winperc = 0
 
-    color = data[str(ctx.author.id)][str(ctx.guild.id)]['color']
+    color = data[str(user.id)][str(ctx.guild.id)]['color']
 
     embed=discord.Embed(title="Plunge Battle Royale Stats", color=color)
     embed.set_thumbnail(url=avatarUrl)
-    embed.add_field(name=f"Level: {math.floor(level)}", value=f"{ctx.author.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin/Loss: {round(winloss, 2)}", inline=False)
+    embed.add_field(name=f"Level: {math.floor(level)}", value=f"{user.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin Percentage: {round(winperc)}%", inline=False)
     embed.set_footer(text=f"Stats for: {ctx.guild.name}")
     await ctx.send(embed=embed)
 
-# TODO: Add a method that calculates universal stats no matter what server you are in.
+async def displayAllStats(ctx, authorId):
+
+    with open('userStats.json', 'r') as f:
+        data = json.load(f)
+
+    wins = 0
+    kills = 0
+    deaths = 0
+    totalExp = 0
+
+    authorId = str(authorId)
+
+    for server in list(data[authorId]):
+        serverId = str(server)
+        wins += data[authorId][serverId]['wins']
+        kills += data[authorId][serverId]['kills']
+        deaths += data[authorId][serverId]['deaths']
+        totalExp += data[authorId][serverId]['totalExp']
+
+    # Gets the user
+    user = client.get_user(int(authorId))
+
+    # Gets the users avatar image
+    avatarUrl = user.avatar_url
+
+    if kills > 0 and deaths > 0:
+        kd = kills / deaths
+    elif deaths == 0:
+        kd = kills
+    else:
+        kd = 0
+
+    gamesPlayed = deaths + wins
+
+    level = totalExp/100
+
+    if wins > 0 and gamesPlayed > 0:
+        winperc = wins / gamesPlayed * 100
+    elif gamesPlayed == 0:
+        winperc = 0
+    else:
+        winperc = 0
+
+    color = data[str(user.id)][str(ctx.guild.id)]['color']
+
+    embed=discord.Embed(title="Plunge Battle Royale Stats", color=color)
+    embed.set_thumbnail(url=avatarUrl)
+    embed.add_field(name=f"Level: {math.floor(level)}", value=f"{user.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin Percentage: {round(winperc)}%", inline=False)
+    embed.set_footer(text=f"All Stats")
+    await ctx.send(embed=embed)
 
 # Runs the bot
 client.run(data['token'])

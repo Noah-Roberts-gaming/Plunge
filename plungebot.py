@@ -485,8 +485,8 @@ async def giveaway(ctx):
 #  
 #  Weapon Categories: Shotgun, Smg, Ar, Sniper
 #
-#  
-#
+#  Items: Umbrella, 
+#  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
 #
 
 # TODO: Add special Umbrella when you win

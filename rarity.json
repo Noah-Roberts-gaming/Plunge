@@ -1,0 +1,26 @@
+{
+    "0": {
+        "rarity": "common",
+        "threat": 2
+    },
+    "1": {
+        "rarity": "uncommon",
+        "threat": 4
+    },
+    "2": {
+        "rarity": "rare",
+        "threat": 6
+    },
+    "3": {
+        "rarity": "epic",
+        "threat": 8
+    },
+    "4": {
+        "rarity": "legendary",
+        "threat": 10
+    },
+    "5": {
+        "rarity": "mythic",
+        "threat": 12
+    }
+}

@@ -456,17 +456,24 @@ async def giveaway(ctx):
 #####################################################################
 #####################################################################
 
+#JSON TODO: 
+# Perks     (ID's range from 1000 - 1999)
+# Umbrellas (ID's range from 2000 - 2999)
+# Titles    (ID's range from 3000 - 3999)
+# Crates    (ID's range from 4000 - 4999)
+# Pickaxes  (ID's range from 5000 - 5999)
+
 # NEED ATLEAST 20 Players to start
 # TODO: IF user is in a battle, don't start battle
 # TODO: React if you want to battle as: A group (No Rewards earned or stats counted) OR with Bots (Rewards + Stats counted)
-# TODO: Add Crate Rewards
+# TODO: Add Crate Rewards (Crates have rarity)
 
-# TODO: Add 2 Perks Slots (+threat, +gold, +xp)
+# TODO: Add Perk Slot (+threat, +gold, +xp)
 
 # TODO: Randomly Find Crates in games 1 in 200 chance
 
 # TODO: Match summary (kills, xp, gold, items if any)
-# TODO: Add a currency system
+# TODO: Add a currency system (Gold and Gems)
 
 
 # TODO: Add distance before the battle engagement to determine which weapons will get a boost
@@ -485,10 +492,8 @@ async def giveaway(ctx):
 #  
 #  Weapon Categories: Shotgun, Smg, Ar, Sniper
 #
-#  Items: Umbrella, 
 #  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
 #
-
 # TODO: Add special Umbrella when you win
 
 # Command that simulates a battle royale

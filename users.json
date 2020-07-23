@@ -1,0 +1,33 @@
+{
+    "348903294893290": {
+        "name": "ExampleUser#3429",
+        "title": 3999,
+        "showcase1": "",
+        "showcase2": "",
+        "showcase3": "",
+        "stats": {
+            "wins": 3,
+            "kills": 2,
+            "deaths": 4,
+            "currentGameKills": 0,
+            "totalExp": 110
+        },
+        "loadout": {
+            "slot1": 5,
+            "slot2": 13,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1000
+        },
+        "inventory": {
+            "weapons": [5, 9, 13, 18],
+            "perks": [1000, 1001, 1002],
+            "umbrellas": [2000, 2001],
+            "titles": [3000, 3002],
+            "crates": [4000, 4000, 4001],
+            "pickaxes": [5000, 5001],
+            "gold": 800,
+            "gems": 0
+        }
+    }
+}

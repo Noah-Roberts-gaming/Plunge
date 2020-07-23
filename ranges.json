@@ -1,0 +1,37 @@
+{
+    "0": {
+        "name": "Pickaxe Range",
+        "description": "A pickaxe.",
+        "minRange": 1,
+        "maxRange": 1,
+        "bonusThreat": 0
+    },
+    "1": {
+        "name": "Shotgun Range",
+        "description": "A weapon that is perfect for close range engagments.",
+        "minRange": 1,
+        "maxRange": 15,
+        "bonusThreat": 10
+    },
+    "2": {
+        "name": "Smg Range",
+        "description": "A weapon that is perfect for close to medium range engagments.",
+        "minRange": 5,
+        "maxRange": 50,
+        "bonusThreat": 8
+    },
+    "3": {
+        "name": "AR Range",
+        "description": "A weapon that is perfect for medium to long range engagments.",
+        "minRange": 30,
+        "maxRange": 110,
+        "bonusThreat": 5
+    },
+    "4": {
+        "name": "Sniper Range",
+        "description": "A weapon that is perfect for long range engagments.",
+        "minRange": 90,
+        "maxRange": 150,
+        "bonusThreat": 10
+    }
+}

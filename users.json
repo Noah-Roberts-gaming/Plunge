@@ -2,15 +2,21 @@
     "348903294893290": {
         "name": "ExampleUser#3429",
         "title": 3999,
-        "showcase1": "",
-        "showcase2": "",
-        "showcase3": "",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
         "stats": {
             "wins": 3,
             "kills": 2,
             "deaths": 4,
-            "currentGameKills": 0,
             "totalExp": 110
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
         },
         "loadout": {
             "slot1": 5,
@@ -20,14 +26,119 @@
             "perk": 1000
         },
         "inventory": {
-            "weapons": [5, 9, 13, 18],
-            "perks": [1000, 1001, 1002],
-            "umbrellas": [2000, 2001],
-            "titles": [3000, 3002],
-            "crates": [4000, 4000, 4001],
-            "pickaxes": [5000, 5001],
+            "weapons": [
+                5,
+                9,
+                13,
+                18
+            ],
+            "perks": [
+                1000,
+                1001,
+                1002
+            ],
+            "umbrellas": [
+                2000,
+                2001
+            ],
+            "titles": [
+                3000,
+                3002
+            ],
+            "chests": [
+                4000,
+                4000,
+                4001
+            ],
+            "pickaxes": [
+                5000,
+                5001
+            ],
             "gold": 800,
             "gems": 0
+        }
+    },
+    "260698008595726336": {
+        "name": "Elyxirs",
+        "title": 3000,
+        "showcase1": 22,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 50,
+            "kills": 278,
+            "deaths": 803,
+            "totalExp": 2394
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 9,
+            "slot2": 14,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                9,
+                14
+            ],
+            "perks": [],
+            "umbrellas": [],
+            "titles": [
+                3000
+            ],
+            "chests": [],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+        }
+    },
+    "534099020230950923": {
+        "name": "Duh",
+        "title": 3999,
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 999,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [],
+            "perks": [],
+            "umbrellas": [],
+            "titles": [],
+            "chests": [],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 250,
+            "gems": 20
         }
     }
 }

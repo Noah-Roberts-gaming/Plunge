@@ -1,4 +1,10 @@
 {
+    "1999": {
+        "name": "",
+        "description": "",
+        "imageUrl": "",
+        "emojiId": 123456789
+    },
     "1000": {
         "name": "Threat Boost",
         "description": "Increases your threat for every engagment.",

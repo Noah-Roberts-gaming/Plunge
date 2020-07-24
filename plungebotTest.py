@@ -5,10 +5,20 @@ import math
 import json
 import asyncio
 
+####################
+# Start Setup
+####################
+
 # The prefix for all the commands
 prefix = "p."
+
+# All active battles for a server
 activeBattles = []
+
+# All active users in a battle
 activeUsers = []
+
+# Sets the bots prefix and removes the help command for our own custom help command
 client = commands.Bot(command_prefix = prefix, case_insensitive=True)
 client.remove_command('help')
 
@@ -19,11 +29,25 @@ logourl = "https://i.imgur.com/tdbgl13.png"
 with open('auth.json', 'r') as f:
     data = json.load(f)
 
+# Displays that the bot is ready and loops through its statuses
+@client.event
+async def on_ready():
+    client.loop.create_task(change_status())
+    print('Bot is ready.')
+
+####################
+# End Setup
+####################
+
+####################
+# Start Bot Methods
+####################
+
 # Updates and cycles the bots status
 async def change_status():
     while True:
         await client.change_presence(
-            activity=discord.Game('Dropped ' + str(getInfo('drops')) + " times!")
+            activity=discord.Game('Dropped ' + str(await getInfo('drops')) + " times!")
         )
 
         await asyncio.sleep(15)
@@ -47,7 +71,7 @@ async def change_status():
         await asyncio.sleep(15)
 
         await client.change_presence(
-            activity=discord.Game('Hosted ' + str(getInfo('battles')) + " battles!")
+            activity=discord.Game('Hosted ' + str(await getInfo('battles')) + " battles!")
         )
 
         await asyncio.sleep(15)
@@ -58,39 +82,193 @@ async def change_status():
 
         await asyncio.sleep(15)
 
-# Displays that the bot is ready
-@client.event
-async def on_ready():
-    #change_status.start()
-    client.loop.create_task(change_status())
-    print('Bot is ready.')
+# Checks if the authorId is a dev's authorId
+def isDev(authorId):
+    if authorId == 260698008595726336 or authorId == 534099020230950923 or authorId == 290530439331053579:
+        return True 
+    else:
+        return False
 
-# Gets the amount of drops
-def getInfo(info):
+####################
+# End Bot Methods
+####################
+
+####################
+# Start Get Methods
+####################
+
+# Gets the bots drop count or the bots battle count
+async def getInfo(info):
     with open('info.json', 'r') as f:
         drops = json.load(f)
     
     return drops[info]
 
-def isDev(ctx):
-    if ctx.author.id == 260698008595726336 or ctx.author.id == 534099020230950923 or ctx.author.id == 290530439331053579:
-        return True 
-    else:
-        return False
+# Function to get the keys (users ID) from the userInfo.json
+async def getKeys(json):
+    items = []
+    for key, value in json:
+        items.append(key)
 
-# Command Not Found Error Handler
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
-        await ctx.send(embed=embed)
-    elif isinstance(error, commands.MissingPermissions):
-        pass
-    else:
-        raise error
+    return items
 
+# Function to get the values (server ID) from the userInfo.json
+async def getValues(json):
+    items = []
+    for key, value in json:
+        items.append(value)
+    
+    return items
+
+# TODO: Get the emoji based on ID
+
+# TODO: Get the imageUrl based off item ID
+
+####################
+# End Get Methods
+####################
+
+####################
+# Start Add Methods
+####################
+
+# Adds to the drop counter
+async def addDrop():
+    with open('info.json', 'r') as f:
+        drops = json.load(f)
+        
+        drops["drops"] += 1
+
+        with open('info.json', 'w') as f:
+            json.dump(drops, f, indent=4)
+
+# Adds to the battle counter
+async def addBattle():
+    with open('info.json', 'r') as f:
+        battles = json.load(f)
+        
+        battles["battles"] += 1
+
+        with open('info.json', 'w') as f:
+            json.dump(battles, f, indent=4)
+
+
+####################
+# End Add Methods
+####################
+
+####################
+# Start User Helper Methods
+####################
+
+# TODO: Add a new user to the json
+
+
+### Get User Info ###
+# TODO: Get the users profile page
+
+# TODO: Get the users stats
+
+# TODO: Get the users match stats
+
+# TODO: Get the users loadout
+
+# TODO: Get the users showcase
+
+# TODO: Get the users threat (Weapon Threat, Perk Threat)
+
+### Get the users Inventory ###
+# TODO: Get the users weapons
+
+# TODO: Get the users perks
+
+# TODO: Get the users umbrellas
+
+# TODO: Get the users titles
+
+# TODO: Get the users chests
+
+# TODO: Get the users pickaxes
+
+# TODO: Get the users gold
+
+# TODO: Get the users gems
+
+### Add Match Stats ###
+# TODO: Add placement
+
+# TODO: Add killsEarned
+# Method that gets the current Game Kills
+# # Don't pass the ctx just pass ctx.guild.id
+# async def getGameKills(ctx, user):
+#     with open('userStats.json', 'r') as f:
+#         data = json.load(f)
+
+#     return data[str(user.id)][str(ctx.guild.id)]['currentGameKills']
+
+# TODO: Add goldEarned
+
+# TODO: Add expEarned
+
+# TODO: Add itemsGained
+
+
+### Add Total Stats ###
+# TODO: Add win
+
+# TODO: Add kill
+
+# TODO: Add death
+
+# TODO: Add totalExp
+
+
+### Add and Remove Currency ###
+# TODO: Add gold
+
+# TODO: Add gems
+
+# TODO: Remove gold
+
+# TODO: Remove gems
+
+
+### Add Inventory ###
+# TODO: Add weapon to inventory > weapons
+
+# TODO: Add perk to inventory > perks
+
+# TODO: Add umbrella to inventory > umbrellas
+
+# TODO: Add title to inventory > titles
+
+# TODO: Add chest to inventory > chests
+
+# TODO: Add pickaxe to inventory > pickaxes
+
+####################
+# End User Helper Methods
+####################
+
+####################
+# Start Weapon Helper Methods
+####################
+
+# TODO: Get the weapon
+
+# TODO: Get the weapon threat
+
+# TODO: Get the weapon range
+
+# TODO: Get the weapon rarity
+
+####################
+# End Weapon Helper Methods
+####################
+
+####################
+# Start Client Event Methods
+####################
 
 # When the bot is directly mentioned "@Plunge", give a description about what the bot is about
 @client.event
@@ -104,8 +282,41 @@ async def on_message(message):
         await message.channel.send(embed=embed)
     await client.process_commands(message)
 
+# On guild removed, it removes the users role in Plunge development and removes them from the userInfo.json and sends the users effected a dm.
+@client.event
+async def on_guild_remove(guild):
+    ourGuild = client.get_guild(733551377611096195)
+
+    with open('userInfo.json', 'r') as f:
+        userInfo = json.load(f)
+
+    for key, value in list(userInfo.items()):
+        if (value == str(guild.id)):
+            userInfo.pop(key)
+
+            with open('userInfo.json', 'w') as f:
+                json.dump(userInfo, f, indent=4)
+
+            await ourGuild.get_member(int(key)).remove_roles(ourGuild.get_role(733559654210207885), reason="They removed the bot from their server.")
+            await ourGuild.get_member(int(key)).add_roles(ourGuild.get_role(733558248401272832), reason="They removed the bot from their server.")
+
+            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+            embed.set_thumbnail(url=logourl)
+            embed.add_field(name="Verification Revoked", value="Hey, looks like you are no longer verified. The bot is no longer in the server you were verified in. Unfortunately, you have lost the User role in the Plunge Development server.\n\nYou can [invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to another server and use the `p.verify` command to get back the User role.", inline=False)
+
+            await ourGuild.get_member(int(key)).send(embed=embed)
+
+####################
+# End Client Event Methods
+####################
+
+####################
+# Start Bot Commands
+####################
+
 # Help Command
 # p.help
+# TODO: Remake the help command
 @client.command()
 async def help(ctx, setting = None):
     if setting is None:
@@ -191,7 +402,6 @@ async def help(ctx, setting = None):
         embed.add_field(name="Try:", value=f"`p.help` or `p.help (command)`", inline=False)
         await ctx.send(embed=embed)
 
-        
 # Command to let the user know where to drop using the drop command
 # Can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  
 # Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command 
@@ -199,19 +409,12 @@ async def help(ctx, setting = None):
 # p.drop
 @client.command()
 async def drop(ctx):
-    with open('info.json', 'r') as f:
-        drops = json.load(f)
-    
-    drops["drops"] += 1
-
-    with open('info.json', 'w') as f:
-        json.dump(drops, f, indent=4)
+    # Call the add drop command to add to the counter
+    await addDrop()
 
     # Removed: "The Shark"
     locations = ['Catty Corner', 'Frenzy Farm', 'Holly Hedges', 'Lazy Lake', 'Misty Meadows', 'Pleasant Park', 'Retail Row', 'Rickety Rig', 'Salty Springs', 'Steamy Stacks', 'Sweaty Sands', 'The Authority', 'The Fortilla', 'Risky Reels', 'The Yacht', 'Dirty Docks', 'Broken Castle', 'Pirate Barge']
     location = random.choice(locations)
-
-
 
     # locationurl = f'http://www.genplus.xyz/plunge/images/{location.replace(" ", "%20")}.png'
     locationurl = ''
@@ -254,7 +457,6 @@ async def drop(ctx):
     elif location == 'Pirate Barge':
         locationurl = 'https://i.imgur.com/qpcf2bd.png'
     else:
-        # Hmm thats odd
         locationurl = ''
 
     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
@@ -263,242 +465,8 @@ async def drop(ctx):
     embed.set_image(url=locationurl)
     await ctx.send(embed=embed)
 
-
-    #####################################################################
-    #####################################################################
-    ##                                                                 ##
-    ##                      Server Commands                            ##
-    ##                                                                 ##
-    #####################################################################
-    #####################################################################
-
-@client.command()
-async def updates(ctx):
-    if isDev(ctx):
-        updates = client.get_channel(733858209046986863) # Gets #updates channel in Plunge Development
-        embed=discord.Embed(title="Plunge (BETA v1.0.0)", description="Bot Released with features", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Added", value="`p.drop` - Gives a random location to drop in Fortnite!\n`p.battle` - Starts a simulated battle royale for your server.\n`p.help` - Shows a list of all commands\n", inline=False)
-        await updates.send(embed=embed)
-    else:
-        # If people are trying to use this command and are not dev, tell them its an unknown command
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
-        await ctx.send(embed=embed)
-
-    #####################################################################
-    #####################################################################
-
-
-# Command to invite the bot to your server
-# p.invite
-@client.command()
-async def invite(ctx):
-    embed=discord.Embed(title="Plunge Invite Link", description="If you'd like to invite this bot to your own server, [click here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) for an invite", color=0xfd5d5d)
-    embed.set_thumbnail(url=logourl)
-    await ctx.send(embed=embed)
-
-# Command to see how many servers the bot is in
-# p.servers, p.botservers, p.botserver
-@client.command(aliases=['botservers', 'botserver'])
-async def servers(ctx):
-    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-    embed.set_thumbnail(url=logourl)
-    embed.add_field(name="Plunge is in:", value=f"{str(len(client.guilds))} servers", inline=False)
-    for guild in client.guilds:
-        print(guild.name)
-    await ctx.send(embed=embed)
-
-# Function to get the keys (users ID) from the userInfo.json
-async def getKeys(json):
-    items = []
-    for key, value in json:
-        items.append(key)
-
-    return items
-
-# Function to get the values (server ID) from the userInfo.json
-async def getValues(json):
-    items = []
-    for key, value in json:
-        items.append(value)
-    
-    return items
-
-# Command to verify they added the bot to the server
-# p.verify
-@client.command()
-@commands.has_guild_permissions(manage_guild=True)
-async def verify(ctx):
-    # print(ctx.guild.get_member(ctx.author.id).guild_permissions) # This returns the value of your permissions Elyxirs -> value=2147483647
-    ourGuild = client.get_guild(733551377611096195)
-
-    users = []
-
-    for user in ourGuild.members:
-        users.append(user.id)
-
-    if (ctx.author.id in users):
-        await ourGuild.get_member(ctx.author.id).add_roles(ourGuild.get_role(733559654210207885), reason="Used the verify command")
-        await ourGuild.get_member(ctx.author.id).remove_roles(ourGuild.get_role(733558248401272832), reason="Used the verify command")
-
-        with open('userInfo.json', 'r') as f:
-            userInfo = json.load(f)
-
-        keys = await getKeys(userInfo.items())
-
-        # if the user is already verified tell them... else verify them
-        if (str(ctx.author.id) in keys):
-            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-            embed.set_thumbnail(url=logourl)
-            embed.add_field(name="Already Verified", value=f"{ctx.author.mention}, you are already verified and have the User role in the Plunge Development server.\n\nHead over to the Plunge Development server to see!", inline=False)
-            await ctx.send(embed=embed)
-        else:
-            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-            embed.set_thumbnail(url=logourl)
-            embed.add_field(name=f"Verified", value=f"{ctx.author.mention}, you are now verified and have the User role in the Plunge Development server.\n\nHead over to the Plunge Development server to see!", inline=False)
-            await ctx.send(embed=embed)
-
-        # Update the users info in the userInfo.json anyway
-        userInfo[str(ctx.author.id)] = str(ctx.guild.id)
-
-        with open('userInfo.json', 'w') as f:
-            json.dump(userInfo, f, indent=4)
-    else:
-        embed=discord.Embed(title="Plunge", description=f"{ctx.author.mention}, you are not in the Plunge Development server. [Click here](https://discord.gg/mjr6nUU) to join!\n\nAfter you are in the Plunge Development server, run the `p.verify` command again to get your role.", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        await ctx.send(embed=embed)
-
-@verify.error
-async def verify_error(ctx, error):
-    if isinstance(error, commands.MissingPermissions):
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Missing Permissions", value="To verify for the User role in the Plunge Development server, you need to be an administrator or have permissions to manage the server you are currently in.", inline=False)
-        embed.add_field(name="To Verify", value="[Invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to a server you own or are administrator of and use `p.verify` there.", inline=False)
-        await ctx.send(embed=embed)
-
-# On guild removed, it removes the users role in Plunge development and removes them from the userInfo.json and sends the users effected a dm.
-@client.event
-async def on_guild_remove(guild):
-    ourGuild = client.get_guild(733551377611096195)
-
-    with open('userInfo.json', 'r') as f:
-        userInfo = json.load(f)
-
-    for key, value in list(userInfo.items()):
-        if (value == str(guild.id)):
-            userInfo.pop(key)
-
-            with open('userInfo.json', 'w') as f:
-                json.dump(userInfo, f, indent=4)
-
-            await ourGuild.get_member(int(key)).remove_roles(ourGuild.get_role(733559654210207885), reason="They removed the bot from their server.")
-            await ourGuild.get_member(int(key)).add_roles(ourGuild.get_role(733558248401272832), reason="They removed the bot from their server.")
-
-            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-            embed.set_thumbnail(url=logourl)
-            embed.add_field(name="Verification Revoked", value="Hey, looks like you are no longer verified. The bot is no longer in the server you were verified in. Unfortunately, you have lost the User role in the Plunge Development server.\n\nYou can [invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to another server and use the `p.verify` command to get back the User role.", inline=False)
-
-            await ourGuild.get_member(int(key)).send(embed=embed)
-    
-# Command to join the developer discord
-# p.server, p.join, p.discord
-@client.command(aliases=['join', 'discord'])
-async def server(ctx):
-    embed=discord.Embed(title="Plunge Development", description="To join our discord, [click here](https://discord.gg/mjr6nUU) for an invite", color=0xfd5d5d)
-    embed.set_thumbnail(url=logourl)
-    await ctx.send(embed=embed)
-
-# Command that leaves a suggestion for the bot
-# p.suggest (suggestion)  p.feedback (feedback)
-@client.command(aliases=['feedback'])
-async def suggest(ctx, *, suggestion = None):
-    if suggestion is None:
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Invalid Command Format", value="Try: `p.suggest (suggestion)` or `p.feedback (feedback)`", inline=False)
-        await ctx.send(embed=embed)
-    else:
-        # On Suggestion command, ping private discord channel 733592146308890675 with the details
-        channelId = client.get_channel(733592146308890675) #suggestions in Plunge Development
-
-        # Response to user's message
-        reply=discord.Embed(title="Plunge", color=0xfd5d5d)
-        reply.set_thumbnail(url=logourl)
-        reply.add_field(name=f"Sent", value=f"Thanks for your submission!", inline=False)
-        reply.set_footer(text="p.invite • Invites this bot to your server")
-        await ctx.send(embed=reply)
-        
-        # Suggestion added to suggestions channel
-        suggested=discord.Embed(title="Plunge", description=f"Submitted by {ctx.author.name}#{ctx.author.discriminator}", color=0xfd5d5d)
-        suggested.set_thumbnail(url=ctx.author.avatar_url)
-        suggested.add_field(name="Suggestion / Feedback", value=suggestion, inline=False)
-        await channelId.send(embed=suggested)
-
-# Command that gives the user information about the giveaway
-# p.giveaway 
-@client.command()
-async def giveaway(ctx):
-    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-    embed.set_thumbnail(url=logourl)
-    embed.add_field(name="Giveaway Information", value="Giving away `3x Discord Nitro` in the Plunge Development server.\n", inline=False)
-    embed.add_field(name="To Qualify", value="1. Join the [Plunge Development server](https://discord.gg/mjr6nUU) and be sure to read the server rules.\n\n2. You need the Plunge bot in a server you own or are administrator of. Use `p.invite` or invite the bot by clicking [here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot).\n\n3. In your server, run the `p.verify` command. This will give you the User role in the Plunge Development server.\n\n4. Head back over to the giveaways channel in the [Plunge Development server](https://discord.gg/mjr6nUU) and enter the giveaway.", inline=False)
-    embed.add_field(name="Note", value="If the bot is removed from the server where you used `p.verify` you will lose the User role in the Plunge Development server.", inline=False)
-    await ctx.send(embed=embed)
-
-#####################################################################
-#####################################################################
-##                                                                 ##
-##                      Battle Royale                              ##
-##                                                                 ##
-#####################################################################
-#####################################################################
-
-# Perks     (ID's range from 1000 - 1999) (Threat Boost, Gold Boost, Experience Boost) DONE
-# Umbrellas (ID's range from 2000 - 2999) (Beta Umbrealla, Umbrella) DONE
-# Titles    (ID's range from 3000 - 3999) (Staff, Mod, 2020 Nitro Champ, Beta Tester) DONE
-# Chests   (ID's range from 4000 - 4999) (Rare Chest, Epic Chest, Legendary Chest) DONE
-# Pickaxes  (ID's range from 5000 - 5999) (Default) DONE
-
-#JSON TODO: 
-# Shop.json
-
-# NEED ATLEAST 20 Players to start
-# TODO: IF user is in a battle, don't start battle
-# TODO: React if you want to battle as: A group (No Rewards earned or stats counted) OR with Bots (Rewards + Stats counted)
-# TODO: Add Crate Rewards (Crates have rarity)
-
-# TODO: Add Perk Slot (+threat, +gold, +xp)
-
-# TODO: Randomly Find Crates in games 1 in 200 chance
-
-# TODO: Match summary (kills, xp, gold, items if any)
-# TODO: Add a currency system (Gold and Gems)
-
-
-# TODO: Add distance before the battle engagement to determine which weapons will get a boost
-
-
-# Gets weapon Range value in a list
-    # l = range(20,30)
-    # z = []
-    # for i in l:
-    #     z.append(i)
-    # print(z)
-
-# TODO: Add a shop with items
-######### ITEMS/SHOP ITEMS ##########
-#  TIERS: Common - 0, Uncommon - 1, Rare - 2, Epic - 3, Legendary - 4, POSSIBLY MYTHIC - 5 (NOT RELEASED)
-#  
-#  Weapon Categories: Shotgun, Smg, Ar, Sniper
-#
-#  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
-#
-# TODO: Add special Umbrella when you win
-
 # Command that simulates a battle royale
+# TODO: Rework battle command
 # p.battle
 @client.command()
 async def battle(ctx):
@@ -610,6 +578,451 @@ async def battle(ctx):
         # removes the guild from the active battles check (this comes last)
         activeBattles.remove(ctx.guild.id)
 
+@client.command()
+async def profile(ctx, args = None):
+    # if no parameters, display the authors profile
+    if args == None:
+        await displayProfile(ctx, ctx.author.id)
+    # else, display the passed in user
+    else:
+        # Format the mentioned user for easy lookup
+        args = args.translate(dict.fromkeys(map(ord, '!@<>')))
+
+        # Get the user object
+        user = client.get_user(int(args))
+
+        # If user is not None
+        if user is not None:
+            # Display passed in user
+            await displayProfile(ctx, user.id)
+        else:
+            print("User not found. Profile Command.")
+
+# Displays the users profile
+async def displayProfile(ctx, userId):
+    # Get the user
+    user = client.get_user(userId)
+
+    # Fetch the user from the list
+    userProfile = await fetchUserProfile(userId)
+
+    if userProfile is True:
+        await ctx.send(f"{user.name}#{user.discriminator} has not yet played in a Battle Royale.")
+    else:
+        # Get the users profile info
+        name = userProfile["name"]
+
+        titleId = userProfile["title"]
+        title = await fetchTitleName(titleId)
+
+        showcase1Id = userProfile["showcase1"]
+        showcase2Id = userProfile["showcase2"]
+        showcase3Id = userProfile["showcase3"]
+        showcase1 = await fetchItem(showcase1Id)
+        showcase2 = await fetchItem(showcase2Id)
+        showcase3 = await fetchItem(showcase3Id)
+
+        wins = userProfile["stats"]["wins"]
+        kills = userProfile["stats"]["kills"]
+        deaths = userProfile["stats"]["deaths"]
+        kd = await calcKD(kills, deaths)
+        level = math.floor(userProfile["stats"]["totalExp"]/100)
+        gamesPlayed = deaths + wins
+        winPerc = await calcWinPerc(wins, gamesPlayed)
+
+        slot1Id = userProfile["loadout"]["slot1"]
+        slot2Id = userProfile["loadout"]["slot2"]
+        slot3Id = userProfile["loadout"]["slot3"]
+        slot4Id = userProfile["loadout"]["slot4"]
+        perkId = userProfile["loadout"]["perk"]
+        slot1 = await fetchItem(slot1Id)
+        slot2 = await fetchItem(slot2Id)
+        slot3 = await fetchItem(slot3Id)
+        slot4 = await fetchItem(slot4Id)
+        perk = await fetchItem(perkId)
+        slot1Name = slot1["name"]
+        slot1Emoji = client.get_emoji(slot1["emojiId"])
+        slot2Name = slot2["name"]
+        slot2Emoji = client.get_emoji(slot2["emojiId"])
+        slot3Name = slot3["name"]
+        slot3Emoji = client.get_emoji(slot3["emojiId"])
+        slot4Name = slot4["name"]
+        slot4Emoji = client.get_emoji(slot4["emojiId"])
+        perkName = perk["name"]
+        perkEmoji = client.get_emoji(perk["emojiId"])
+
+        totalWeapons = len(userProfile["inventory"]["weapons"])
+        totalPerks = len(userProfile["inventory"]["perks"])
+        totalUmbrellas = len(userProfile["inventory"]["umbrellas"])
+        totalTitles = len(userProfile["inventory"]["titles"])
+        totalChests = len(userProfile["inventory"]["chests"])
+        totalPickaxes = len(userProfile["inventory"]["pickaxes"])
+        inventorySize = totalWeapons + totalPerks + totalUmbrellas + totalTitles + totalChests + totalPickaxes
+
+        gold = userProfile["inventory"]["gold"]
+        gems = userProfile["inventory"]["gems"]
+
+        # TODO: Handle None types
+        # TODO: Grab threat of weapons/perks to make total threat
+        # TODO: Grab showcase items and emojis
+        # TODO: Set Color based off level
+        embed=discord.Embed(title="Plunge Battle Royale Stats")
+        embed.set_thumbnail(url=user.avatar_url)
+        embed.add_field(name=f"Level: {level}\nThreat: 100", value=f"{title} {name}#{user.discriminator}\n\n**{gold}** Gold\n**{gems}** Gems\n\n", inline=False),
+        embed.add_field(name=f"__Stats__", value=f"Wins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}\nWin Percent: {winPerc}%\n\n", inline=True)
+        embed.add_field(name=f"__Showcase__", value=f"{slot1Emoji} {slot1Name}\n{slot1Emoji} {slot1Name}", inline=True)
+        embed.add_field(name=f"__Loadout__", value=f"**1.** {slot1Emoji} {slot1Name} `+40 threat`\n**2.** {slot2Emoji} {slot2Name} `+60 threat`\n**3.** {slot3Emoji} {slot3Name}\n**4.** {slot4Emoji} {slot4Name}\n", inline=False)
+        embed.add_field(name=f"__Perk__", value=f"{perkEmoji} {perkName}", inline=False)
+        # TODO: EMOJI embed.add_field(name=f"Showcase", value=f"{showcase1["emojiId"]} {showcase2["emojiId"]} {showcase3["emojiId"]}", inline=False)
+        embed.set_footer(text=f"Inventory ({inventorySize})")
+        await ctx.send(embed=embed)
+
+# Fetches the user.. if not found, creates a new user
+async def fetchUserProfile(userId):
+    # Opens the users.json file and reads it
+    with open('users.json', 'r') as f:
+        userData = json.load(f)
+
+    # Checks if userId is in the userData list
+    if str(userId) in list(userData.keys()):
+        return userData[str(userId)]
+    # else create new user
+    else:
+        # Creates a user and return it
+        await createNewUser(userId)
+
+        return True
+
+# Fetches The Title Name
+async def fetchTitleName(titleId):
+    # Opens the titles.json
+    with open('titles.json', 'r') as f:
+        titleData = json.load(f)
+
+    if str(titleId) in list(titleData.keys()):
+        title = titleData[str(titleId)]["title"]
+        
+        if title != "":
+            title = "`[" + title + "]`"
+
+        return title
+    else:
+        print("Title name not found. fetchTitleName error.")
+
+# Fetchs an item based on its ID
+async def fetchItem(itemId):
+    if itemId < 1000:
+        with open('weapons.json', 'r') as f:
+            weaponData = json.load(f)
+
+        if str(itemId) in list(weaponData.keys()):
+            return weaponData[str(itemId)]
+        else:
+            print("Weapon not found. fetchItem error.")
+    elif itemId > 999 and itemId < 2000:
+        with open('perks.json', 'r') as f:
+            perkData = json.load(f)
+
+        if str(itemId) in list(perkData.keys()):
+            return perkData[str(itemId)]
+        else:
+            print("Perk not found. fetchItem error.")
+    elif itemId > 1999 and itemId < 3000:
+        with open('umbrellas.json', 'r') as f:
+            umbrellaData = json.load(f)
+
+        if str(itemId) in list(umbrellaData.keys()):
+            return umbrellaData[str(itemId)]
+        else:
+            print("Umbrella not found. fetchItem error.")
+    elif itemId > 2999 and itemId < 4000:
+        with open('titles.json', 'r') as f:
+            titleData = json.load(f)
+
+        if str(itemId) in list(titleData.keys()):
+            return titleData[str(itemId)]
+        else:
+            print("Title not found. fetchItem error.")
+    elif itemId > 3999 and itemId < 5000:
+        with open('chests.json', 'r') as f:
+            chestData = json.load(f)
+
+        if str(itemId) in list(chestData.keys()):
+            return chestData[str(itemId)]
+        else:
+            print("Chest not found. fetchItem error.")
+    else:
+        with open('pickaxes.json', 'r') as f:
+            pickData = json.load(f)
+
+        if str(itemId) in list(pickData.keys()):
+            return pickData[str(itemId)]
+        else:
+            print("Pick not found. fetchItem error.")
+
+# Create a new user in the users.json
+async def createNewUser(userId):
+    # Opens the users.json file and read it
+    with open('users.json', 'r') as f:
+        userData = json.load(f)
+    
+    # If user is not in the list, add a new user
+    if str(userId) not in list(userData.keys()):
+        # Gets the users name
+        user = client.get_user(userId)
+
+        stats = {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        }
+        matchStats = {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        }
+        loadout = {
+            "slot1": 999,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        }
+        inventory = {
+            "weapons": [],
+            "perks": [],
+            "umbrellas": [],
+            "titles": [],
+            "chests": [],
+            "pickaxes": [5000],
+            "gold": 250,
+            "gems": 0
+        }
+
+        userData[str(userId)] = {
+            "name": user.name,
+            "title": 3999,
+            "showcase1": 999,
+            "showcase2": 999,
+            "showcase3": 999,
+            "stats": stats,
+            "matchStats": matchStats,
+            "loadout": loadout,
+            "inventory": inventory
+        }
+    
+        with open('users.json', 'w') as f:
+            json.dump(userData, f, indent=4)
+    else:
+        print("User already created. createUser Error.")
+
+# Get the users kill death ratio
+async def calcKD(kills, deaths):
+    if kills > 0 and deaths > 0:
+        kd = kills / deaths
+    elif deaths == 0:
+        kd = kills
+    else:
+        kd = 0
+
+    return round(kd, 2)
+
+# Get the users win percentage
+async def calcWinPerc(wins, gamesPlayed):
+    if wins > 0 and gamesPlayed > 0:
+        winperc = wins / gamesPlayed * 100
+    else:
+        winperc = 0
+
+    return round(winperc)
+
+
+####################
+# End Bot Commands
+####################
+
+####################
+# Start Mod Commands
+####################
+
+@client.command()
+async def updates(ctx):
+    if isDev(ctx.author.id):
+        updates = client.get_channel(733858209046986863) # Gets #updates channel in Plunge Development
+        embed=discord.Embed(title="Plunge (BETA v1.0.0)", description="Bot Released with features", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Added", value="`p.drop` - Gives a random location to drop in Fortnite!\n`p.battle` - Starts a simulated battle royale for your server.\n`p.help` - Shows a list of all commands\n", inline=False)
+        await updates.send(embed=embed)
+    else:
+        # If people are trying to use this command and are not dev, tell them its an unknown command
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
+        await ctx.send(embed=embed)
+
+####################
+# End Mod Commands
+####################
+
+# Command to invite the bot to your server
+# p.invite
+@client.command()
+async def invite(ctx):
+    embed=discord.Embed(title="Plunge Invite Link", description="If you'd like to invite this bot to your own server, [click here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) for an invite", color=0xfd5d5d)
+    embed.set_thumbnail(url=logourl)
+    await ctx.send(embed=embed)
+
+# Command to see how many servers the bot is in
+# p.servers, p.botservers, p.botserver
+@client.command(aliases=['botservers', 'botserver'])
+async def servers(ctx):
+    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+    embed.set_thumbnail(url=logourl)
+    embed.add_field(name="Plunge is in:", value=f"{str(len(client.guilds))} servers", inline=False)
+    for guild in client.guilds:
+        print(guild.name)
+    await ctx.send(embed=embed)
+
+# Command to verify they added the bot to the server
+# p.verify
+@client.command()
+@commands.has_guild_permissions(manage_guild=True)
+async def verify(ctx):
+    # print(ctx.guild.get_member(ctx.author.id).guild_permissions) # This returns the value of your permissions Elyxirs -> value=2147483647
+    ourGuild = client.get_guild(733551377611096195)
+
+    users = []
+
+    for user in ourGuild.members:
+        users.append(user.id)
+
+    if (ctx.author.id in users):
+        await ourGuild.get_member(ctx.author.id).add_roles(ourGuild.get_role(733559654210207885), reason="Used the verify command")
+        await ourGuild.get_member(ctx.author.id).remove_roles(ourGuild.get_role(733558248401272832), reason="Used the verify command")
+
+        with open('userInfo.json', 'r') as f:
+            userInfo = json.load(f)
+
+        keys = await getKeys(userInfo.items())
+
+        # if the user is already verified tell them... else verify them
+        if (str(ctx.author.id) in keys):
+            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+            embed.set_thumbnail(url=logourl)
+            embed.add_field(name="Already Verified", value=f"{ctx.author.mention}, you are already verified and have the User role in the Plunge Development server.\n\nHead over to the Plunge Development server to see!", inline=False)
+            await ctx.send(embed=embed)
+        else:
+            embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+            embed.set_thumbnail(url=logourl)
+            embed.add_field(name=f"Verified", value=f"{ctx.author.mention}, you are now verified and have the User role in the Plunge Development server.\n\nHead over to the Plunge Development server to see!", inline=False)
+            await ctx.send(embed=embed)
+
+        # Update the users info in the userInfo.json anyway
+        userInfo[str(ctx.author.id)] = str(ctx.guild.id)
+
+        with open('userInfo.json', 'w') as f:
+            json.dump(userInfo, f, indent=4)
+    else:
+        embed=discord.Embed(title="Plunge", description=f"{ctx.author.mention}, you are not in the Plunge Development server. [Click here](https://discord.gg/mjr6nUU) to join!\n\nAfter you are in the Plunge Development server, run the `p.verify` command again to get your role.", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        await ctx.send(embed=embed)
+    
+# Command to join the developer discord
+# p.server, p.join, p.discord
+@client.command(aliases=['join', 'discord'])
+async def server(ctx):
+    embed=discord.Embed(title="Plunge Development", description="To join our discord, [click here](https://discord.gg/mjr6nUU) for an invite", color=0xfd5d5d)
+    embed.set_thumbnail(url=logourl)
+    await ctx.send(embed=embed)
+
+# Command that leaves a suggestion for the bot
+# p.suggest (suggestion)  p.feedback (feedback)
+@client.command(aliases=['feedback'])
+async def suggest(ctx, *, suggestion = None):
+    if suggestion is None:
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Invalid Command Format", value="Try: `p.suggest (suggestion)` or `p.feedback (feedback)`", inline=False)
+        await ctx.send(embed=embed)
+    else:
+        # On Suggestion command, ping private discord channel 733592146308890675 with the details
+        channelId = client.get_channel(733592146308890675) #suggestions in Plunge Development
+
+        # Response to user's message
+        reply=discord.Embed(title="Plunge", color=0xfd5d5d)
+        reply.set_thumbnail(url=logourl)
+        reply.add_field(name=f"Sent", value=f"Thanks for your submission!", inline=False)
+        reply.set_footer(text="p.invite • Invites this bot to your server")
+        await ctx.send(embed=reply)
+        
+        # Suggestion added to suggestions channel
+        suggested=discord.Embed(title="Plunge", description=f"Submitted by {ctx.author.name}#{ctx.author.discriminator}", color=0xfd5d5d)
+        suggested.set_thumbnail(url=ctx.author.avatar_url)
+        suggested.add_field(name="Suggestion / Feedback", value=suggestion, inline=False)
+        await channelId.send(embed=suggested)
+
+# Command that gives the user information about the giveaway
+# p.giveaway 
+@client.command()
+async def giveaway(ctx):
+    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+    embed.set_thumbnail(url=logourl)
+    embed.add_field(name="Giveaway Information", value="Giving away `3x Discord Nitro` in the Plunge Development server.\n", inline=False)
+    embed.add_field(name="To Qualify", value="1. Join the [Plunge Development server](https://discord.gg/mjr6nUU) and be sure to read the server rules.\n\n2. You need the Plunge bot in a server you own or are administrator of. Use `p.invite` or invite the bot by clicking [here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot).\n\n3. In your server, run the `p.verify` command. This will give you the User role in the Plunge Development server.\n\n4. Head back over to the giveaways channel in the [Plunge Development server](https://discord.gg/mjr6nUU) and enter the giveaway.", inline=False)
+    embed.add_field(name="Note", value="If the bot is removed from the server where you used `p.verify` you will lose the User role in the Plunge Development server.", inline=False)
+    await ctx.send(embed=embed)
+
+#####################################################################
+#####################################################################
+##                                                                 ##
+##                      Battle Royale                              ##
+##                                                                 ##
+#####################################################################
+#####################################################################
+
+#JSON TODO: 
+# Perks     (ID's range from 1000 - 1999) (Threat Boost, Gold Boost, Experience Boost) DONE
+# Umbrellas (ID's range from 2000 - 2999) (Beta Umbrealla, Umbrella) DONE
+# Titles    (ID's range from 3000 - 3999) (Staff, Mod, 2020 Nitro Champ, Beta Tester) DONE
+# Chests   (ID's range from 4000 - 4999) (Rare Chest, Epic Chest, Legendary Chest) DONE
+# Pickaxes  (ID's range from 5000 - 5999) (Default) DONE
+
+# NEED ATLEAST 20 Players to start
+# TODO: IF user is in a battle, don't start battle
+# TODO: React if you want to battle as: A group (No Rewards earned or stats counted) OR with Bots (Rewards + Stats counted)
+# TODO: Add Crate Rewards (Crates have rarity)
+
+# TODO: Add Perk Slot (+threat, +gold, +xp)
+
+# TODO: Randomly Find Crates in games 1 in 200 chance
+
+# TODO: Match summary (kills, xp, gold, items if any)
+# TODO: Add a currency system (Gold and Gems)
+
+
+# TODO: Add distance before the battle engagement to determine which weapons will get a boost
+
+
+# Gets weapon Range value in a list
+    # l = range(20,30)
+    # z = []
+    # for i in l:
+    #     z.append(i)
+    # print(z)
+
+# TODO: Add a shop with items
+######### ITEMS/SHOP ITEMS ##########
+#  TIERS: Common - 0, Uncommon - 1, Rare - 2, Epic - 3, Legendary - 4, POSSIBLY MYTHIC - 5 (NOT RELEASED)
+#  
+#  Weapon Categories: Shotgun, Smg, Ar, Sniper
+#
+#  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
+#
+# TODO: Add special Umbrella when you win
+
 # Battle function
 async def battleStart(ctx, users):
     # TODO: More custom messages... more related to fortnite I guess...
@@ -624,13 +1037,7 @@ async def battleStart(ctx, users):
     'sunk in quick sand', 'was trampled by rhinos', 'died from the unknown', 'fell in the void', 'got a deadly infection', 'was squashed',
     'was poisoned', 'choked on a raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
 
-    with open('info.json', 'r') as info:
-        battles = json.load(info)
-    
-    battles["battles"] += 1
-
-    with open('info.json', 'w') as info:
-        json.dump(battles, info, indent=4)
+    await addBattle()
 
     # Checks the users in the list... removes Plunge Bot
     for user in list(users):
@@ -855,8 +1262,6 @@ async def stats(ctx, param1 = None, param2 = None):
             await displayAllStats(ctx, user.id)
         else:
             print('User not found')
-    
-
 
 async def displayServerStats(ctx, authorId):
     with open('userStats.json', 'r') as f:
@@ -900,7 +1305,6 @@ async def displayServerStats(ctx, authorId):
     await ctx.send(embed=embed)
 
 async def displayAllStats(ctx, authorId):
-
     with open('userStats.json', 'r') as f:
         data = json.load(f)
 
@@ -949,6 +1353,37 @@ async def displayAllStats(ctx, authorId):
     embed.add_field(name=f"Level: {math.floor(level)}", value=f"{user.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin Percentage: {round(winperc)}%", inline=False)
     embed.set_footer(text=f"All Stats")
     await ctx.send(embed=embed)
+
+####################
+# Start Error Handling
+####################
+
+# Command Not Found Error Handler
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Command Not Found", value="Try `p.help` for a list of all commands.", inline=False)
+        await ctx.send(embed=embed)
+    elif isinstance(error, commands.MissingPermissions):
+        pass
+    else:
+        raise error
+
+# On verify command error
+@verify.error
+async def verify_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Missing Permissions", value="To verify for the User role in the Plunge Development server, you need to be an administrator or have permissions to manage the server you are currently in.", inline=False)
+        embed.add_field(name="To Verify", value="[Invite the bot](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) to a server you own or are administrator of and use `p.verify` there.", inline=False)
+        await ctx.send(embed=embed)
+
+####################
+# End Error Handling
+####################
 
 # Runs the bot
 client.run(data['token'])

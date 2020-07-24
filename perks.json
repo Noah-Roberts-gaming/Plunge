@@ -1,0 +1,20 @@
+{
+    "1000": {
+        "name": "Threat Boost",
+        "description": "Increases your threat for every engagment.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    },
+    "1001": {
+        "name": "Gold Boost",
+        "description": "Increases the amount of gold you get at the end of every game.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    },
+    "1002": {
+        "name": "Experience Boost",
+        "description": "Increases the amount of experience you get at the end of every game.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    }
+}

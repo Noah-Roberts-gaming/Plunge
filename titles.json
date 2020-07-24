@@ -1,0 +1,18 @@
+{
+    "3000": {
+        "title": "Staff",
+        "description": "Given to users who helped develop the Plunge bot."
+    },
+    "3001": {
+        "title": "Mod",
+        "description": "Given to users who help moderate the Plunge Development server."
+    },
+    "3002": {
+        "title": "2020 Nitro Champ",
+        "description": "Earned from winning the Plunge Development 2020 Battle Royale, winner received Discord Nitro."
+    },
+    "3003": {
+        "title": "Beta Tester",
+        "description": "Earned from playing in a battle while Plunge was still in development."
+    }
+}

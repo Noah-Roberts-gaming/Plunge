@@ -1,0 +1,20 @@
+{
+    "4000": {
+        "name": "Rare Chest",
+        "description": "Receive some gold with a high chance of opening a rare quality weapon. Slim chance of opening a perk or epic quality weapon.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    },
+    "4001": {
+        "name": "Epic Chest",
+        "description": "Receive a moderate amount of gold with a high chance of opening an epic quality weapon and/or a perk. Slim chance of opening a legendary quality weapon.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    },
+    "4002": {
+        "name": "Legendary Chest",
+        "description": "Receive a large amount of gold with a high chance of opening a legendary quality weapon and/or a perk. Slim chance of opening an unreleased weapon.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    }
+}

@@ -457,11 +457,11 @@ async def giveaway(ctx):
 #####################################################################
 
 #JSON TODO: 
-# Perks     (ID's range from 1000 - 1999)
-# Umbrellas (ID's range from 2000 - 2999)
-# Titles    (ID's range from 3000 - 3999)
-# Crates    (ID's range from 4000 - 4999)
-# Pickaxes  (ID's range from 5000 - 5999)
+# Perks     (ID's range from 1000 - 1999) (Threat Boost, Gold Boost, Experience Boost) DONE
+# Umbrellas (ID's range from 2000 - 2999) (Beta Umbrealla, Umbrella) DONE
+# Titles    (ID's range from 3000 - 3999) (Staff, Mod, 2020 Nitro Champ, Beta Tester) DONE
+# Chests   (ID's range from 4000 - 4999) (Rare Chest, Epic Chest, Legendary Chest) DONE
+# Pickaxes  (ID's range from 5000 - 5999) (Default) DONE
 
 # NEED ATLEAST 20 Players to start
 # TODO: IF user is in a battle, don't start battle

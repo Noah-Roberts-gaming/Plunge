@@ -1,0 +1,14 @@
+{
+    "2000": {
+        "name": "Beta Umbrella",
+        "description": "The umbrella given to you when winning a battle royale while Plunge is in beta.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    },
+    "2001": {
+        "name": "Umbrella",
+        "description": "The default umbrealla that is given to you when you win a battle royale.",
+        "imageUrl": "",
+        "emojiId": 123456789
+    }
+}

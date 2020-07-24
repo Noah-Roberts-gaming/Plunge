@@ -120,6 +120,20 @@ async def getValues(json):
     
     return items
 
+# Function to get the weapons Rarity
+async def getRarity(rarityId):
+    with open('rarity.json', 'r') as f:
+        rarity = json.load(f)
+
+    return rarity[str(rarityId)]
+
+# Function to get the weapons Range
+async def getRange(rangeId):
+    with open('ranges.json', 'r') as f:
+        ranges = json.load(f)
+
+    return ranges[str(rangeId)]
+
 # TODO: Get the emoji based on ID
 
 # TODO: Get the imageUrl based off item ID
@@ -640,14 +654,27 @@ async def displayProfile(ctx, userId):
         slot3 = await fetchItem(slot3Id)
         slot4 = await fetchItem(slot4Id)
         perk = await fetchItem(perkId)
+
         slot1Name = slot1["name"]
         slot1Emoji = client.get_emoji(slot1["emojiId"])
+        slot1Rarity = await getRarity(slot1["rarityId"])
+        slot1Threat = slot1Rarity["threat"]
+
         slot2Name = slot2["name"]
         slot2Emoji = client.get_emoji(slot2["emojiId"])
+        slot2Rarity = await getRarity(slot2["rarityId"])
+        slot2Threat = slot2Rarity["threat"]
+
         slot3Name = slot3["name"]
         slot3Emoji = client.get_emoji(slot3["emojiId"])
+        slot3Rarity = await getRarity(slot3["rarityId"])
+        slot3Threat = slot3Rarity["threat"]
+
         slot4Name = slot4["name"]
         slot4Emoji = client.get_emoji(slot4["emojiId"])
+        slot4Rarity = await getRarity(slot4["rarityId"])
+        slot4Threat = slot4Rarity["threat"]
+
         perkName = perk["name"]
         perkEmoji = client.get_emoji(perk["emojiId"])
 
@@ -662,16 +689,18 @@ async def displayProfile(ctx, userId):
         gold = userProfile["inventory"]["gold"]
         gems = userProfile["inventory"]["gems"]
 
+        totalThreat = slot1Threat + slot2Threat + slot3Threat + slot4Threat
+
         # TODO: Handle None types
         # TODO: Grab threat of weapons/perks to make total threat
         # TODO: Grab showcase items and emojis
         # TODO: Set Color based off level
         embed=discord.Embed(title="Plunge Battle Royale Stats")
         embed.set_thumbnail(url=user.avatar_url)
-        embed.add_field(name=f"Level: {level}\nThreat: 100", value=f"{title} {name}#{user.discriminator}\n\n**{gold}** Gold\n**{gems}** Gems\n\n", inline=False),
+        embed.add_field(name=f"Level: {level}\nThreat: {totalThreat * 10}", value=f"{title} {name}#{user.discriminator}\n\n**{gold}** Gold\n**{gems}** Gems\n\n", inline=False),
         embed.add_field(name=f"__Stats__", value=f"Wins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}\nWin Percent: {winPerc}%\n\n", inline=True)
         embed.add_field(name=f"__Showcase__", value=f"{slot1Emoji} {slot1Name}\n{slot1Emoji} {slot1Name}", inline=True)
-        embed.add_field(name=f"__Loadout__", value=f"**1.** {slot1Emoji} {slot1Name} `+40 threat`\n**2.** {slot2Emoji} {slot2Name} `+60 threat`\n**3.** {slot3Emoji} {slot3Name}\n**4.** {slot4Emoji} {slot4Name}\n", inline=False)
+        embed.add_field(name=f"__Loadout__", value=f"**1.** {slot1Emoji} {slot1Name} `+{slot1Threat * 10} threat`\n**2.** {slot2Emoji} {slot2Name} `+{slot2Threat * 10} threat`\n**3.** {slot3Emoji} {slot3Name} `+{slot3Threat * 10} threat`\n**4.** {slot4Emoji} {slot4Name} `+{slot4Threat * 10} threat`\n", inline=False)
         embed.add_field(name=f"__Perk__", value=f"{perkEmoji} {perkName}", inline=False)
         # TODO: EMOJI embed.add_field(name=f"Showcase", value=f"{showcase1["emojiId"]} {showcase2["emojiId"]} {showcase3["emojiId"]}", inline=False)
         embed.set_footer(text=f"Inventory ({inventorySize})")

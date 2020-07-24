@@ -1,4 +1,11 @@
 {
+    "999": {
+        "name": "",
+        "description": "",
+        "minRange": 0,
+        "maxRange": 0,
+        "bonusThreat": 0
+    },
     "0": {
         "name": "Pickaxe Range",
         "description": "A pickaxe.",

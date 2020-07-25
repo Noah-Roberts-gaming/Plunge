@@ -1,11 +1,11 @@
 {
     "999": {
-        "name": "Empty Slot",
+        "name": "",
         "description": "",
         "rarityId": 999,
         "rangeId": 999,
         "imageUrl": "",
-        "emojiId": 0,
+        "emojiId": 736461376666599444,
         "price": 0
     },
     "0": {

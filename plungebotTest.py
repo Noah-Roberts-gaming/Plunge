@@ -134,10 +134,6 @@ async def getRange(rangeId):
 
     return ranges[str(rangeId)]
 
-# TODO: Get the emoji based on ID
-
-# TODO: Get the imageUrl based off item ID
-
 ####################
 # End Get Methods
 ####################
@@ -331,90 +327,100 @@ async def on_guild_remove(guild):
 # Help Command
 # p.help
 # TODO: Remake the help command
+# @client.command()
+# async def help(ctx, setting = None):
+#     if setting is None:
+#         embed=discord.Embed(title="Plunge", description="List of Commands", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="General", value=f"`{prefix}drop` `{prefix}battle` `{prefix}help` `{prefix}feedback` `{prefix}invite` `{prefix}discord` `{prefix}verify` `{prefix}giveaway`", inline=False)
+#         embed.add_field(name="Info", value=f"To get more help on a command or see the command's function, try: `p.help (command)`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "drop":
+#         embed=discord.Embed(title="Plunge", description="Drop Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Gives you a random location to drop in Fortnite!", inline=False)
+#         embed.add_field(name="Usage:", value="`p.drop`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "battle":
+#         embed=discord.Embed(title="Plunge", description="Battle Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Starts a simulated battle royale for your server.", inline=False)
+#         embed.add_field(name="Usage:", value="`p.battle`", inline=False)
+#         embed.set_footer(text="p.stats • view your battle royale stats")
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "suggest":
+#         embed=discord.Embed(title="Plunge", description="Suggest Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Sends your suggestion to the developers to review.", inline=False)
+#         embed.add_field(name="Usage:", value="`p.suggest (your suggestion)`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "feedback":
+#         embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Sends your feedback for the developers to review.", inline=False)
+#         embed.add_field(name="Usage:", value="`p.feedback (your feedback)`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "invite":
+#         embed=discord.Embed(title="Plunge", description="Invite Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Gives you a link to invite this bot to your server!", inline=False)
+#         embed.add_field(name="Usage:", value="`p.invite`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "discord":
+#         embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+#         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+#         embed.add_field(name="Aliases:", value="`p.server`, `p.join`, `p.support`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "server":
+#         embed=discord.Embed(title="Plunge", description="Server Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+#         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+#         embed.add_field(name="Aliases:", value="`p.discord`, `p.join`, `p.support`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "join":
+#         embed=discord.Embed(title="Plunge", description="Join Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+#         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+#         embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.support`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "support":
+#         embed=discord.Embed(title="Plunge", description="Support Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
+#         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+#         embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "verify":
+#         embed=discord.Embed(title="Plunge", description="Verify Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Verifies that you have the bot in your server, giving you the User Role in the Plunge Development server.", inline=False)
+#         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+#         await ctx.send(embed=embed)
+#     elif setting.lower() == "giveaway":
+#         embed=discord.Embed(title="Plunge", description="Giveaway Command", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Description:", value=f"Displays information about the current giveaway.", inline=False)
+#         embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
+#         await ctx.send(embed=embed)
+#     else:
+#         embed=discord.Embed(title="Plunge", description="Invalid Command Setting", color=0xfd5d5d)
+#         embed.set_thumbnail(url=logourl)
+#         embed.add_field(name="Try:", value=f"`p.help` or `p.help (command)`", inline=False)
+#         await ctx.send(embed=embed)
+
 @client.command()
-async def help(ctx, setting = None):
-    if setting is None:
-        embed=discord.Embed(title="Plunge", description="List of Commands", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="General", value=f"`{prefix}drop` `{prefix}battle` `{prefix}help` `{prefix}feedback` `{prefix}invite` `{prefix}discord` `{prefix}verify` `{prefix}giveaway`", inline=False)
-        embed.add_field(name="Info", value=f"To get more help on a command or see the command's function, try: `p.help (command)`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "drop":
-        embed=discord.Embed(title="Plunge", description="Drop Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Gives you a random location to drop in Fortnite!", inline=False)
-        embed.add_field(name="Usage:", value="`p.drop`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "battle":
-        embed=discord.Embed(title="Plunge", description="Battle Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Starts a simulated battle royale for your server.", inline=False)
-        embed.add_field(name="Usage:", value="`p.battle`", inline=False)
-        embed.set_footer(text="p.stats • view your battle royale stats")
-        await ctx.send(embed=embed)
-    elif setting.lower() == "suggest":
-        embed=discord.Embed(title="Plunge", description="Suggest Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Sends your suggestion to the developers to review.", inline=False)
-        embed.add_field(name="Usage:", value="`p.suggest (your suggestion)`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "feedback":
-        embed=discord.Embed(title="Plunge", description="Feedback Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Sends your feedback for the developers to review.", inline=False)
-        embed.add_field(name="Usage:", value="`p.feedback (your feedback)`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "invite":
-        embed=discord.Embed(title="Plunge", description="Invite Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Gives you a link to invite this bot to your server!", inline=False)
-        embed.add_field(name="Usage:", value="`p.invite`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "discord":
-        embed=discord.Embed(title="Plunge", description="Discord Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
-        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.server`, `p.join`, `p.support`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "server":
-        embed=discord.Embed(title="Plunge", description="Server Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
-        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.discord`, `p.join`, `p.support`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "join":
-        embed=discord.Embed(title="Plunge", description="Join Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
-        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.support`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "support":
-        embed=discord.Embed(title="Plunge", description="Support Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Invites you to the bot's development server!", inline=False)
-        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        embed.add_field(name="Aliases:", value="`p.discord`, `p.server`, `p.join`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "verify":
-        embed=discord.Embed(title="Plunge", description="Verify Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Verifies that you have the bot in your server, giving you the User Role in the Plunge Development server.", inline=False)
-        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        await ctx.send(embed=embed)
-    elif setting.lower() == "giveaway":
-        embed=discord.Embed(title="Plunge", description="Giveaway Command", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Description:", value=f"Displays information about the current giveaway.", inline=False)
-        embed.add_field(name="Usage:", value=f"`p.{setting}`", inline=False)
-        await ctx.send(embed=embed)
-    else:
-        embed=discord.Embed(title="Plunge", description="Invalid Command Setting", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Try:", value=f"`p.help` or `p.help (command)`", inline=False)
-        await ctx.send(embed=embed)
+async def help(ctx):
+    commands = f"`p.info` Gives instructions on how to use this bot\n`p.drop` Picks a random place for you to drop in Fortnite\n`p.battle` Starts a battle royale\n`p.shop` Displays the current shop items\n`p.profile` Shows your profile\n`p.inventory` Shows your inventory\n`p.chest` Opens a chest which contains gold and items\n`p.loadout` Pick your loadout items\n`p.perk` Pick a perk to equip\n`p.showcase` Pick your showcase items\n`p.title` Pick a title to equip\n`p.color` At level 100, change your profile color\n`p.leaderboard` Shows some of the best battle royale players\n`p.invite` Sends an invite link to have the bot join your own server\n`p.discord` Sends an invite link to join our discord server\n`p.verify` Gives you the user role in our discord server\n`p.giveaway` Gives information about the active giveaway"
+
+    embed=discord.Embed(title="Plunge Help Page", color=0xfd5d5d)
+    embed.set_thumbnail(url=logourl)
+    embed.add_field(name="List of Commands", value=f"{commands}", inline=False)
+    embed.add_field(name="Have feedback for us?", value=f"Use `p.feedback [your message]` to let us know what you would like to see in the future.", inline=False)
+    await ctx.send(embed=embed)
 
 # Command to let the user know where to drop using the drop command
 # Can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  
@@ -722,8 +728,31 @@ async def displayProfile(ctx, userId):
 
         totalThreat = threat1 + threat2 + threat3 + threat4
 
-        # TODO: Set Color based off level
-        embed=discord.Embed(title=f"{name}\'s Profile")
+        # Sets Color based off level
+        if level < 10:
+            color = 2433568
+        elif level > 9 and level < 20:
+            color = 14885182
+        elif level > 19 and level < 30:
+            color = 16407354
+        elif level > 29 and level < 40:
+            color = 16764160
+        elif level > 39 and level < 50:
+            color = 31530
+        elif level > 49 and level < 60:
+            color = 37347
+        elif level > 59 and level < 70:
+            color = 8476113
+        elif level > 69 and level < 80:
+            color = 14702034
+        elif level > 79 and level < 90:
+            color = 6363698
+        elif level > 89 and level < 100:
+            color = 14673631
+        elif level >= 100:
+            color = int(userProfile["color"], 16)
+
+        embed=discord.Embed(title=f"{name}\'s Profile", color=color)
         embed.set_thumbnail(url=user.avatar_url)
         embed.add_field(name=f"Level: {level}\nThreat: {totalThreat * 10}", value=f"{title} {name}#{user.discriminator}\n\n**Gold:** {gold} {goldEmoji}\n**Gems:** {gems} {gemEmoji}\n\n ", inline=False),
         embed.add_field(name=f"__Stats__", value=f"Wins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}\nWin Percent: {winPerc}%\n\n", inline=True)
@@ -861,6 +890,7 @@ async def createNewUser(userId):
         userData[str(userId)] = {
             "name": user.name,
             "title": 3999,
+            "color": "0c0d0c",
             "showcase1": 999,
             "showcase2": 999,
             "showcase3": 999,

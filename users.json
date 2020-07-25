@@ -2,6 +2,7 @@
     "348903294893290": {
         "name": "ExampleUser#3429",
         "title": 3999,
+        "color": "0c0d0c",
         "showcase1": 999,
         "showcase2": 999,
         "showcase3": 999,
@@ -61,6 +62,7 @@
     "260698008595726336": {
         "name": "Elyxirs",
         "title": 3000,
+        "color": "0c0d0c",
         "showcase1": 22,
         "showcase2": 999,
         "showcase3": 999,
@@ -68,7 +70,7 @@
             "wins": 50,
             "kills": 278,
             "deaths": 803,
-            "totalExp": 2394
+            "totalExp": 9000
         },
         "matchStats": {
             "placement": 0,
@@ -105,6 +107,47 @@
     "534099020230950923": {
         "name": "Duh",
         "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 1000
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 999,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [],
+            "perks": [],
+            "umbrellas": [],
+            "titles": [],
+            "chests": [],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 250,
+            "gems": 20
+        }
+    },
+    "295382022350962690": {
+        "name": "xCryptic.YT",
+        "title": 3999,
+        "color": "0c0d0c",
         "showcase1": 999,
         "showcase2": 999,
         "showcase3": 999,
@@ -138,7 +181,7 @@
                 5000
             ],
             "gold": 250,
-            "gems": 20
+            "gems": 0
         }
     }
 }

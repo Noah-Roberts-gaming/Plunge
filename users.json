@@ -64,7 +64,7 @@
         "title": 3000,
         "color": "0c0d0c",
         "showcase1": 22,
-        "showcase2": 999,
+        "showcase2": 20,
         "showcase3": 999,
         "stats": {
             "wins": 50,
@@ -82,14 +82,17 @@
         "loadout": {
             "slot1": 9,
             "slot2": 14,
-            "slot3": 999,
+            "slot3": 16,
             "slot4": 999,
             "perk": 1999
         },
         "inventory": {
             "weapons": [
                 9,
-                14
+                14,
+                20,
+                16
+
             ],
             "perks": [],
             "umbrellas": [],

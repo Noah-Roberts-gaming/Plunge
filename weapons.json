@@ -41,7 +41,7 @@
         "rarityId": 0,
         "rangeId": 4,
         "imageUrl": "",
-        "emojiId": 123456789,
+        "emojiId": 736752819276873807,
         "price": 250
     },
     "4": {
@@ -77,7 +77,7 @@
         "rarityId": 1,
         "rangeId": 4,
         "imageUrl": "",
-        "emojiId": 123456789,
+        "emojiId": 736752820434239600,
         "price": 1000
     },
     "8": {
@@ -113,7 +113,7 @@
         "rarityId": 2,
         "rangeId": 4,
         "imageUrl": "",
-        "emojiId": 123456789,
+        "emojiId": 736752820904132638,
         "price": 5000
     },
     "12": {
@@ -149,7 +149,7 @@
         "rarityId": 3,
         "rangeId": 4,
         "imageUrl": "",
-        "emojiId": 123456789,
+        "emojiId": 736752817943085076,
         "price": 12000
     },
     "16": {
@@ -185,7 +185,7 @@
         "rarityId": 4,
         "rangeId": 4,
         "imageUrl": "",
-        "emojiId": 123456789,
+        "emojiId": 736752820308410447,
         "price": 20000
     },
     "20": {
@@ -221,7 +221,7 @@
         "rarityId": 5,
         "rangeId": 4,
         "imageUrl": "",
-        "emojiId": 123456789,
+        "emojiId": 736752820598079559,
         "price": 40000
     }
 }

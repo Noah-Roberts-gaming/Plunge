@@ -627,7 +627,7 @@ async def displayProfile(ctx, userId):
     userProfile = await fetchUserProfile(userId)
 
     if userProfile is True:
-        await ctx.send(f"{user.name}#{user.discriminator} has not yet played in a Battle Royale.")
+        await ctx.send(f"{user.name}#{user.discriminator} has not yet played in a Battle Royale... Creating User...")
     else:
         # Get the users profile info
         name = userProfile["name"]

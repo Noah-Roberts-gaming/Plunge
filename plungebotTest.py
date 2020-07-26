@@ -283,6 +283,7 @@ async def addBattle():
 # When the bot is directly mentioned "@Plunge", give a description about what the bot is about
 @client.event
 async def on_message(message):
+    print(message.content)
     if message.content == '<@!732864657932681278>':
         embed=discord.Embed(title="Plunge", description=f"Hey {message.author.mention}, can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command `p.drop`, Plunge will randomly select a location for you to drop in Fortnite, making your next drop stress free.", color=0xfd5d5d)
         embed.add_field(name="!! Special !!", value="We are currently hosting a giveaway!\nDo `p.giveaway` for information on how to qualify.",inline=False)
@@ -712,6 +713,7 @@ async def displayProfile(ctx, userId):
 
         perkName = perk["name"]
         perkEmoji = client.get_emoji(perk["emojiId"])
+        perkBonus = await getPerkBonus(perkId)
 
         totalWeapons = len(userProfile["inventory"]["weapons"])
         totalPerks = len(userProfile["inventory"]["perks"])
@@ -727,6 +729,9 @@ async def displayProfile(ctx, userId):
         gemEmoji = client.get_emoji(736451870016405655)
 
         totalThreat = threat1 + threat2 + threat3 + threat4
+
+        if perkId == 1000:
+            totalThreat = totalThreat + 2
 
         # Sets Color based off level
         if level < 10:
@@ -758,7 +763,7 @@ async def displayProfile(ctx, userId):
         embed.add_field(name=f"__Stats__", value=f"Wins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}\nWin Percent: {winPerc}%\n\n", inline=True)
         embed.add_field(name=f"__Showcase__", value=f"{showcase1Emoji} {showcase1Name}\n{showcase2Emoji} {showcase2Name}\n{showcase3Emoji} {showcase3Name}", inline=True)
         embed.add_field(name=f"__Loadout__", value=f"**1.** {slot1Emoji} {slot1Name} {slot1Threat}\n**2.** {slot2Emoji} {slot2Name} {slot2Threat}\n**3.** {slot3Emoji} {slot3Name} {slot3Threat}\n**4.** {slot4Emoji} {slot4Name} {slot4Threat}\n", inline=False)
-        embed.add_field(name=f"__Perk__", value=f"{perkEmoji} {perkName}", inline=False)        
+        embed.add_field(name=f"__Perk__", value=f"{perkEmoji} {perkName} {perkBonus}", inline=False)        
         embed.set_footer(text=f"Inventory ({inventorySize})")
         await ctx.send(embed=embed)
 
@@ -925,6 +930,16 @@ async def calcWinPerc(wins, gamesPlayed):
 
     return round(winperc)
 
+# Gets the bonus of the perk you have equipped
+async def getPerkBonus(perkId):
+    if perkId == 1999:
+        return ""
+    elif perkId == 1000:
+        return "`+20 Threat`"
+    elif perkId == 1001:
+        return "`+10% Gold`"
+    elif perkId == 1002:
+        return "`+10% Exp`"
 
 ####################
 # End Bot Commands

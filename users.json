@@ -83,8 +83,8 @@
             "slot1": 9,
             "slot2": 14,
             "slot3": 16,
-            "slot4": 23,
-            "perk": 1999
+            "slot4": 3,
+            "perk": 1000
         },
         "inventory": {
             "weapons": [

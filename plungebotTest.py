@@ -283,7 +283,6 @@ async def addBattle():
 # When the bot is directly mentioned "@Plunge", give a description about what the bot is about
 @client.event
 async def on_message(message):
-    print(message.content)
     if message.content == '<@!732864657932681278>':
         embed=discord.Embed(title="Plunge", description=f"Hey {message.author.mention}, can't decide on where to drop in Fortnite? It happens to us all, we  are riding in the battle bus with our maps open but no location marked.  Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command `p.drop`, Plunge will randomly select a location for you to drop in Fortnite, making your next drop stress free.", color=0xfd5d5d)
         embed.add_field(name="!! Special !!", value="We are currently hosting a giveaway!\nDo `p.giveaway` for information on how to qualify.",inline=False)
@@ -497,7 +496,7 @@ async def battle(ctx):
     if ctx.guild.id in list(activeBattles):
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle In Progress", value="There is a battle in progress, please wait until the current battle is complete", inline=False)
+        embed.add_field(name="Battle In Progress", value="There is already a battle in progress for this server, please wait until the current battle is complete", inline=False)
         await ctx.send(embed=embed)
     else:
         # add the guild to the active battles check
@@ -505,68 +504,122 @@ async def battle(ctx):
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 30 seconds!", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Ready Up!", value="We are starting in 3 minutes!", inline=False)
         msg = await ctx.send(embed=embed)
         await msg.add_reaction('<:plunge:734656507194507275>')
 
-        await asyncio.sleep(10)
+        # await asyncio.sleep(60)
 
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 20 seconds!", inline=False)
-        await msg.edit(embed=embed)
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 2 minutes!", inline=False)
+        # await msg.edit(embed=embed)
 
-        await asyncio.sleep(10)
+        # await asyncio.sleep(60)
 
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 10 seconds!", inline=False)
-        await msg.edit(embed=embed)
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 1 minutes!", inline=False)
+        # await msg.edit(embed=embed)
 
-        await asyncio.sleep(5)
+        # await asyncio.sleep(30)
 
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 5 seconds!", inline=False)
-        await msg.edit(embed=embed)
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 30 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(10)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 20 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(10)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 10 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 9 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 8 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 7 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 6 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 5 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 4 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 3 seconds!", inline=False)
+        # await msg.edit(embed=embed)
+
+        # await asyncio.sleep(1)
+
+        # embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        # embed.set_thumbnail(url=logourl)
+        # embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
+        # embed.add_field(name="Ready Up!", value="We are starting in 2 seconds!", inline=False)
+        # await msg.edit(embed=embed)
 
         await asyncio.sleep(1)
 
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 4 seconds!", inline=False)
-        await msg.edit(embed=embed)
-
-        await asyncio.sleep(1)
-
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 3 seconds!", inline=False)
-        await msg.edit(embed=embed)
-
-        await asyncio.sleep(1)
-
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
-        embed.add_field(name="Ready Up!", value="We are starting in 2 seconds!", inline=False)
-        await msg.edit(embed=embed)
-
-        await asyncio.sleep(1)
-
-        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-        embed.set_thumbnail(url=logourl)
-        embed.add_field(name="Battle Starting", value=f"React to the message below with {emoji} to be entered in this battle royale.", inline=False)
+        embed.add_field(name="Battle Starting", value=f"React with {emoji} to be entered in this battle royale.", inline=False)
         embed.add_field(name="Ready Up!", value="We are starting in 1 seconds!", inline=False)
         await msg.edit(embed=embed)
-
-        await asyncio.sleep(1)
 
         # Caches your message so you can get the reactions
         cache_msg = discord.utils.get(client.cached_messages, id = msg.id)
@@ -576,15 +629,23 @@ async def battle(ctx):
             # if reaction is the plunge emoji...
             if str(reaction.emoji) == '<:plunge:734656507194507275>':
                 # Grabs the users that used that reaction
-                users = await reaction.users().flatten()
+                userObjects = await reaction.users().flatten()
+                users = []
 
-                # If the list is larger than or equal to 5 TODO: Change the minimum players back (Decide on minimum players)
-                if len(users) > 1:
+                # Makes a new list of just user.Id's
+                for user in list(userObjects):
+                    if user.id != 732864657932681278:
+                        users.append(user.id)
+
+                usersToAdd = 20 - len(users)
+
+                # If the list is larger than 20 start the battle, else
+                if len(users) > 20:
                     await msg.delete(delay=None)
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
                     embed.add_field(name="Battle In Progress...", value="Good Luck Everyone!", inline=False)
-                    embed.set_footer(text=f"{len(users) - 1} Players Entered")
+                    embed.set_footer(text=f"{len(users) - 1} Players")
                     await ctx.send(embed=embed)
 
                     # Pass the ctx and users list into the battleStart function
@@ -593,8 +654,28 @@ async def battle(ctx):
                     await msg.delete(delay=None)
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
-                    embed.add_field(name="Battle Cancelled", value="Sorrry, you need a minimum of 5 players to begin a Battle Royale.", inline=False)
+                    embed.add_field(name="Not Enough Players", value=f"Minimum players required: 20\n\nFilling the remaining {usersToAdd} slots with bots", inline=False)
+                    msg2 = await ctx.send(embed=embed)
+
+                    await asyncio.sleep(5)
+                    
+                    # Add players to the list
+                    i = 0
+                    while i < usersToAdd:
+                        users.append(i)
+                        i += 1
+
+                    await msg2.delete(delay=None)
+
+                    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+                    embed.set_thumbnail(url=logourl)
+                    embed.add_field(name="Battle In Progress...", value="Good Luck Everyone!", inline=False)
+                    embed.set_footer(text=f"{len(users)} Players")
                     await ctx.send(embed=embed)
+
+                    # Pass the ctx and users list into the battleStart function
+                    await battleStart(ctx, users)
+
                 
         # removes the guild from the active battles check (this comes last)
         activeBattles.remove(ctx.guild.id)

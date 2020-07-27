@@ -1,0 +1,47 @@
+{
+    "0": {
+        "name": "Jim Bot",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 3,
+            "kills": 2,
+            "deaths": 4,
+            "totalExp": 110
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    }
+}

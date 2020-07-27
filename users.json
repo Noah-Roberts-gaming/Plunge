@@ -1,16 +1,16 @@
 {
-    "348903294893290": {
-        "name": "ExampleUser#3429",
+    "0": {
+        "name": "Ashley [bot]",
         "title": 3999,
         "color": "0c0d0c",
         "showcase1": 999,
         "showcase2": 999,
         "showcase3": 999,
         "stats": {
-            "wins": 3,
-            "kills": 2,
-            "deaths": 4,
-            "totalExp": 110
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
         },
         "matchStats": {
             "placement": 0,
@@ -20,44 +20,884 @@
             "itemsGained": []
         },
         "loadout": {
-            "slot1": 5,
-            "slot2": 13,
+            "slot1": 2,
+            "slot2": 999,
             "slot3": 999,
             "slot4": 999,
-            "perk": 1000
+            "perk": 1999
         },
         "inventory": {
             "weapons": [
-                5,
-                9,
-                13,
-                18
+                2
             ],
             "perks": [
-                1000,
-                1001,
-                1002
             ],
             "umbrellas": [
-                2000,
-                2001
             ],
             "titles": [
-                3000,
-                3002
             ],
             "chests": [
-                4000,
-                4000,
-                4001
             ],
             "pickaxes": [
-                5000,
-                5001
+                5000
             ],
             "gold": 800,
             "gems": 0
-        }
+    },
+    "1": {
+        "name": "Isacc [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "2": {
+        "name": "Alex [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 3,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                3
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "3": {
+        "name": "Josh [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 1,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                1
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "4": {
+        "name": "Jake [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "5": {
+        "name": "Orlando [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "6": {
+        "name": "Pam [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "7": {
+        "name": "Chris [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 0,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                0
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "8": {
+        "name": "John [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "9": {
+        "name": "Jesse [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 3,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                3
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "10": {
+        "name": "Arthur [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "11": {
+        "name": "Eleven [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 1,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                1
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "12": {
+        "name": "Mike [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 3,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                3
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "13": {
+        "name": "Daniel [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "14": {
+        "name": "Manuel [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "15": {
+        "name": "Jazmine [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "16": {
+        "name": "Edan [Bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 0,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                0
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "17": {
+        "name": "Emily [Bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 3,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                3
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "18": {
+        "name": "Jim [Bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
+    },
+    "19": {
+        "name": "Kyle [Bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+            "totalExp": 0
+        },
+        "matchStats": {
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
+            "itemsGained": []
+        },
+        "loadout": {
+            "slot1": 1,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                1
+            ],
+            "perks": [
+            ],
+            "umbrellas": [
+            ],
+            "titles": [
+            ],
+            "chests": [
+            ],
+            "pickaxes": [
+                5000
+            ],
+            "gold": 800,
+            "gems": 0
     },
     "260698008595726336": {
         "name": "Elyxirs",

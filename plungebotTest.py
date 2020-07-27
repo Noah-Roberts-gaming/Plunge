@@ -655,7 +655,7 @@ async def battle(ctx):
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
                     embed.add_field(name="Not Enough Players", value=f"Minimum players required: 20\n\nFilling the remaining {usersToAdd} slots with bots", inline=False)
-                    msg2 = await ctx.send(embed=embed)
+                    await ctx.send(embed=embed)
 
                     await asyncio.sleep(5)
                     
@@ -664,8 +664,6 @@ async def battle(ctx):
                     while i < usersToAdd:
                         users.append(i)
                         i += 1
-
-                    await msg2.delete(delay=None)
 
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
@@ -859,7 +857,7 @@ async def fetchUserProfile(userId):
         return userData[str(userId)]
     # else create new user
     else:
-        # Creates a user and return it
+        # Creates a user
         await createNewUser(userId)
 
         return True
@@ -989,7 +987,8 @@ async def createNewUser(userId):
         with open('users.json', 'w') as f:
             json.dump(userData, f, indent=4)
     else:
-        print("User already created. createUser Error.")
+        # print("User already created. createUser Error.")
+        return
 
 # Get the users kill death ratio
 async def calcKD(kills, deaths):
@@ -1209,34 +1208,37 @@ async def giveaway(ctx):
 async def battleStart(ctx, users):
     # TODO: More custom messages... more related to fortnite I guess...
 
-    weapons = ['a Pistol', 'a Pickaxe', 'an Assault Rifle', 'an Auto Rifle', 'a Sniper Rifle', 'a Paintball Gun', 'a Rock', 'an Arrow', 'a Blow Dart Gun', 'a Rocket Launcher', 
-    'a Grenade', 'a Grenade Launcher', 'a Shotgun', 'Hand to Hand Combat', 'a Submachine Gun', 'a Light Machine Gun', 'a Stick', 'an Eye Poke', 'a Karate Chop']
+    # weapons = ['a Pistol', 'a Pickaxe', 'an Assault Rifle', 'an Auto Rifle', 'a Sniper Rifle', 'a Paintball Gun', 'a Rock', 'an Arrow', 'a Blow Dart Gun', 'a Rocket Launcher', 
+    # 'a Grenade', 'a Grenade Launcher', 'a Shotgun', 'Hand to Hand Combat', 'a Submachine Gun', 'a Light Machine Gun', 'a Stick', 'an Eye Poke', 'a Karate Chop']
 
-    eliminations = ['eliminated', 'destroyed', 'annihilated', 'obliterated', 'got rid of', 'beamed', 'ended', 'finished off', 'murdered', 'killed', 'erased']
+    # eliminations = ['eliminated', 'destroyed', 'annihilated', 'obliterated', 'got rid of', 'beamed', 'ended', 'finished off', 'murdered', 'killed', 'erased']
 
     funny = ['took an arrow to the knee', 'forgot they can\'t fly', 'starved to death', 'was eliminated for cheating', 
     'went off the deep end', 'drowned', 'fell', 'died', 'mysteriously disappeared', 'fled from battle', 'was pecked to death by a bird',
     'sunk in quick sand', 'was trampled by rhinos', 'died from the unknown', 'fell in the void', 'got a deadly infection', 'was squashed',
     'was poisoned', 'choked on a raisin', 'didn\'t make it', 'hyperventilated and died', 'was eliminated for tax evasion']
 
+    # Adds to the battle counter
     await addBattle()
 
     # Checks the users in the list... removes Plunge Bot
-    for user in list(users):
-        if user.id == 732864657932681278:
-            users.remove(user)
-        else:
-            await newUser(ctx, user)
+    for userId in list(users):
+        if userId > 20:
+            await createNewUser(userId)
 
+    # TODO: Fix whatever mess this is
     newList = users
-    
-
     totalPlayers = len(list(newList))
     PlayersForXp = list(newList)
     
     while len(newList) > 1:
-        user1 = random.choice(users)
-        user2 = random.choice(users)
+        with open('users.json', 'r') as f:
+            data = json.load(f)
+
+        userId1 = random.choice(users)
+        userId2 = random.choice(users)
+
+        battleRange = random.randint(1, 150)
 
         await asyncio.sleep(random.randint(4,8)) # Randomly select the message delay between 4-8 numbers
 
@@ -1245,205 +1247,365 @@ async def battleStart(ctx, users):
         # Prevents them from randomly dying without getting eleminated when its in the final 5
         if len(newList) <= 5:
             i = 0
-            while i < 3 and user1 == user2:
-                user1 = random.choice(newList)
-                user2 = random.choice(newList)
+            while i < 3 and userId1 == userId2:
+                userId1 = random.choice(newList)
+                userId2 = random.choice(newList)
                 i+=1
 
-        if user1 == user2:
-            await addDeath(ctx, user1)
+        if userId1 == userId2:
+
+            if userId1 > 20:
+                user1 = client.fetch_user(userId1)
+                if user1 is not None:
+                    user1Name = f'{user1.mention}'
+                else:
+                    print('but something went wrong 1263')
+                    user1Name = data[str(userId1)]['name']
+            else:
+                user1Name = data[str(userId1)]['name']
+
+            await addDeath(userId1, len(newList))
             embed=discord.Embed(color=0xfd5d5d)
-            embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(funny)}', inline=False)
+            embed.add_field(name="Elimination", value=f'**{user1Name}** {random.choice(funny)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
             await ctx.send(embed=embed)
+
+            # Updates the list by removing the user that got eliminated
+            newList.remove(userId2)
         else:
-            await addKill(ctx, user1)
-            await addDeath(ctx, user2)
+            # Call the method that calculates who wins the battle (returns the elimination message)
+            elimMessage = userBattle(userId1, userId2, battleRange)
+            await addKill(userId1)
+            await addDeath(userId2, len(newList))
             embed=discord.Embed(color=0xfd5d5d)
-            embed.add_field(name="Elimination", value=f'{user1.mention} {random.choice(eliminations)} {user2.mention} with {random.choice(weapons)}', inline=False)
+            embed.add_field(name="Elimination", value=f'{elimMessage[0]}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
             await ctx.send(embed=embed)
-        
-        # Updates the list by removing the user that got eliminated
-        newList.remove(user2)
+            
+            # Updates the list by removing the user that got eliminated
+            newList.remove(elimMessage[1])
 
     await asyncio.sleep(3)
 
-    await addWin(ctx, newList[0])
+
+    winner = newList[0]
+
+    await addWin(winner)
+
+    # Get the winners name
+    if winner > 20:
+        winnerUser = client.get_user(winner)
+        winnerName = f'{winnerUser.mention}'
+    else:
+        winnerName = data[str(winner)]['name']
+    
+    winnerKills = data[str(winner)]['matchStats']['killsEarned']
 
     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
     # TODO: Display the amount of kills
-    embed.add_field(name="Battle Royale Victory", value=f'The winner of {ctx.guild.name}\'s Battle Royale is {newList[0].mention}\n\n{newList[0].mention} had {await getGameKills(ctx, newList[0])} kills', inline=False)
+    embed.add_field(name="Battle Royale Victory", value=f'The winner of {ctx.guild.name}\'s Battle Royale is **{winnerName}**\n\n**{winnerName}** had {winnerKills} kills', inline=False)
     embed.set_footer(text=f"{totalPlayers} players participated")
     await ctx.send(embed=embed)
 
-    for player in PlayersForXp:
-        await updateStats(ctx, player)
+    for userId in PlayersForXp:
+        await resetMatchStats(userId)
 
-# Method that creates a new user object for json if they are not in the list
-# TODO: Don't Pass the entire context... just pass the ctx.guild.id
-# TODO: Check if the user is already in the list for faster response time
-async def newUser(ctx, user):
-    with open('userStats.json', 'r') as f:
-        data = json.load(f)
+
+def userBattle(userId1, userId2, battleRange):
+    with open('users.json', 'r') as f:
+        users = json.load(f)
     
-    # if user is not in the list add a brand new user
-    if str(user.id) not in list(data.keys()):
+    with open('ranges.json', 'r') as f:
+        ranges = json.load(f)
 
-        serverId = {}
-    
-        serverId[ctx.guild.id] = {
-            'wins': 0,
-            'kills': 0,
-            'deaths': 0,
-            'currentGameKills': 0,
-            'totalExp': 0,
-            'color': 2433568
-        }
+    # Variables
+    eliminations = ['eliminated', 'destroyed', 'annihilated', 'obliterated', 'got rid of', 'beamed', 'ended', 'finished off', 'murdered', 'killed', 'erased']
 
-        data[str(user.id)] = serverId
+    # Get user1's weapon loadout
+    user1Loadout = []
+    user1Loadout.append(users[str(userId1)]['loadout']['slot1'])
+    user1Loadout.append(users[str(userId1)]['loadout']['slot2'])
+    user1Loadout.append(users[str(userId1)]['loadout']['slot3'])
+    user1Loadout.append(users[str(userId1)]['loadout']['slot4'])
 
-        with open('userStats.json', 'w') as f:
-            json.dump(data, f, indent=4)
+    # Get desired weapon for user 1
+    user1Weapon = desiredWeapon(user1Loadout, battleRange)
 
-    # If user is in the list, check if the guild id is in the users guilds list
+    # Get weapon emoji
+    user1WeaponEmojiId = user1Weapon['emojiId']
+    user1WeaponEmoji = client.get_emoji(user1WeaponEmojiId)
+
+    # Get weapon name
+    user1WeaponName = user1Weapon['name']
+
+    # Get user1's weapon ranges
+    user1MinRange = ranges[str(user1Weapon['rangeId'])]['minRange']
+    user1MaxRange = ranges[str(user1Weapon['rangeId'])]['maxRange']
+    user1RangeBonusThreat = 0
+
+    # Get user1's bonus threat if any
+    if battleRange <= user1MaxRange and battleRange >= user1MinRange:
+        user1RangeBonusThreat = ranges[str(user1Weapon['rangeId'])]['bonusThreat']
+
+    # Get user1's loadout threat
+    user1LoadoutThreat = getUsersThreat(users[str(userId1)])
+
+    # Get user2's weapon loadout
+    user2Loadout = []
+    user2Loadout.append(users[str(userId2)]['loadout']['slot1'])
+    user2Loadout.append(users[str(userId2)]['loadout']['slot2'])
+    user2Loadout.append(users[str(userId2)]['loadout']['slot3'])
+    user2Loadout.append(users[str(userId2)]['loadout']['slot4'])
+
+    # Get desired weapon for user 2
+    user2Weapon = desiredWeapon(user2Loadout, battleRange)
+
+    # Get weapon emoji
+    user2WeaponEmojiId = user2Weapon['emojiId']
+    user2WeaponEmoji = client.get_emoji(user2WeaponEmojiId)
+
+    # Get weapon name
+    user2WeaponName = user2Weapon['name']
+
+    # Get user2's weapon ranges
+    user2MinRange = ranges[str(user2Weapon['rangeId'])]['minRange']
+    user2MaxRange = ranges[str(user2Weapon['rangeId'])]['maxRange']
+    user2RangeBonusThreat = 0
+
+    # Get user2's bonus threat if any
+    if battleRange <= user2MaxRange and battleRange >= user2MinRange:
+        user2RangeBonusThreat = ranges[str(user2Weapon['rangeId'])]['bonusThreat']
+
+    # Get user2's ladout threat
+    user2LoadoutThreat = getUsersThreat(users[str(userId2)])
+
+    # Get user2's total threat
+    user2TotalThreat = user2RangeBonusThreat + user2LoadoutThreat
+    print(f"Weapon: {user2WeaponName}\nUser 2 Total Threat: {user2TotalThreat}\nRange Bonus: {user2RangeBonusThreat}\n\n")
+
+    # Get user1's total threat
+    user1TotalThreat = user1RangeBonusThreat + user1LoadoutThreat
+    print(f"Weapon: {user1WeaponName}\nUser 1 Total Threat: {user1TotalThreat}\nRange Bonus: {user1RangeBonusThreat}\n\n")
+
+    # Get the odds per user
+    if user1TotalThreat > user2TotalThreat:
+        difference = user1TotalThreat - user2TotalThreat
+        user1odds = 50 + difference
+        user2odds = 50 - difference
+    elif user1TotalThreat == user2TotalThreat:
+        user1odds = 50
+        user2odds = 50
     else:
-        # If the guild is in the users guilds list do nothing
-        if str(ctx.guild.id) in list(data[str(user.id)].keys()):
-            print(f'User already added for this server')
-        
-        # If the guild is not in the users guilds list, add new server stats
-        else:
-            serverId = {
-                'wins': 0,
-                'kills': 0,
-                'deaths': 0,
-                'currentGameKills': 0,
-                'totalExp': 0,
-                'color': 2433568
-            }
+        difference = user2TotalThreat - user1TotalThreat
+        user2odds = 50 + difference
+        user1odds = 50 - difference
 
-            data[str(user.id)][str(ctx.guild.id)] = serverId
+    weightedList = [userId1, userId2]
 
-            with open('userStats.json', 'w') as f:
-                json.dump(data, f, indent=4)
+    winningId = random.choices(weightedList, weights=(user1odds, user2odds))
+    
+    # Fetch the users names to use
+    if userId1 > 20:
+        user1 = client.get_user(userId1)
+        user1Name = f'{user1.mention}'
+    else:
+        user1Name = users[str(userId1)]['name']
+
+    if userId2 > 20:
+        user2 = client.get_user(userId2)
+        user2Name = f'{user2.mention}'
+    else:
+        user2Name = users[str(userId2)]['name']
+
+    if winningId == userId1:
+        # User1 wins
+        return f'**{user1Name}** {random.choice(eliminations)} **{user2Name}** with {user1WeaponEmoji} {user1WeaponName} [{user1odds} to {user2odds} odds] (*{battleRange}m*)', userId2
+    else:
+        # User2 wins
+        return f'**{user2Name}** {random.choice(eliminations)} **{user1Name}** with {user2WeaponEmoji} {user2WeaponName} [{user2odds} to {user1odds} odds] (*{battleRange}m*)', userId1
+
+# Gets a users total threat
+def getUsersThreat(user):
+    with open('weapons.json', 'r') as f:
+        weapons = json.load(f)
+    
+    with open('rarity.json', 'r') as f:
+        rarity = json.load(f)
+
+    totalThreat = 0
+
+    # Get users loadout
+    userLoadout = []
+    userLoadout.append(user['loadout']['slot1'])
+    userLoadout.append(user['loadout']['slot2'])
+    userLoadout.append(user['loadout']['slot3'])
+    userLoadout.append(user['loadout']['slot4'])
+
+    for weaponId in userLoadout:
+        totalThreat += rarity[str(weapons[str(weaponId)]['rarityId'])]['threat']
+    
+    if user['loadout']['perk'] == 1000:
+        totalThreat += 2
+
+    return totalThreat
+
+# Gets the desired weapon for the user to use for the engagement
+def desiredWeapon(weapons, battleRange):
+    with open('weapons.json', 'r') as f:
+        weapons = json.load(f)
+    
+    with open('ranges.json', 'r') as f:
+        ranges = json.load(f)
+
+    # average list
+    averageRanges = []
+
+    # get the average of the ranges
+    for weaponId in weapons:
+        if weaponId != "999":
+            rangeId = weapons[str(weaponId)]['rangeId']
+
+            averageRange = ranges[str(rangeId)]['averageRange']
+
+            averageRanges.append(averageRange)
+            
+
+    # weaponRange to use
+    rangeToUse = closest(averageRanges, battleRange)
+
+    for weaponId in weapons:
+        if weaponId != "999":
+            rangeId = weapons[str(weaponId)]['rangeId']
+
+            if rangeToUse == ranges[str(rangeId)]['averageRange']:
+                return weapons[str(weaponId)]
+
+
+
+def closest(lst, distance):
+    return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-distance))]
 
 # Method that gets the current Game Kills
-# TODO: Don't pass the ctx just pass ctx.guild.id
-async def getGameKills(ctx, user):
+# TODO: REWORK Might not even need
+async def getGameKills(userId):
     with open('userStats.json', 'r') as f:
         data = json.load(f)
 
-    return data[str(user.id)][str(ctx.guild.id)]['currentGameKills']
+    return data[str(userId)]['stats']['killsEarned']
 
 # Method that updates your stats at the end of the game
-# TODO: Don't pass the ctx just pass ctx.guild.id and Grab the user.id
-async def updateStats(ctx, user):
-    with open('userStats.json', 'r') as f:
+async def resetMatchStats(userId):
+    with open('users.json', 'r') as f:
         data = json.load(f)
 
-    data[str(user.id)][str(ctx.guild.id)]['currentGameKills'] = 0
+    data[str(userId)]['matchStats']['placement'] = 0
+    data[str(userId)]['matchStats']['killsEarned'] = 0
+    data[str(userId)]['matchStats']['goldEarned'] = 0
+    data[str(userId)]['matchStats']['expEarned'] = 0
+    data[str(userId)]['matchStats']['itemsEarned'] = []
 
-    wins = data[str(ctx.author.id)][str(ctx.guild.id)]['wins']
-    kills = data[str(ctx.author.id)][str(ctx.guild.id)]['kills']
-    deaths = data[str(ctx.author.id)][str(ctx.guild.id)]['deaths']
-    gamesPlayed = deaths + wins
-
-    totalExp = gamesPlayed * 10 + wins * 100 + kills * 25
-
-    data[str(ctx.author.id)][str(ctx.guild.id)]['totalExp'] = totalExp
-
-    with open('userStats.json', 'w') as f:
+    with open('users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users kills
-# TODO: Don't pass the ctx just pass ctx.guild.id
-async def addKill(ctx, user):
-    with open('userStats.json', 'r') as f:
+async def addKill(userId):
+    with open('users.json', 'r') as f:
         data = json.load(f)
 
-    data[str(user.id)][str(ctx.guild.id)]['kills'] += 1
-    data[str(user.id)][str(ctx.guild.id)]['currentGameKills'] += 1
+    data[str(userId)]['stats']['kills'] += 1
+    data[str(userId)]['matchStats']['killsEarned'] += 1
+    data[str(userId)]['stats']['totalExp'] += 1
+    data[str(userId)]['matchStats']['expEarned'] += 1
+    data[str(userId)]['inventory']['gold'] += 10
+    data[str(userId)]['matchStats']['goldEarned'] += 10
 
-    with open('userStats.json', 'w') as f:
+    with open('users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users wins
-# TODO: Don't pass the ctx just pass ctx.guild.id
-async def addWin(ctx, user):
-    with open('userStats.json', 'r') as f:
+async def addWin(userId):
+    with open('users.json', 'r') as f:
         data = json.load(f)
 
-    data[str(user.id)][str(ctx.guild.id)]['wins'] += 1
+    data[str(userId)]['stats']['wins'] += 1
+    data[str(userId)]['matchStats']['placement'] = 1
+    data[str(userId)]['stats']['totalExp'] += 10
+    data[str(userId)]['matchStats']['expEarned'] += 10
+    data[str(userId)]['inventory']['gold'] += 150
+    data[str(userId)]['matchStats']['goldEarned'] += 150
 
-    with open('userStats.json', 'w') as f:
+    with open('users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users deaths
-# TODO: Don't pass the ctx just pass ctx.guild.id
-async def addDeath(ctx, user):
-    with open('userStats.json', 'r') as f:
+async def addDeath(userId, placement):
+    with open('users.json', 'r') as f:
         data = json.load(f)
 
-    data[str(user.id)][str(ctx.guild.id)]['deaths'] += 1
+    data[str(userId)]['matchStats']['placement'] = placement
+    data[str(userId)]['stats']['deaths'] += 1
+    data[str(userId)]['stats']['totalExp'] += 5
+    data[str(userId)]['matchStats']['expEarned'] += 5
+    data[str(userId)]['inventory']['gold'] += 50
+    data[str(userId)]['matchStats']['goldEarned'] += 50
 
-    with open('userStats.json', 'w') as f:
+    with open('users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # TODO: Method that calculates the users remaining experience to level and possibly display it??
 
 # Command that fetches your stats for the server you are in
-@client.command()
-async def stats(ctx, param1 = None, param2 = None):
-    await newUser(ctx, ctx.author)
+# @client.command()
+# async def stats(ctx, param1 = None, param2 = None):
+#     await newUser(ctx, ctx.author)
 
-    # If no parameters are passed in, 
-    if param1 == None and param2 == None:
+#     # If no parameters are passed in, 
+#     if param1 == None and param2 == None:
 
-        # Creates User if it doesn't exist
-        await newUser(ctx, ctx.author)
+#         # Creates User if it doesn't exist
+#         await newUser(ctx, ctx.author)
 
-        # Display the users stats for this server
-        await displayServerStats(ctx, ctx.author.id)
+#         # Display the users stats for this server
+#         await displayServerStats(ctx, ctx.author.id)
 
-    elif param1.lower() == 'all' and param2 == None:
+#     elif param1.lower() == 'all' and param2 == None:
 
-        # Creates User if it doesn't exist
-        await newUser(ctx, ctx.author)
+#         # Creates User if it doesn't exist
+#         await newUser(ctx, ctx.author)
 
-        # Display all the users stats
-        await displayAllStats(ctx, ctx.author.id)
+#         # Display all the users stats
+#         await displayAllStats(ctx, ctx.author.id)
 
-    elif param1 is not None and param2 == None:
-        # Formats the Mention as a user ID
-        param1 = param1.translate(dict.fromkeys(map(ord, '!@<>')))
-        # Get the user object
-        user = client.get_user(int(param1))
+#     elif param1 is not None and param2 == None:
+#         # Formats the Mention as a user ID
+#         param1 = param1.translate(dict.fromkeys(map(ord, '!@<>')))
+#         # Get the user object
+#         user = client.get_user(int(param1))
 
-        if user is not None:
-            # Creates stats for the user in this current server if it does not exist
-            await newUser(ctx, user)
+#         if user is not None:
+#             # Creates stats for the user in this current server if it does not exist
+#             await newUser(ctx, user)
 
-            # Display
-            await displayServerStats(ctx, user.id)
-        else:
-            print('User not found')
+#             # Display
+#             await displayServerStats(ctx, user.id)
+#         else:
+#             print('User not found')
 
-    elif param1.lower() == 'all' and param2 is not None:
-        # Formats the Mention as a user ID
-        param2 = param2.translate(dict.fromkeys(map(ord, '!@<>')))
-        # Get the user object
-        user = client.get_user(int(param2))
+#     elif param1.lower() == 'all' and param2 is not None:
+#         # Formats the Mention as a user ID
+#         param2 = param2.translate(dict.fromkeys(map(ord, '!@<>')))
+#         # Get the user object
+#         user = client.get_user(int(param2))
 
-        if user is not None:
-            # Creates stats for the user in this current server if it does not exist
-            await newUser(ctx, user)
+#         if user is not None:
+#             # Creates stats for the user in this current server if it does not exist
+#             await newUser(ctx, user)
 
-            # Display
-            await displayAllStats(ctx, user.id)
-        else:
-            print('User not found')
+#             # Display
+#             await displayAllStats(ctx, user.id)
+#         else:
+#             print('User not found')
 
 async def displayServerStats(ctx, authorId):
     with open('userStats.json', 'r') as f:

@@ -951,7 +951,7 @@ async def createNewUser(userId):
             "killsEarned": 0,
             "goldEarned": 0,
             "expEarned": 0,
-            "itemsGained": []
+            "itemsEarned": []
         }
         loadout = {
             "slot1": 999,
@@ -1242,8 +1242,6 @@ async def battleStart(ctx, users):
 
         await asyncio.sleep(random.randint(4,8)) # Randomly select the message delay between 4-8 numbers
 
-        # TODO: Send users a custom messages based on their placement??
-
         # Prevents them from randomly dying without getting eleminated when its in the final 5
         if len(newList) <= 5:
             i = 0
@@ -1255,11 +1253,11 @@ async def battleStart(ctx, users):
         if userId1 == userId2:
 
             if userId1 > 20:
-                user1 = client.fetch_user(userId1)
+                user1 = client.get_user(userId1)
                 if user1 is not None:
                     user1Name = f'{user1.mention}'
                 else:
-                    print('but something went wrong 1263')
+                    print('but something went wrong 1260')
                     user1Name = data[str(userId1)]['name']
             else:
                 user1Name = data[str(userId1)]['name']
@@ -1275,15 +1273,15 @@ async def battleStart(ctx, users):
         else:
             # Call the method that calculates who wins the battle (returns the elimination message)
             elimMessage = userBattle(userId1, userId2, battleRange)
-            await addKill(userId1)
-            await addDeath(userId2, len(newList))
+            addKill(elimMessage[1])
+            await addDeath(elimMessage[2], len(newList))
             embed=discord.Embed(color=0xfd5d5d)
             embed.add_field(name="Elimination", value=f'{elimMessage[0]}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
             await ctx.send(embed=embed)
             
             # Updates the list by removing the user that got eliminated
-            newList.remove(elimMessage[1])
+            newList.remove(elimMessage[2])
 
     await asyncio.sleep(3)
 
@@ -1299,7 +1297,7 @@ async def battleStart(ctx, users):
     else:
         winnerName = data[str(winner)]['name']
     
-    winnerKills = data[str(winner)]['matchStats']['killsEarned']
+    winnerKills = getGameKills(winner)
 
     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
@@ -1391,15 +1389,15 @@ def userBattle(userId1, userId2, battleRange):
     # Get the odds per user
     if user1TotalThreat > user2TotalThreat:
         difference = user1TotalThreat - user2TotalThreat
-        user1odds = 50 + difference
-        user2odds = 50 - difference
+        user1odds = (100 + difference) / 2
+        user2odds = (100 - difference) / 2
     elif user1TotalThreat == user2TotalThreat:
         user1odds = 50
         user2odds = 50
     else:
         difference = user2TotalThreat - user1TotalThreat
-        user2odds = 50 + difference
-        user1odds = 50 - difference
+        user2odds = (100 + difference) / 2
+        user1odds = (100 - difference) / 2
 
     weightedList = [userId1, userId2]
 
@@ -1418,12 +1416,12 @@ def userBattle(userId1, userId2, battleRange):
     else:
         user2Name = users[str(userId2)]['name']
 
-    if winningId == userId1:
+    if winningId[0] == userId1:
         # User1 wins
-        return f'**{user1Name}** {random.choice(eliminations)} **{user2Name}** with {user1WeaponEmoji} {user1WeaponName} [{user1odds} to {user2odds} odds] (*{battleRange}m*)', userId2
+        return f'**{user1Name}** {random.choice(eliminations)} **{user2Name}** with {user1WeaponEmoji} {user1WeaponName} [{user1odds} to {user2odds} odds] (*{battleRange}m*)', userId1, userId2
     else:
         # User2 wins
-        return f'**{user2Name}** {random.choice(eliminations)} **{user1Name}** with {user2WeaponEmoji} {user2WeaponName} [{user2odds} to {user1odds} odds] (*{battleRange}m*)', userId1
+        return f'**{user2Name}** {random.choice(eliminations)} **{user1Name}** with {user2WeaponEmoji} {user2WeaponName} [{user2odds} to {user1odds} odds] (*{battleRange}m*)', userId2, userId1
 
 # Gets a users total threat
 def getUsersThreat(user):
@@ -1451,7 +1449,7 @@ def getUsersThreat(user):
     return totalThreat
 
 # Gets the desired weapon for the user to use for the engagement
-def desiredWeapon(weapons, battleRange):
+def desiredWeapon(weaponIdList, battleRange):
     with open('weapons.json', 'r') as f:
         weapons = json.load(f)
     
@@ -1461,9 +1459,9 @@ def desiredWeapon(weapons, battleRange):
     # average list
     averageRanges = []
 
-    # get the average of the ranges
-    for weaponId in weapons:
-        if weaponId != "999":
+    # get the average of the ranges and add them to the list
+    for weaponId in weaponIdList:
+        if weaponId != 999:
             rangeId = weapons[str(weaponId)]['rangeId']
 
             averageRange = ranges[str(rangeId)]['averageRange']
@@ -1474,12 +1472,11 @@ def desiredWeapon(weapons, battleRange):
     # weaponRange to use
     rangeToUse = closest(averageRanges, battleRange)
 
-    for weaponId in weapons:
-        if weaponId != "999":
-            rangeId = weapons[str(weaponId)]['rangeId']
-
-            if rangeToUse == ranges[str(rangeId)]['averageRange']:
-                return weapons[str(weaponId)]
+    for weaponId in weaponIdList:
+        rangeId = weapons[str(weaponId)]['rangeId']
+        
+        if rangeToUse == ranges[str(rangeId)]['averageRange']:
+            return weapons[str(weaponId)]
 
 
 
@@ -1488,11 +1485,13 @@ def closest(lst, distance):
 
 # Method that gets the current Game Kills
 # TODO: REWORK Might not even need
-async def getGameKills(userId):
-    with open('userStats.json', 'r') as f:
+def getGameKills(userId):
+    with open('users.json', 'r') as f:
         data = json.load(f)
 
-    return data[str(userId)]['stats']['killsEarned']
+    kills = data[str(userId)]['matchStats']['killsEarned']
+
+    return kills
 
 # Method that updates your stats at the end of the game
 async def resetMatchStats(userId):
@@ -1509,7 +1508,7 @@ async def resetMatchStats(userId):
         json.dump(data, f, indent=4)
 
 # Method that updates the users kills
-async def addKill(userId):
+def addKill(userId):
     with open('users.json', 'r') as f:
         data = json.load(f)
 

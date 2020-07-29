@@ -39,6 +39,8 @@ async def on_ready():
 # End Setup
 ####################
 
+#TODO: Re-write Embed Messages
+
 ####################
 # Start Bot Methods
 ####################
@@ -171,39 +173,6 @@ async def addBattle():
 # Start User Helper Methods
 ####################
 
-# TODO: Add a new user to the json
-
-
-### Get User Info ###
-# TODO: Get the users profile page
-
-# TODO: Get the users stats
-
-# TODO: Get the users match stats
-
-# TODO: Get the users loadout
-
-# TODO: Get the users showcase
-
-# TODO: Get the users threat (Weapon Threat, Perk Threat)
-
-### Get the users Inventory ###
-# TODO: Get the users weapons
-
-# TODO: Get the users perks
-
-# TODO: Get the users umbrellas
-
-# TODO: Get the users titles
-
-# TODO: Get the users chests
-
-# TODO: Get the users pickaxes
-
-# TODO: Get the users gold
-
-# TODO: Get the users gems
-
 ### Add and Remove Currency ###
 # Add gold
 async def addGold(userId, gold):
@@ -252,14 +221,6 @@ async def removeGems(userId, gems):
 ####################
 # Start Weapon Helper Methods
 ####################
-
-# TODO: Get the weapon
-
-# TODO: Get the weapon threat
-
-# TODO: Get the weapon range
-
-# TODO: Get the weapon rarity
 
 ####################
 # End Weapon Helper Methods
@@ -315,7 +276,6 @@ async def on_guild_remove(guild):
 
 # Help Command
 # p.help
-# TODO: Remake the help command
 # @client.command()
 # async def help(ctx, setting = None):
 #     if setting is None:
@@ -1301,13 +1261,6 @@ async def giveaway(ctx):
 #####################################################################
 #####################################################################
 
-#JSON TODO: 
-# Perks     (ID's range from 1000 - 1999) (Threat Boost, Gold Boost, Experience Boost) DONE
-# Umbrellas (ID's range from 2000 - 2999) (Beta Umbrealla, Umbrella) DONE
-# Titles    (ID's range from 3000 - 3999) (Staff, Mod, 2020 Nitro Champ, Beta Tester) DONE
-# Chests   (ID's range from 4000 - 4999) (Rare Chest, Epic Chest, Legendary Chest) DONE
-# Pickaxes  (ID's range from 5000 - 5999) (Default) DONE
-
 
 # TODO: Match summary (kills, xp, gold, items if any)
 
@@ -1385,7 +1338,7 @@ async def battleStart(ctx, users):
                 user1Name = data[str(userId1)]['name']
 
             await addDeath(userId1, len(newList))
-            embed=discord.Embed(color=0xfd5d5d)
+            embed=discord.Embed()
             embed.add_field(name="Elimination", value=f'**{user1Name}** {random.choice(funny)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
             await ctx.send(embed=embed)
@@ -1397,7 +1350,7 @@ async def battleStart(ctx, users):
             elimMessage = userBattle(userId1, userId2, battleRange)
             addKill(elimMessage[1])
             await addDeath(elimMessage[2], len(newList))
-            embed=discord.Embed(color=0xfd5d5d)
+            embed=discord.Embed()
             embed.add_field(name="Elimination", value=f'{elimMessage[0]}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
             await ctx.send(embed=embed)
@@ -1421,10 +1374,10 @@ async def battleStart(ctx, users):
     
     winnerKills = getGameKills(winner)
 
-    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+    #TODO: Put crown for thumbnail url in embed message.
+
+    embed=discord.Embed(title="Battle Royale Victory", description=f"The winner of {ctx.guild.name}\'s Battle Royale is **{winnerName}**\n\n**{winnerName}** had {winnerKills} kills", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
-    # TODO: Display the amount of kills
-    embed.add_field(name="Battle Royale Victory", value=f'The winner of {ctx.guild.name}\'s Battle Royale is **{winnerName}**\n\n**{winnerName}** had {winnerKills} kills', inline=False)
     embed.set_footer(text=f"{totalPlayers} players participated")
     await ctx.send(embed=embed)
 
@@ -1502,11 +1455,9 @@ def userBattle(userId1, userId2, battleRange):
 
     # Get user2's total threat
     user2TotalThreat = user2RangeBonusThreat + user2LoadoutThreat
-    print(f"Weapon: {user2WeaponName}\nUser 2 Total Threat: {user2TotalThreat}\nRange Bonus: {user2RangeBonusThreat}\n\n")
 
     # Get user1's total threat
     user1TotalThreat = user1RangeBonusThreat + user1LoadoutThreat
-    print(f"Weapon: {user1WeaponName}\nUser 1 Total Threat: {user1TotalThreat}\nRange Bonus: {user1RangeBonusThreat}\n\n")
 
     # Get the odds per user
     if user1TotalThreat > user2TotalThreat:

@@ -204,57 +204,46 @@ async def addBattle():
 
 # TODO: Get the users gems
 
-### Add Match Stats ###
-# TODO: Add placement
-
-# TODO: Add killsEarned
-# Method that gets the current Game Kills
-# # Don't pass the ctx just pass ctx.guild.id
-# async def getGameKills(ctx, user):
-#     with open('userStats.json', 'r') as f:
-#         data = json.load(f)
-
-#     return data[str(user.id)][str(ctx.guild.id)]['currentGameKills']
-
-# TODO: Add goldEarned
-
-# TODO: Add expEarned
-
-# TODO: Add itemsGained
-
-
-### Add Total Stats ###
-# TODO: Add win
-
-# TODO: Add kill
-
-# TODO: Add death
-
-# TODO: Add totalExp
-
-
 ### Add and Remove Currency ###
-# TODO: Add gold
+# Add gold
+async def addGold(userId, gold):
+    with open('users.json', 'r') as f:
+        data = json.load(f)
+    
+    data[str(userId)]['inventory']['gold'] += gold
 
-# TODO: Add gems
+    with open('users.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
-# TODO: Remove gold
+# Add gems
+async def addGems(userId, gems):
+    with open('users.json', 'r') as f:
+        data = json.load(f)
+    
+    data[str(userId)]['inventory']['gems'] += gems
 
-# TODO: Remove gems
+    with open('users.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
+# Remove gold
+async def removeGold(userId, gold):
+    with open('users.json', 'r') as f:
+        data = json.load(f)
+    
+    data[str(userId)]['inventory']['gold'] -= gold
 
-### Add Inventory ###
-# TODO: Add weapon to inventory > weapons
+    with open('users.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
-# TODO: Add perk to inventory > perks
+# Remove gems
+async def removeGems(userId, gems):
+    with open('users.json', 'r') as f:
+        data = json.load(f)
+    
+    data[str(userId)]['inventory']['gems'] -= gems
 
-# TODO: Add umbrella to inventory > umbrellas
-
-# TODO: Add title to inventory > titles
-
-# TODO: Add chest to inventory > chests
-
-# TODO: Add pickaxe to inventory > pickaxes
+    with open('users.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
 ####################
 # End User Helper Methods
@@ -486,7 +475,7 @@ async def drop(ctx):
     await ctx.send(embed=embed)
 
 # Command that simulates a battle royale
-# TODO: Rework battle command
+# TODO: add the random chest you can get in a game
 # p.battle
 @client.command()
 async def battle(ctx):
@@ -859,7 +848,6 @@ async def fetchUserProfile(userId):
     else:
         # Creates a user
         await createNewUser(userId)
-
         return True
 
 # Fetches The Title Name
@@ -1021,6 +1009,155 @@ async def getPerkBonus(perkId):
     elif perkId == 1002:
         return "`+10% Exp`"
 
+# Command that gets the users inventory
+@client.command()
+async def inventory(ctx):
+    # Fetch the user from the list
+    userProfile = await fetchUserProfile(ctx.author.id)
+
+    if userProfile is True:
+        await ctx.send(f"{ctx.author.name}#{ctx.author.discriminator} does not have an inventory yet... Creating User...")
+    else:
+        # Get the users profile info
+        name = userProfile["name"]
+
+        titleId = userProfile["title"]
+        title = await fetchTitleName(titleId)
+
+        weaponList = userProfile["inventory"]["weapons"]
+        perkList = userProfile["inventory"]["perks"]
+        umbrellaList = userProfile["inventory"]["umbrellas"]
+        titleList = userProfile["inventory"]["titles"]
+        chests = userProfile["inventory"]["chests"]
+        pickaxeList = userProfile["inventory"]["pickaxes"]
+        gold = userProfile["inventory"]["gold"]
+        gems = userProfile["inventory"]["gems"]
+
+        # returns a string based on the weapons in the list
+        weapons = fetchWeapons(weaponList)
+        perks = fetchPerks(perkList)
+        umbrellas = fetchUmbrellas(umbrellaList)
+        titles = fetchTitles(titleList)
+        pickaxes = fetchPickaxes(pickaxeList)
+
+        embed=discord.Embed(title=f"{title} {name}\'s Inventory", color=0xfd5d5d)
+        embed.set_thumbnail(url=ctx.author.avatar_url)
+        embed.add_field(name=f"__Weapons__", value=f"{weapons}", inline=False)
+        embed.add_field(name=f"__Pickaxes__", value=f"{pickaxes}", inline=False)
+        embed.add_field(name=f"__Perks__", value=f"{perks}", inline=False)
+        embed.add_field(name=f"__Umbrellas__", value=f"{umbrellas}", inline=False)
+        embed.add_field(name=f"__Titles__", value=f"{titles}\n\n**Gold:** {gold}\n**Gems:** {gems}\n**Chests:** {chests}", inline=False)
+        await ctx.send(embed=embed)
+
+# Takes a list of weapons and returns a formated string
+def fetchWeapons(weapons):
+    value = ''
+
+    with open('weapons.json', 'r') as f:
+        data = json.load(f)
+
+    with open('rarity.json', 'r') as r:
+        rarity = json.load(r)
+
+    for weaponId in weapons:
+        emojiId = data[str(weaponId)]['emojiId']
+        emoji = client.get_emoji(emojiId)
+        name = data[str(weaponId)]['name']
+        rarityId = data[str(weaponId)]['rarityId']
+        threat = rarity[str(rarityId)]['threat'] * 10
+
+        value += f'{emoji} {name} `+{threat} threat`\n'
+    
+    if value == '':
+        return 'None'
+    else:
+        return value
+
+
+# Takes a list of perks and returns a formated string
+def fetchPerks(perks):
+    value = ''
+
+    with open('perks.json', 'r') as f:
+        data = json.load(f)
+    
+    for perkId in perks:
+        emojiId = data[str(perkId)]['emojiId']
+        emoji = client.get_emoji(emojiId)
+        name = data[str(perkId)]['name']
+
+        if perkId == 1000:
+            bonus = f'`+20 threat`'
+        elif perkId == 1001:
+            bonus = f'`+10% gold`'
+        elif perkId == 1002:
+            bonus = f'`+10% exp`'
+
+        value += f'{emoji} {name} {bonus}\n'
+
+    if value == '':
+        return 'None'
+    else:
+        return value
+
+# Takes a list of umbrellas and returns a formated string
+# TODO: update the umbrella emoji's
+def fetchUmbrellas(umbrellas):
+    value = ''
+
+    with open('umbrellas.json', 'r') as f:
+        data = json.load(f)
+
+    for umbrellaId in umbrellas:
+        emojiId = data[str(umbrellaId)]['emojiId']
+        # Get emoji here
+        name = data[str(umbrellaId)]['name']
+
+        value += f'{name}\n'
+
+    if value == '':
+        return 'None'
+    else:
+        return value
+
+# Takes a list of titles and returns a formated string
+def fetchTitles(titles):
+    value = ''
+
+    with open('titles.json', 'r') as f:
+        data = json.load(f)
+
+    for titleId in titles:
+        name = data[str(titleId)]['title']
+
+        value += f'`{name}` '
+
+    if value == '':
+        return 'None'
+    else:
+        return value
+
+
+# Takes a list of pickaxes and returns a formated string
+def fetchPickaxes(pickaxes):
+    value = ''
+
+    with open('pickaxes.json', 'r') as f:
+        data = json.load(f)
+
+    for pickaxeId in pickaxes:
+        emojiId = data[str(pickaxeId)]['emojiId']
+        # Get the emoji for the pickaxe once added
+        name = data[str(pickaxeId)]['name']
+
+        value += f'{name}\n'
+
+    if value == '':
+        return 'None'
+    else:
+        return value
+
+
 ####################
 # End Bot Commands
 ####################
@@ -1171,28 +1308,8 @@ async def giveaway(ctx):
 # Chests   (ID's range from 4000 - 4999) (Rare Chest, Epic Chest, Legendary Chest) DONE
 # Pickaxes  (ID's range from 5000 - 5999) (Default) DONE
 
-# NEED ATLEAST 20 Players to start
-# TODO: IF user is in a battle, don't start battle
-# TODO: React if you want to battle as: A group (No Rewards earned or stats counted) OR with Bots (Rewards + Stats counted)
-# TODO: Add Crate Rewards (Crates have rarity)
-
-# TODO: Add Perk Slot (+threat, +gold, +xp)
-
-# TODO: Randomly Find Crates in games 1 in 200 chance
 
 # TODO: Match summary (kills, xp, gold, items if any)
-# TODO: Add a currency system (Gold and Gems)
-
-
-# TODO: Add distance before the battle engagement to determine which weapons will get a boost
-
-
-# Gets weapon Range value in a list
-    # l = range(20,30)
-    # z = []
-    # for i in l:
-    #     z.append(i)
-    # print(z)
 
 # TODO: Add a shop with items
 ######### ITEMS/SHOP ITEMS ##########
@@ -1203,6 +1320,11 @@ async def giveaway(ctx):
 #  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
 #
 # TODO: Add special Umbrella when you win
+
+
+####################
+# Start Battle commands
+####################
 
 # Battle function
 async def battleStart(ctx, users):
@@ -1418,10 +1540,10 @@ def userBattle(userId1, userId2, battleRange):
 
     if winningId[0] == userId1:
         # User1 wins
-        return f'**{user1Name}** {random.choice(eliminations)} **{user2Name}** with {user1WeaponEmoji} {user1WeaponName} [{user1odds} to {user2odds} odds] (*{battleRange}m*)', userId1, userId2
+        return f'**{user1Name}** {random.choice(eliminations)} **{user2Name}** with {user1WeaponEmoji} {user1WeaponName} (*{battleRange}m*)', userId1, userId2
     else:
         # User2 wins
-        return f'**{user2Name}** {random.choice(eliminations)} **{user1Name}** with {user2WeaponEmoji} {user2WeaponName} [{user2odds} to {user1odds} odds] (*{battleRange}m*)', userId2, userId1
+        return f'**{user2Name}** {random.choice(eliminations)} **{user1Name}** with {user2WeaponEmoji} {user2WeaponName} (*{battleRange}m*)', userId2, userId1
 
 # Gets a users total threat
 def getUsersThreat(user):
@@ -1479,12 +1601,10 @@ def desiredWeapon(weaponIdList, battleRange):
             return weapons[str(weaponId)]
 
 
-
 def closest(lst, distance):
     return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-distance))]
 
 # Method that gets the current Game Kills
-# TODO: REWORK Might not even need
 def getGameKills(userId):
     with open('users.json', 'r') as f:
         data = json.load(f)
@@ -1552,150 +1672,9 @@ async def addDeath(userId, placement):
     with open('users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
-# TODO: Method that calculates the users remaining experience to level and possibly display it??
-
-# Command that fetches your stats for the server you are in
-# @client.command()
-# async def stats(ctx, param1 = None, param2 = None):
-#     await newUser(ctx, ctx.author)
-
-#     # If no parameters are passed in, 
-#     if param1 == None and param2 == None:
-
-#         # Creates User if it doesn't exist
-#         await newUser(ctx, ctx.author)
-
-#         # Display the users stats for this server
-#         await displayServerStats(ctx, ctx.author.id)
-
-#     elif param1.lower() == 'all' and param2 == None:
-
-#         # Creates User if it doesn't exist
-#         await newUser(ctx, ctx.author)
-
-#         # Display all the users stats
-#         await displayAllStats(ctx, ctx.author.id)
-
-#     elif param1 is not None and param2 == None:
-#         # Formats the Mention as a user ID
-#         param1 = param1.translate(dict.fromkeys(map(ord, '!@<>')))
-#         # Get the user object
-#         user = client.get_user(int(param1))
-
-#         if user is not None:
-#             # Creates stats for the user in this current server if it does not exist
-#             await newUser(ctx, user)
-
-#             # Display
-#             await displayServerStats(ctx, user.id)
-#         else:
-#             print('User not found')
-
-#     elif param1.lower() == 'all' and param2 is not None:
-#         # Formats the Mention as a user ID
-#         param2 = param2.translate(dict.fromkeys(map(ord, '!@<>')))
-#         # Get the user object
-#         user = client.get_user(int(param2))
-
-#         if user is not None:
-#             # Creates stats for the user in this current server if it does not exist
-#             await newUser(ctx, user)
-
-#             # Display
-#             await displayAllStats(ctx, user.id)
-#         else:
-#             print('User not found')
-
-async def displayServerStats(ctx, authorId):
-    with open('userStats.json', 'r') as f:
-        data = json.load(f)
-
-    wins = data[str(authorId)][str(ctx.guild.id)]['wins']
-    kills = data[str(authorId)][str(ctx.guild.id)]['kills']
-    deaths = data[str(authorId)][str(ctx.guild.id)]['deaths']
-    totalExp = data[str(authorId)][str(ctx.guild.id)]['totalExp']
-
-    # Gets the user
-    user = client.get_user(authorId)
-
-    # Gets the users avatar image
-    avatarUrl = user.avatar_url
-
-    if kills > 0 and deaths > 0:
-        kd = kills / deaths
-    elif deaths == 0:
-        kd = kills
-    else:
-        kd = 0
-
-    gamesPlayed = deaths + wins
-
-    level = totalExp/100
-
-    if wins > 0 and gamesPlayed > 0:
-        winperc = wins / gamesPlayed * 100
-    elif gamesPlayed == 0:
-        winperc = 0
-    else:
-        winperc = 0
-
-    color = data[str(user.id)][str(ctx.guild.id)]['color']
-
-    embed=discord.Embed(title="Plunge Battle Royale Stats", color=color)
-    embed.set_thumbnail(url=avatarUrl)
-    embed.add_field(name=f"Level: {math.floor(level)}", value=f"{user.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin Percentage: {round(winperc)}%", inline=False)
-    embed.set_footer(text=f"Stats for: {ctx.guild.name}")
-    await ctx.send(embed=embed)
-
-async def displayAllStats(ctx, authorId):
-    with open('userStats.json', 'r') as f:
-        data = json.load(f)
-
-    wins = 0
-    kills = 0
-    deaths = 0
-    totalExp = 0
-
-    authorId = str(authorId)
-
-    for server in list(data[authorId]):
-        serverId = str(server)
-        wins += data[authorId][serverId]['wins']
-        kills += data[authorId][serverId]['kills']
-        deaths += data[authorId][serverId]['deaths']
-        totalExp += data[authorId][serverId]['totalExp']
-
-    # Gets the user
-    user = client.get_user(int(authorId))
-
-    # Gets the users avatar image
-    avatarUrl = user.avatar_url
-
-    if kills > 0 and deaths > 0:
-        kd = kills / deaths
-    elif deaths == 0:
-        kd = kills
-    else:
-        kd = 0
-
-    gamesPlayed = deaths + wins
-
-    level = totalExp/100
-
-    if wins > 0 and gamesPlayed > 0:
-        winperc = wins / gamesPlayed * 100
-    elif gamesPlayed == 0:
-        winperc = 0
-    else:
-        winperc = 0
-
-    color = data[str(user.id)][str(ctx.guild.id)]['color']
-
-    embed=discord.Embed(title="Plunge Battle Royale Stats", color=color)
-    embed.set_thumbnail(url=avatarUrl)
-    embed.add_field(name=f"Level: {math.floor(level)}", value=f"{user.mention}\n\nWins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {round(kd, 2)}\nGames Played: {gamesPlayed}\nWin Percentage: {round(winperc)}%", inline=False)
-    embed.set_footer(text=f"All Stats")
-    await ctx.send(embed=embed)
+####################
+# End Battle commands
+####################
 
 ####################
 # Start Error Handling

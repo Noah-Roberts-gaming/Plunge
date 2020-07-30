@@ -755,7 +755,7 @@ async def displayProfile(ctx, userId):
         totalPerks = len(userProfile["inventory"]["perks"])
         totalUmbrellas = len(userProfile["inventory"]["umbrellas"])
         totalTitles = len(userProfile["inventory"]["titles"])
-        totalChests = len(userProfile["inventory"]["chests"])
+        totalChests = userProfile["inventory"]["chests"]
         totalPickaxes = len(userProfile["inventory"]["pickaxes"])
         inventorySize = totalWeapons + totalPerks + totalUmbrellas + totalTitles + totalChests + totalPickaxes
 

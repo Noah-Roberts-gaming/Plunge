@@ -588,8 +588,16 @@ async def battle(ctx):
 
                 usersToAdd = 20 - len(users)
 
+                if len(users) == 0:
+                    # Battle wont start
+                    await msg.delete(delay=None)
+                    embed=discord.Embed(title="Plunge Error", color=0xfd5d5d)
+                    embed.set_thumbnail(url=logourl)
+                    embed.add_field(name="Not Enough Players", value=f"Make sure to react to the battle message to be entered in the battle royale.", inline=False)
+                    msg = await ctx.send(embed=embed)
+                    await msg.delete(delay=60)
                 # If the list is larger than 20 start the battle, else
-                if len(users) > 20:
+                elif len(users) > 20:
                     await msg.delete(delay=None)
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
@@ -1341,7 +1349,8 @@ async def battleStart(ctx, users):
             embed=discord.Embed()
             embed.add_field(name="Elimination", value=f'**{user1Name}** {random.choice(funny)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
-            await ctx.send(embed=embed)
+            msg = await ctx.send(embed=embed)
+            await msg.delete(delay=120)
 
             # Updates the list by removing the user that got eliminated
             newList.remove(userId2)
@@ -1353,7 +1362,8 @@ async def battleStart(ctx, users):
             embed=discord.Embed()
             embed.add_field(name="Elimination", value=f'{elimMessage[0]}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
-            await ctx.send(embed=embed)
+            msg = await ctx.send(embed=embed)
+            await msg.delete(delay=120)
             
             # Updates the list by removing the user that got eliminated
             newList.remove(elimMessage[2])
@@ -1374,7 +1384,7 @@ async def battleStart(ctx, users):
     
     winnerKills = getGameKills(winner)
 
-    #TODO: Put crown for thumbnail url in embed message.
+    #TODO: Put crown for thumbnail url in embed message. add other emojis for victory
 
     embed=discord.Embed(title="Battle Royale Victory", description=f"The winner of {ctx.guild.name}\'s Battle Royale is **{winnerName}**\n\n**{winnerName}** had {winnerKills} kills", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)

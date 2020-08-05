@@ -41,6 +41,8 @@ async def on_ready():
 
 #TODO: Re-write Embed Messages
 
+#TODO: Add command to change profile color
+
 ####################
 # Start Bot Methods
 ####################

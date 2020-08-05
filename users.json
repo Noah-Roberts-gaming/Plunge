@@ -13,10 +13,10 @@
             "totalExp": 251
         },
         "matchStats": {
-            "placement": 16,
-            "killsEarned": 1,
-            "goldEarned": 60,
-            "expEarned": 6,
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -55,10 +55,10 @@
             "totalExp": 181
         },
         "matchStats": {
-            "placement": 14,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -93,8 +93,8 @@
         "stats": {
             "wins": 0,
             "kills": 29,
-            "deaths": 29,
-            "totalExp": 174
+            "deaths": 30,
+            "totalExp": 179
         },
         "matchStats": {
             "placement": 0,
@@ -121,7 +121,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2540,
+            "gold": 2590,
             "gems": 0
         }
     },
@@ -135,14 +135,14 @@
         "stats": {
             "wins": 3,
             "kills": 32,
-            "deaths": 28,
-            "totalExp": 202
+            "deaths": 29,
+            "totalExp": 207
         },
         "matchStats": {
             "placement": 0,
-            "killsEarned": 1,
-            "goldEarned": 10,
-            "expEarned": 1,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -163,7 +163,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2970,
+            "gold": 3020,
             "gems": 0
         }
     },
@@ -175,10 +175,10 @@
         "showcase2": 999,
         "showcase3": 999,
         "stats": {
-            "wins": 1,
-            "kills": 23,
+            "wins": 2,
+            "kills": 24,
             "deaths": 33,
-            "totalExp": 198
+            "totalExp": 209
         },
         "matchStats": {
             "placement": 0,
@@ -205,7 +205,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2830,
+            "gold": 2990,
             "gems": 0
         }
     },
@@ -218,9 +218,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 1,
-            "kills": 24,
-            "deaths": 33,
-            "totalExp": 199
+            "kills": 26,
+            "deaths": 34,
+            "totalExp": 206
         },
         "matchStats": {
             "placement": 0,
@@ -247,7 +247,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2840,
+            "gold": 2910,
             "gems": 0
         }
     },
@@ -265,10 +265,10 @@
             "totalExp": 219
         },
         "matchStats": {
-            "placement": 20,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -303,8 +303,8 @@
         "stats": {
             "wins": 0,
             "kills": 26,
-            "deaths": 28,
-            "totalExp": 166
+            "deaths": 29,
+            "totalExp": 171
         },
         "matchStats": {
             "placement": 0,
@@ -331,7 +331,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2460,
+            "gold": 2510,
             "gems": 0
         }
     },
@@ -349,10 +349,10 @@
             "totalExp": 204
         },
         "matchStats": {
-            "placement": 19,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -391,10 +391,10 @@
             "totalExp": 194
         },
         "matchStats": {
-            "placement": 17,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -429,14 +429,14 @@
         "stats": {
             "wins": 1,
             "kills": 35,
-            "deaths": 30,
-            "totalExp": 195
+            "deaths": 31,
+            "totalExp": 200
         },
         "matchStats": {
             "placement": 0,
-            "killsEarned": 2,
-            "goldEarned": 20,
-            "expEarned": 2,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -457,7 +457,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2800,
+            "gold": 2850,
             "gems": 0
         }
     },
@@ -475,10 +475,10 @@
             "totalExp": 182
         },
         "matchStats": {
-            "placement": 12,
-            "killsEarned": 1,
-            "goldEarned": 60,
-            "expEarned": 6,
+            "placement": 0,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -512,15 +512,15 @@
         "showcase3": 999,
         "stats": {
             "wins": 1,
-            "kills": 30,
-            "deaths": 33,
-            "totalExp": 205
+            "kills": 31,
+            "deaths": 34,
+            "totalExp": 211
         },
         "matchStats": {
             "placement": 0,
-            "killsEarned": 1,
-            "goldEarned": 10,
-            "expEarned": 1,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -541,7 +541,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2900,
+            "gold": 2960,
             "gems": 0
         }
     },
@@ -559,10 +559,10 @@
             "totalExp": 277
         },
         "matchStats": {
-            "placement": 18,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -597,8 +597,8 @@
         "stats": {
             "wins": 0,
             "kills": 26,
-            "deaths": 29,
-            "totalExp": 171
+            "deaths": 30,
+            "totalExp": 176
         },
         "matchStats": {
             "placement": 0,
@@ -625,7 +625,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2510,
+            "gold": 2560,
             "gems": 0
         }
     },
@@ -639,14 +639,14 @@
         "stats": {
             "wins": 1,
             "kills": 33,
-            "deaths": 34,
-            "totalExp": 213
+            "deaths": 35,
+            "totalExp": 218
         },
         "matchStats": {
             "placement": 0,
-            "killsEarned": 1,
-            "goldEarned": 10,
-            "expEarned": 1,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -667,7 +667,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 2980,
+            "gold": 3030,
             "gems": 0
         }
     },
@@ -685,10 +685,10 @@
             "totalExp": 178
         },
         "matchStats": {
-            "placement": 13,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -722,9 +722,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 2,
-            "kills": 31,
-            "deaths": 39,
-            "totalExp": 246
+            "kills": 33,
+            "deaths": 40,
+            "totalExp": 253
         },
         "matchStats": {
             "placement": 0,
@@ -751,7 +751,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 3360,
+            "gold": 3430,
             "gems": 0
         }
     },
@@ -769,10 +769,10 @@
             "totalExp": 212
         },
         "matchStats": {
-            "placement": 15,
+            "placement": 0,
             "killsEarned": 0,
-            "goldEarned": 50,
-            "expEarned": 5,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -849,15 +849,15 @@
         "showcase3": 23,
         "stats": {
             "wins": 56,
-            "kills": 335,
-            "deaths": 825,
-            "totalExp": 9227
+            "kills": 338,
+            "deaths": 826,
+            "totalExp": 9235
         },
         "matchStats": {
             "placement": 0,
-            "killsEarned": 2,
-            "goldEarned": 20,
-            "expEarned": 2,
+            "killsEarned": 0,
+            "goldEarned": 0,
+            "expEarned": 0,
             "itemsEarned": []
         },
         "loadout": {
@@ -888,7 +888,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 3370,
+            "gold": 3450,
             "gems": 0
         }
     },

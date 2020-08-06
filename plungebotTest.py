@@ -448,7 +448,8 @@ async def battle(ctx):
         embed=discord.Embed(title="Plunge", color=0xfd5d5d)
         embed.set_thumbnail(url=logourl)
         embed.add_field(name="Battle In Progress", value="There is already a battle in progress for this server, please wait until the current battle is complete", inline=False)
-        await ctx.send(embed=embed)
+        progress = await ctx.send(embed=embed)
+        await progress.delete(delay=60)
     else:
         # add the guild to the active battles check
         activeBattles.append(ctx.guild.id)
@@ -596,8 +597,8 @@ async def battle(ctx):
                     embed=discord.Embed(title="Plunge Error", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
                     embed.add_field(name="Not Enough Players", value=f"Make sure to react to the battle message to be entered in the battle royale.", inline=False)
-                    msg = await ctx.send(embed=embed)
-                    await msg.delete(delay=60)
+                    noplayers = await ctx.send(embed=embed)
+                    await noplayers.delete(delay=60)
                 # If the list is larger than 20 start the battle, else
                 elif len(users) > 20:
                     await msg.delete(delay=None)
@@ -605,7 +606,8 @@ async def battle(ctx):
                     embed.set_thumbnail(url=logourl)
                     embed.add_field(name="Battle In Progress...", value="Good Luck Everyone!", inline=False)
                     embed.set_footer(text=f"{len(users) - 1} Players")
-                    await ctx.send(embed=embed)
+                    msg = await ctx.send(embed=embed)
+                    await msg.delete(delay=60)
 
                     # Pass the ctx and users list into the battleStart function
                     await battleStart(ctx, users)
@@ -614,9 +616,10 @@ async def battle(ctx):
                     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
                     embed.set_thumbnail(url=logourl)
                     embed.add_field(name="Not Enough Players", value=f"Minimum players required: 20\n\nFilling the remaining {usersToAdd} slots with bots", inline=False)
-                    await ctx.send(embed=embed)
+                    msg = await ctx.send(embed=embed)
+                    await msg.delete(delay=60)
 
-                    await asyncio.sleep(5)
+                    await asyncio.sleep(4)
                     
                     # Add players to the list
                     i = 0
@@ -628,7 +631,9 @@ async def battle(ctx):
                     embed.set_thumbnail(url=logourl)
                     embed.add_field(name="Battle In Progress...", value="Good Luck Everyone!", inline=False)
                     embed.set_footer(text=f"{len(users)} Players")
-                    await ctx.send(embed=embed)
+                    battleMsg = await ctx.send(embed=embed)
+
+                    await battleMsg.delete(delay=60)
 
                     # Pass the ctx and users list into the battleStart function
                     await battleStart(ctx, users)

@@ -1334,11 +1334,34 @@ async def battleStart(ctx, users):
 
         battleRange = random.randint(1, 150)
 
-        chestNumber = random.randint(999, 1000)
+        chestNumber = random.randint(1, 1000)
 
         if chestNumber == 999:
-            # TODO: Give an actual player a chest
-            print('chest given')
+            allPlayers = []
+
+            # Gives an actual player a chest
+            for user in newList:
+                if user > 20:
+                    allPlayers.append(user)
+
+            if len(allPlayers) != 0:
+                chestWinner = random.choice(allPlayers)
+                
+                chestUser = client.get_user(chestWinner)
+                if chestUser is not None:
+                    chestUserName = f'{chestUser.mention}'
+                else:
+                    print('but something went wrong 1354')
+                    chestUserName = data[str(chestWinner)]['name']
+
+                addChest(chestWinner)
+
+                embed=discord.Embed(color=0xfd5d5d)
+                embed.add_field(name="Chest Found", value=f"{chestUserName} found a chest!", inline=False)
+                embed.set_footer(text=f"use p.chest to open it")
+                msg = await ctx.send(embed=embed)
+                await msg.delete(delay=120)
+
 
         await asyncio.sleep(random.randint(4,8)) # Randomly select the message delay between 4-8 numbers
 
@@ -1600,6 +1623,16 @@ async def resetMatchStats(userId):
     data[str(userId)]['matchStats']['goldEarned'] = 0
     data[str(userId)]['matchStats']['expEarned'] = 0
     data[str(userId)]['matchStats']['itemsEarned'] = []
+
+    with open('json/users.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Method that adds a chest to the user
+def addChest(userId):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+
+    data[str(userId)]['inventory']['chests'] += 1
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)

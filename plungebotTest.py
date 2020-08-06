@@ -26,7 +26,7 @@ client.remove_command('help')
 logourl = "https://i.imgur.com/tdbgl13.png"
 
 # Reads the Auth.json File
-with open('auth.json', 'r') as f:
+with open('json/auth.json', 'r') as f:
     data = json.load(f)
 
 # Displays that the bot is ready and loops through its statuses
@@ -42,6 +42,10 @@ async def on_ready():
 #TODO: Re-write Embed Messages
 
 #TODO: Add command to change profile color
+
+#TODO: Need to add another layer to users.json and have match stats for the 
+# current server... or match stats will reset if there are 2 battles going 
+# on at the same time and one finishes before the other.
 
 ####################
 # Start Bot Methods
@@ -103,7 +107,7 @@ def isDev(authorId):
 
 # Gets the bots drop count or the bots battle count
 async def getInfo(info):
-    with open('info.json', 'r') as f:
+    with open('json/info.json', 'r') as f:
         drops = json.load(f)
     
     return drops[info]
@@ -126,14 +130,14 @@ async def getValues(json):
 
 # Function to get the weapons Rarity
 async def getRarity(rarityId):
-    with open('rarity.json', 'r') as f:
+    with open('json/rarity.json', 'r') as f:
         rarity = json.load(f)
 
     return rarity[str(rarityId)]
 
 # Function to get the weapons Range
 async def getRange(rangeId):
-    with open('ranges.json', 'r') as f:
+    with open('json/ranges.json', 'r') as f:
         ranges = json.load(f)
 
     return ranges[str(rangeId)]
@@ -148,22 +152,22 @@ async def getRange(rangeId):
 
 # Adds to the drop counter
 async def addDrop():
-    with open('info.json', 'r') as f:
+    with open('json/info.json', 'r') as f:
         drops = json.load(f)
         
         drops["drops"] += 1
 
-        with open('info.json', 'w') as f:
+        with open('json/info.json', 'w') as f:
             json.dump(drops, f, indent=4)
 
 # Adds to the battle counter
 async def addBattle():
-    with open('info.json', 'r') as f:
+    with open('json/info.json', 'r') as f:
         battles = json.load(f)
         
         battles["battles"] += 1
 
-        with open('info.json', 'w') as f:
+        with open('json/info.json', 'w') as f:
             json.dump(battles, f, indent=4)
 
 
@@ -178,42 +182,42 @@ async def addBattle():
 ### Add and Remove Currency ###
 # Add gold
 async def addGold(userId, gold):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
     
     data[str(userId)]['inventory']['gold'] += gold
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Add gems
 async def addGems(userId, gems):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
     
     data[str(userId)]['inventory']['gems'] += gems
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Remove gold
 async def removeGold(userId, gold):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
     
     data[str(userId)]['inventory']['gold'] -= gold
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Remove gems
 async def removeGems(userId, gems):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
     
     data[str(userId)]['inventory']['gems'] -= gems
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 ####################
@@ -249,14 +253,14 @@ async def on_message(message):
 async def on_guild_remove(guild):
     ourGuild = client.get_guild(733551377611096195)
 
-    with open('userInfo.json', 'r') as f:
+    with open('json/userInfo.json', 'r') as f:
         userInfo = json.load(f)
 
     for key, value in list(userInfo.items()):
         if (value == str(guild.id)):
             userInfo.pop(key)
 
-            with open('userInfo.json', 'w') as f:
+            with open('json/userInfo.json', 'w') as f:
                 json.dump(userInfo, f, indent=4)
 
             await ourGuild.get_member(int(key)).remove_roles(ourGuild.get_role(733559654210207885), reason="They removed the bot from their server.")
@@ -813,7 +817,7 @@ async def displayProfile(ctx, userId):
 # Fetches the user.. if not found, creates a new user
 async def fetchUserProfile(userId):
     # Opens the users.json file and reads it
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         userData = json.load(f)
 
     # Checks if userId is in the userData list
@@ -828,7 +832,7 @@ async def fetchUserProfile(userId):
 # Fetches The Title Name
 async def fetchTitleName(titleId):
     # Opens the titles.json
-    with open('titles.json', 'r') as f:
+    with open('json/titles.json', 'r') as f:
         titleData = json.load(f)
 
     if str(titleId) in list(titleData.keys()):
@@ -844,7 +848,7 @@ async def fetchTitleName(titleId):
 # Fetchs an item based on its ID
 async def fetchItem(itemId):
     if itemId < 1000:
-        with open('weapons.json', 'r') as f:
+        with open('json/weapons.json', 'r') as f:
             weaponData = json.load(f)
 
         if str(itemId) in list(weaponData.keys()):
@@ -852,7 +856,7 @@ async def fetchItem(itemId):
         else:
             print("Weapon not found. fetchItem error.")
     elif itemId > 999 and itemId < 2000:
-        with open('perks.json', 'r') as f:
+        with open('json/perks.json', 'r') as f:
             perkData = json.load(f)
 
         if str(itemId) in list(perkData.keys()):
@@ -860,7 +864,7 @@ async def fetchItem(itemId):
         else:
             print("Perk not found. fetchItem error.")
     elif itemId > 1999 and itemId < 3000:
-        with open('umbrellas.json', 'r') as f:
+        with open('json/umbrellas.json', 'r') as f:
             umbrellaData = json.load(f)
 
         if str(itemId) in list(umbrellaData.keys()):
@@ -868,7 +872,7 @@ async def fetchItem(itemId):
         else:
             print("Umbrella not found. fetchItem error.")
     elif itemId > 2999 and itemId < 4000:
-        with open('titles.json', 'r') as f:
+        with open('json/titles.json', 'r') as f:
             titleData = json.load(f)
 
         if str(itemId) in list(titleData.keys()):
@@ -876,7 +880,7 @@ async def fetchItem(itemId):
         else:
             print("Title not found. fetchItem error.")
     elif itemId > 3999 and itemId < 5000:
-        with open('chests.json', 'r') as f:
+        with open('json/chests.json', 'r') as f:
             chestData = json.load(f)
 
         if str(itemId) in list(chestData.keys()):
@@ -884,7 +888,7 @@ async def fetchItem(itemId):
         else:
             print("Chest not found. fetchItem error.")
     else:
-        with open('pickaxes.json', 'r') as f:
+        with open('json/pickaxes.json', 'r') as f:
             pickData = json.load(f)
 
         if str(itemId) in list(pickData.keys()):
@@ -895,7 +899,7 @@ async def fetchItem(itemId):
 # Create a new user in the users.json
 async def createNewUser(userId):
     # Opens the users.json file and read it
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         userData = json.load(f)
     
     # If user is not in the list, add a new user
@@ -947,7 +951,7 @@ async def createNewUser(userId):
             "inventory": inventory
         }
     
-        with open('users.json', 'w') as f:
+        with open('json/users.json', 'w') as f:
             json.dump(userData, f, indent=4)
     else:
         # print("User already created. createUser Error.")
@@ -1028,10 +1032,10 @@ async def inventory(ctx):
 def fetchWeapons(weapons):
     value = ''
 
-    with open('weapons.json', 'r') as f:
+    with open('json/weapons.json', 'r') as f:
         data = json.load(f)
 
-    with open('rarity.json', 'r') as r:
+    with open('json/rarity.json', 'r') as r:
         rarity = json.load(r)
 
     for weaponId in weapons:
@@ -1053,7 +1057,7 @@ def fetchWeapons(weapons):
 def fetchPerks(perks):
     value = ''
 
-    with open('perks.json', 'r') as f:
+    with open('json/perks.json', 'r') as f:
         data = json.load(f)
     
     for perkId in perks:
@@ -1080,7 +1084,7 @@ def fetchPerks(perks):
 def fetchUmbrellas(umbrellas):
     value = ''
 
-    with open('umbrellas.json', 'r') as f:
+    with open('json/umbrellas.json', 'r') as f:
         data = json.load(f)
 
     for umbrellaId in umbrellas:
@@ -1099,7 +1103,7 @@ def fetchUmbrellas(umbrellas):
 def fetchTitles(titles):
     value = ''
 
-    with open('titles.json', 'r') as f:
+    with open('json/titles.json', 'r') as f:
         data = json.load(f)
 
     for titleId in titles:
@@ -1117,7 +1121,7 @@ def fetchTitles(titles):
 def fetchPickaxes(pickaxes):
     value = ''
 
-    with open('pickaxes.json', 'r') as f:
+    with open('json/pickaxes.json', 'r') as f:
         data = json.load(f)
 
     for pickaxeId in pickaxes:
@@ -1196,7 +1200,7 @@ async def verify(ctx):
         await ourGuild.get_member(ctx.author.id).add_roles(ourGuild.get_role(733559654210207885), reason="Used the verify command")
         await ourGuild.get_member(ctx.author.id).remove_roles(ourGuild.get_role(733558248401272832), reason="Used the verify command")
 
-        with open('userInfo.json', 'r') as f:
+        with open('json/userInfo.json', 'r') as f:
             userInfo = json.load(f)
 
         keys = await getKeys(userInfo.items())
@@ -1216,7 +1220,7 @@ async def verify(ctx):
         # Update the users info in the userInfo.json anyway
         userInfo[str(ctx.author.id)] = str(ctx.guild.id)
 
-        with open('userInfo.json', 'w') as f:
+        with open('json/userInfo.json', 'w') as f:
             json.dump(userInfo, f, indent=4)
     else:
         embed=discord.Embed(title="Plunge", description=f"{ctx.author.mention}, you are not in the Plunge Development server. [Click here](https://discord.gg/mjr6nUU) to join!\n\nAfter you are in the Plunge Development server, run the `p.verify` command again to get your role.", color=0xfd5d5d)
@@ -1322,13 +1326,19 @@ async def battleStart(ctx, users):
     PlayersForXp = list(newList)
     
     while len(newList) > 1:
-        with open('users.json', 'r') as f:
+        with open('json/users.json', 'r') as f:
             data = json.load(f)
 
         userId1 = random.choice(users)
         userId2 = random.choice(users)
 
         battleRange = random.randint(1, 150)
+
+        chestNumber = random.randint(999, 1000)
+
+        if chestNumber == 999:
+            # TODO: Give an actual player a chest
+            print('chest given')
 
         await asyncio.sleep(random.randint(4,8)) # Randomly select the message delay between 4-8 numbers
 
@@ -1401,12 +1411,11 @@ async def battleStart(ctx, users):
     for userId in PlayersForXp:
         await resetMatchStats(userId)
 
-
 def userBattle(userId1, userId2, battleRange):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         users = json.load(f)
     
-    with open('ranges.json', 'r') as f:
+    with open('json/ranges.json', 'r') as f:
         ranges = json.load(f)
 
     # Variables
@@ -1515,10 +1524,10 @@ def userBattle(userId1, userId2, battleRange):
 
 # Gets a users total threat
 def getUsersThreat(user):
-    with open('weapons.json', 'r') as f:
+    with open('json/weapons.json', 'r') as f:
         weapons = json.load(f)
     
-    with open('rarity.json', 'r') as f:
+    with open('json/rarity.json', 'r') as f:
         rarity = json.load(f)
 
     totalThreat = 0
@@ -1540,10 +1549,10 @@ def getUsersThreat(user):
 
 # Gets the desired weapon for the user to use for the engagement
 def desiredWeapon(weaponIdList, battleRange):
-    with open('weapons.json', 'r') as f:
+    with open('json/weapons.json', 'r') as f:
         weapons = json.load(f)
     
-    with open('ranges.json', 'r') as f:
+    with open('json/ranges.json', 'r') as f:
         ranges = json.load(f)
 
     # average list
@@ -1574,7 +1583,7 @@ def closest(lst, distance):
 
 # Method that gets the current Game Kills
 def getGameKills(userId):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     kills = data[str(userId)]['matchStats']['killsEarned']
@@ -1583,7 +1592,7 @@ def getGameKills(userId):
 
 # Method that updates your stats at the end of the game
 async def resetMatchStats(userId):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['matchStats']['placement'] = 0
@@ -1592,12 +1601,12 @@ async def resetMatchStats(userId):
     data[str(userId)]['matchStats']['expEarned'] = 0
     data[str(userId)]['matchStats']['itemsEarned'] = []
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users kills
 def addKill(userId):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['stats']['kills'] += 1
@@ -1607,12 +1616,12 @@ def addKill(userId):
     data[str(userId)]['inventory']['gold'] += 10
     data[str(userId)]['matchStats']['goldEarned'] += 10
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users wins
 async def addWin(userId):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['stats']['wins'] += 1
@@ -1622,12 +1631,12 @@ async def addWin(userId):
     data[str(userId)]['inventory']['gold'] += 150
     data[str(userId)]['matchStats']['goldEarned'] += 150
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users deaths
 async def addDeath(userId, placement):
-    with open('users.json', 'r') as f:
+    with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['matchStats']['placement'] = placement
@@ -1637,7 +1646,7 @@ async def addDeath(userId, placement):
     data[str(userId)]['inventory']['gold'] += 50
     data[str(userId)]['matchStats']['goldEarned'] += 50
 
-    with open('users.json', 'w') as f:
+    with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 ####################

@@ -441,7 +441,6 @@ async def drop(ctx):
     await ctx.send(embed=embed)
 
 # Command that simulates a battle royale
-# TODO: add the random chest you can get in a game
 # p.battle
 @client.command()
 async def battle(ctx):
@@ -913,13 +912,9 @@ async def createNewUser(userId):
             "deaths": 0,
             "totalExp": 0
         }
-        matchStats = {
-            "placement": 0,
-            "killsEarned": 0,
-            "goldEarned": 0,
-            "expEarned": 0,
-            "itemsEarned": []
-        }
+
+        matchStats = {}
+
         loadout = {
             "slot1": 999,
             "slot2": 999,
@@ -932,7 +927,7 @@ async def createNewUser(userId):
             "perks": [],
             "umbrellas": [],
             "titles": [],
-            "chests": [],
+            "chests": 0,
             "pickaxes": [5000],
             "gold": 250,
             "gems": 0
@@ -953,9 +948,22 @@ async def createNewUser(userId):
     
         with open('json/users.json', 'w') as f:
             json.dump(userData, f, indent=4)
-    else:
-        # print("User already created. createUser Error.")
-        return
+
+async def addMatchStats(userId, serverId):
+    # Opens the users.json file and read it
+    with open('json/users.json', 'r') as f:
+        userData = json.load(f)
+
+    userData[str(userId)]["matchStats"][str(serverId)] = {
+        "placement": 0,
+        "killsEarned": 0,
+        "goldEarned": 0,
+        "expEarned": 0,
+        "itemsEarned": []
+    }
+
+    with open('json/users.json', 'w') as f:
+        json.dump(userData, f, indent=4)
 
 # Get the users kill death ratio
 async def calcKD(kills, deaths):
@@ -1317,8 +1325,8 @@ async def battleStart(ctx, users):
 
     # Checks the users in the list... removes Plunge Bot
     for userId in list(users):
-        if userId > 20:
-            await createNewUser(userId)
+        await createNewUser(userId)
+        await addMatchStats(userId, ctx.guild.id)
 
     # TODO: Fix whatever mess this is
     newList = users
@@ -1354,7 +1362,7 @@ async def battleStart(ctx, users):
                     print('but something went wrong 1354')
                     chestUserName = data[str(chestWinner)]['name']
 
-                addChest(chestWinner)
+                addChest(chestWinner, ctx.guild.id)
 
                 embed=discord.Embed(color=0xfd5d5d)
                 embed.add_field(name="Chest Found", value=f"{chestUserName} found a chest!", inline=False)
@@ -1385,7 +1393,7 @@ async def battleStart(ctx, users):
             else:
                 user1Name = data[str(userId1)]['name']
 
-            await addDeath(userId1, len(newList))
+            await addDeath(userId1, ctx.guild.id, len(newList))
             embed=discord.Embed()
             embed.add_field(name="Elimination", value=f'**{user1Name}** {random.choice(funny)}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
@@ -1397,8 +1405,8 @@ async def battleStart(ctx, users):
         else:
             # Call the method that calculates who wins the battle (returns the elimination message)
             elimMessage = userBattle(userId1, userId2, battleRange)
-            addKill(elimMessage[1])
-            await addDeath(elimMessage[2], len(newList))
+            addKill(elimMessage[1], ctx.guild.id)
+            await addDeath(elimMessage[2], ctx.guild.id, len(newList))
             embed=discord.Embed()
             embed.add_field(name="Elimination", value=f'{elimMessage[0]}', inline=False)
             embed.set_footer(text=f"{len(newList) - 1} Remaining")
@@ -1413,7 +1421,7 @@ async def battleStart(ctx, users):
 
     winner = newList[0]
 
-    await addWin(winner)
+    await addWin(winner, ctx.guild.id)
 
     # Get the winners name
     if winner > 20:
@@ -1422,7 +1430,7 @@ async def battleStart(ctx, users):
     else:
         winnerName = data[str(winner)]['name']
     
-    winnerKills = getGameKills(winner)
+    winnerKills = getGameKills(winner, ctx.guild.id)
 
     #TODO: Put crown for thumbnail url in embed message. add other emojis for victory
 
@@ -1432,7 +1440,7 @@ async def battleStart(ctx, users):
     await ctx.send(embed=embed)
 
     for userId in PlayersForXp:
-        await resetMatchStats(userId)
+        await resetMatchStats(userId, ctx.guild.id)
 
 def userBattle(userId1, userId2, battleRange):
     with open('json/users.json', 'r') as f:
@@ -1589,95 +1597,102 @@ def desiredWeapon(weaponIdList, battleRange):
             averageRange = ranges[str(rangeId)]['averageRange']
 
             averageRanges.append(averageRange)
+
+    if (averageRanges != []):   
+        # weaponRange to use
+        rangeToUse = closest(averageRanges, battleRange)
+
+        for weaponId in weaponIdList:
+            rangeId = weapons[str(weaponId)]['rangeId']
             
-
-    # weaponRange to use
-    rangeToUse = closest(averageRanges, battleRange)
-
-    for weaponId in weaponIdList:
-        rangeId = weapons[str(weaponId)]['rangeId']
-        
-        if rangeToUse == ranges[str(rangeId)]['averageRange']:
-            return weapons[str(weaponId)]
+            if rangeToUse == ranges[str(rangeId)]['averageRange']:
+                return weapons[str(weaponId)]
+    else:
+        # Use a pickaxe as a weapon TODO: Update the pickaxe emoji in weapons.json
+        return weapons["998"]
 
 
 def closest(lst, distance):
     return lst[min(range(len(lst)), key = lambda i: abs(lst[i]-distance))]
 
 # Method that gets the current Game Kills
-def getGameKills(userId):
+def getGameKills(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
-    kills = data[str(userId)]['matchStats']['killsEarned']
+    kills = data[str(userId)]['matchStats'][str(serverId)]['killsEarned']
 
     return kills
 
 # Method that updates your stats at the end of the game
-async def resetMatchStats(userId):
+async def resetMatchStats(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
-    data[str(userId)]['matchStats']['placement'] = 0
-    data[str(userId)]['matchStats']['killsEarned'] = 0
-    data[str(userId)]['matchStats']['goldEarned'] = 0
-    data[str(userId)]['matchStats']['expEarned'] = 0
-    data[str(userId)]['matchStats']['itemsEarned'] = []
+    data[str(userId)]['matchStats'][str(serverId)]['placement'] = 0
+    data[str(userId)]['matchStats'][str(serverId)]['killsEarned'] = 0
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] = 0
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] = 0
+    data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'] = []
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that adds a chest to the user
-def addChest(userId):
+def addChest(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['inventory']['chests'] += 1
+    # TODO: Figure out how to add chests/umbrellas to items earned
+    data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'] = []
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users kills
-def addKill(userId):
+def addKill(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['stats']['kills'] += 1
-    data[str(userId)]['matchStats']['killsEarned'] += 1
+    data[str(userId)]['matchStats'][str(serverId)]['killsEarned'] += 1
     data[str(userId)]['stats']['totalExp'] += 1
-    data[str(userId)]['matchStats']['expEarned'] += 1
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 1
     data[str(userId)]['inventory']['gold'] += 10
-    data[str(userId)]['matchStats']['goldEarned'] += 10
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 10
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users wins
-async def addWin(userId):
+async def addWin(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
     data[str(userId)]['stats']['wins'] += 1
-    data[str(userId)]['matchStats']['placement'] = 1
+    data[str(userId)]['matchStats'][str(serverId)]['placement'] = 1
     data[str(userId)]['stats']['totalExp'] += 10
-    data[str(userId)]['matchStats']['expEarned'] += 10
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 10
     data[str(userId)]['inventory']['gold'] += 150
-    data[str(userId)]['matchStats']['goldEarned'] += 150
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 150
+    # TODO: Figure out how to add umbrellas to items earned
+    data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'] = []
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
 
 # Method that updates the users deaths
-async def addDeath(userId, placement):
+async def addDeath(userId, serverId, placement):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
-    data[str(userId)]['matchStats']['placement'] = placement
+    data[str(userId)]['matchStats'][str(serverId)]['placement'] = placement
     data[str(userId)]['stats']['deaths'] += 1
     data[str(userId)]['stats']['totalExp'] += 5
-    data[str(userId)]['matchStats']['expEarned'] += 5
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 5
     data[str(userId)]['inventory']['gold'] += 50
-    data[str(userId)]['matchStats']['goldEarned'] += 50
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 50
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)

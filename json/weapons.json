@@ -9,12 +9,12 @@
         "price": 0
     },
     "998": {
-        "name": "Pickaxe",
+        "name": "A Well Placed Stone",
         "description": "",
         "rarityId": 0,
-        "rangeId": 0,
+        "rangeId": 999,
         "imageUrl": "",
-        "emojiId": 736518972148678666,
+        "emojiId": 736461376666599444,
         "price": 0
     },
     "0": {

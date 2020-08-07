@@ -18,7 +18,7 @@
     "1": {
         "name": "Shotgun Range",
         "description": "A weapon that is perfect for close range engagments.",
-        "minRange": 1,
+        "minRange": 2,
         "averageRange": 8,
         "maxRange": 15,
         "bonusThreat": 10

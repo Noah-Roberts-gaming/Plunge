@@ -43,10 +43,6 @@ async def on_ready():
 
 #TODO: Add command to change profile color
 
-#TODO: Need to add another layer to users.json and have match stats for the 
-# current server... or match stats will reset if there are 2 battles going 
-# on at the same time and one finishes before the other.
-
 ####################
 # Start Bot Methods
 ####################
@@ -85,7 +81,7 @@ async def change_status():
         await asyncio.sleep(15)
 
         await client.change_presence(
-            activity=discord.Game(' p.drop • p.battle • p.stats')
+            activity=discord.Game(' p.battle • p.profile • p.shop')
         )
 
         await asyncio.sleep(15)
@@ -706,17 +702,21 @@ async def displayProfile(ctx, userId):
         gamesPlayed = deaths + wins
         winPerc = await calcWinPerc(wins, gamesPlayed)
 
+        pickaxeId = userProfile["loadout"]["pickaxe"]
         slot1Id = userProfile["loadout"]["slot1"]
         slot2Id = userProfile["loadout"]["slot2"]
         slot3Id = userProfile["loadout"]["slot3"]
         slot4Id = userProfile["loadout"]["slot4"]
         perkId = userProfile["loadout"]["perk"]
+        pickaxe = await fetchItem(pickaxeId)
         slot1 = await fetchItem(slot1Id)
         slot2 = await fetchItem(slot2Id)
         slot3 = await fetchItem(slot3Id)
         slot4 = await fetchItem(slot4Id)
         perk = await fetchItem(perkId)
 
+        pickaxeName = pickaxe["name"]
+        pickaxeEmoji = client.get_emoji(pickaxe["emojiId"])
         slot1Name = slot1["name"]
         slot1Emoji = client.get_emoji(slot1["emojiId"])
         slot1Rarity = await getRarity(slot1["rarityId"])
@@ -808,6 +808,7 @@ async def displayProfile(ctx, userId):
         embed.add_field(name=f"Level: {level}\nThreat: {totalThreat * 10}", value=f"{title} {name}#{user.discriminator}\n\n**Gold:** {gold} {goldEmoji}\n**Gems:** {gems} {gemEmoji}\n\n ", inline=False),
         embed.add_field(name=f"__Stats__", value=f"Wins: {wins}\nKills: {kills}\nDeaths: {deaths}\nK/D Ratio: {kd}\nGames Played: {gamesPlayed}\nWin Percent: {winPerc}%\n\n", inline=True)
         embed.add_field(name=f"__Showcase__", value=f"{showcase1Emoji} {showcase1Name}\n{showcase2Emoji} {showcase2Name}\n{showcase3Emoji} {showcase3Name}", inline=True)
+        embed.add_field(name=f"__Pickaxe__", value=f"{pickaxeEmoji} {pickaxeName}\n", inline=False)
         embed.add_field(name=f"__Loadout__", value=f"**1.** {slot1Emoji} {slot1Name} {slot1Threat}\n**2.** {slot2Emoji} {slot2Name} {slot2Threat}\n**3.** {slot3Emoji} {slot3Name} {slot3Threat}\n**4.** {slot4Emoji} {slot4Name} {slot4Threat}\n", inline=False)
         embed.add_field(name=f"__Perk__", value=f"{perkEmoji} {perkName} {perkBonus}", inline=False)        
         embed.set_footer(text=f"Inventory ({inventorySize})")
@@ -916,6 +917,7 @@ async def createNewUser(userId):
         matchStats = {}
 
         loadout = {
+            "pickaxe": 5000,
             "slot1": 999,
             "slot2": 999,
             "slot3": 999,
@@ -1134,10 +1136,10 @@ def fetchPickaxes(pickaxes):
 
     for pickaxeId in pickaxes:
         emojiId = data[str(pickaxeId)]['emojiId']
-        # Get the emoji for the pickaxe once added
+        emoji = client.get_emoji(emojiId)
         name = data[str(pickaxeId)]['name']
 
-        value += f'{name}\n'
+        value += f'{emoji} {name}\n'
 
     if value == '':
         return 'None'
@@ -1340,6 +1342,7 @@ async def battleStart(ctx, users):
         userId1 = random.choice(users)
         userId2 = random.choice(users)
 
+        # TODO: Change back to 1, 150
         battleRange = random.randint(1, 150)
 
         chestNumber = random.randint(1, 1000)
@@ -1449,7 +1452,6 @@ def userBattle(userId1, userId2, battleRange):
     with open('json/ranges.json', 'r') as f:
         ranges = json.load(f)
 
-    # Variables
     eliminations = ['eliminated', 'destroyed', 'annihilated', 'obliterated', 'got rid of', 'beamed', 'ended', 'finished off', 'murdered', 'killed', 'erased']
 
     # Get user1's weapon loadout
@@ -1582,7 +1584,7 @@ def getUsersThreat(user):
 def desiredWeapon(weaponIdList, battleRange):
     with open('json/weapons.json', 'r') as f:
         weapons = json.load(f)
-    
+
     with open('json/ranges.json', 'r') as f:
         ranges = json.load(f)
 
@@ -1608,7 +1610,7 @@ def desiredWeapon(weaponIdList, battleRange):
             if rangeToUse == ranges[str(rangeId)]['averageRange']:
                 return weapons[str(weaponId)]
     else:
-        # Use a pickaxe as a weapon TODO: Update the pickaxe emoji in weapons.json
+        # Use a stone as a weapon TODO: Update the stone emoji in weapons.json
         return weapons["998"]
 
 

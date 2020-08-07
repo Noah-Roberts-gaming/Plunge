@@ -1534,6 +1534,25 @@ def userBattle(userId1, userId2, battleRange):
     weightedList = [userId1, userId2]
 
     winningId = random.choices(weightedList, weights=(user1odds, user2odds))
+
+    # Use pickaxes if the battle range is 1
+    if battleRange == 1:
+        with open('json/pickaxes.json', 'r') as f:
+            pickaxes = json.load(f)
+
+        user1PickaxeId = users[str(userId1)]['loadout']['pickaxe']
+        user1PickaxeEmojiId = pickaxes[str(user1PickaxeId)]['emojiId']
+        user1PickaxeName = pickaxes[str(user1PickaxeId)]['name']
+
+        user1WeaponEmoji = client.get_emoji(user1PickaxeEmojiId)
+        user1WeaponName = user1PickaxeName
+
+        user2PickaxeId = users[str(userId2)]['loadout']['pickaxe']
+        user2PickaxeEmojiId = pickaxes[str(user2PickaxeId)]['emojiId']
+        user2PickaxeName = pickaxes[str(user2PickaxeId)]['name']
+
+        user2WeaponEmoji = client.get_emoji(user2PickaxeEmojiId)
+        user2WeaponName = user2PickaxeName
     
     # Fetch the users names to use
     if userId1 > 20:

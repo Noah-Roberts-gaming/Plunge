@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import random
 import math
+import re
 import json
 import asyncio
 
@@ -997,6 +998,41 @@ async def getPerkBonus(perkId):
         return "`+10% Gold`"
     elif perkId == 1002:
         return "`+10% Exp`"
+
+# Command that sets the users profile color
+@client.command()
+async def color(ctx, color = None):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+
+    usersExp = data[str(ctx.author.id)]['stats']['totalExp']
+    usersLevel = math.floor(usersExp/100)
+    usersColor = data[str(ctx.author.id)]['color']
+
+    if color != None:
+        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
+
+    if usersExp < 10000:
+        embed=discord.Embed(title=f"Not High Enough Level", description=f"Sorry {ctx.author.name}, you must be level 100 in order to change the color of your profile page.\n\nCurrent Level: {usersLevel}", color=0xfd5d5d)
+        await ctx.send(embed=embed)
+    else:
+        if color == None:
+            embed=discord.Embed(title=f"No color provided", description=f"To change the color of your profile, provide a valid hex color code.\nYou can choose a color from [here](https://www.google.com/search?q=color+picker).\n\nExample: `p.color #1bde2e`", color=0xfd5d5d)
+            await ctx.send(embed=embed)
+        elif match:
+            colorToAdd = color.replace('#', '')
+            data[str(ctx.author.id)]['color'] = colorToAdd
+
+            with open('json/users.json', 'w') as f:
+                json.dump(data, f, indent=4)
+
+            profileColor = int(colorToAdd, 16)
+
+            embed=discord.Embed(title=f"Color Changed", description=f"{ctx.author.mention}\\'s profile color changed to {color}", color=profileColor)
+            await ctx.send(embed=embed)
+        else:
+            embed=discord.Embed(title=f"Invalid Color", description=f"Please provide a valid hex color code. You can choose a color [here](https://www.google.com/search?q=color+picker).", color=0xfd5d5d)
+            await ctx.send(embed=embed)
 
 # Command that gets the users inventory
 @client.command()

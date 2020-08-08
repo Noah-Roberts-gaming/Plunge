@@ -1174,7 +1174,7 @@
     "260698008595726336": {
         "name": "Elyxirs",
         "title": 3000,
-        "color": "0c0d0c",
+        "color": "1bde2e",
         "showcase1": 22,
         "showcase2": 20,
         "showcase3": 23,
@@ -1182,7 +1182,7 @@
             "wins": 58,
             "kills": 367,
             "deaths": 844,
-            "totalExp": 9374
+            "totalExp": 10374
         },
         "matchStats": {
             "299742581972271104": {

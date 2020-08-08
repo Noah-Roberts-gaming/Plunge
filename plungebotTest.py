@@ -42,8 +42,6 @@ async def on_ready():
 
 #TODO: Re-write Embed Messages
 
-#TODO: Add command to change profile color
-
 ####################
 # Start Bot Methods
 ####################
@@ -1007,7 +1005,6 @@ async def color(ctx, color = None):
 
     usersExp = data[str(ctx.author.id)]['stats']['totalExp']
     usersLevel = math.floor(usersExp/100)
-    usersColor = data[str(ctx.author.id)]['color']
 
     if color != None:
         match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)

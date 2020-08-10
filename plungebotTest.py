@@ -1358,7 +1358,7 @@ async def matchSummary(userId, guildId):
 
     embed=discord.Embed(title=f"{usersGuild.name}\\'s Battle Royale", color=0xfd5d5d)
     embed.set_thumbnail(url=usersGuild.icon_url)
-    embed.add_field(name=f"__Your Match Summary__", value=f"Placement: {placement}{ordinal}\nKills: {killsEarned}\nGold: {goldEarned} {goldEmoji}\nExp Earned: {expEarned*100}\n\n{items}", inline=False)
+    embed.add_field(name=f"__Match Summary__", value=f"Placement: {placement}{ordinal}\nKills: {killsEarned}\nGold: {goldEarned} {goldEmoji}\nExp Earned: {expEarned*100}\n\n{items}", inline=False)
 
     await member.send(embed=embed)
 

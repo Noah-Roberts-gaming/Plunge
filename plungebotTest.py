@@ -42,6 +42,8 @@ async def on_ready():
 
 #TODO: Re-write Embed Messages
 
+#TODO: Handle gold boost perk and exp boost perk
+
 ####################
 # Start Bot Methods
 ####################
@@ -1412,7 +1414,6 @@ async def battleStart(ctx, users):
         userId1 = random.choice(users)
         userId2 = random.choice(users)
 
-        # TODO: Change back to 1, 150
         battleRange = random.randint(1, 150)
 
         chestNumber = random.randint(1, 1000)
@@ -1490,7 +1491,6 @@ async def battleStart(ctx, users):
             newList.remove(elimMessage[2])
 
     await asyncio.sleep(3)
-
 
     winner = newList[0]
 
@@ -1588,18 +1588,18 @@ def userBattle(userId1, userId2, battleRange):
     # Get user1's total threat
     user1TotalThreat = user1RangeBonusThreat + user1LoadoutThreat
 
-    # Get the odds per user
+    # Get the odds per user TODO: Maybe change the odds again
     if user1TotalThreat > user2TotalThreat:
         difference = user1TotalThreat - user2TotalThreat
-        user1odds = (100 + difference) / 2
-        user2odds = (100 - difference) / 2
+        user1odds = (70 + difference) / 2
+        user2odds = (70 - difference) / 2
     elif user1TotalThreat == user2TotalThreat:
         user1odds = 50
         user2odds = 50
     else:
         difference = user2TotalThreat - user1TotalThreat
-        user2odds = (100 + difference) / 2
-        user1odds = (100 - difference) / 2
+        user2odds = (70 + difference) / 2
+        user1odds = (70 - difference) / 2
 
     weightedList = [userId1, userId2]
 
@@ -1735,8 +1735,7 @@ def addChest(userId, serverId):
         data = json.load(f)
 
     data[str(userId)]['inventory']['chests'] += 1
-    # TODO: Figure out how to add chests/umbrellas to items earned
-    data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'] = []
+    data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'].append(4000)
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
@@ -1767,8 +1766,10 @@ async def addWin(userId, serverId):
     data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 10
     data[str(userId)]['inventory']['gold'] += 150
     data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 150
-    # TODO: Figure out how to add umbrellas to items earned
-    data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'] = []
+    
+    if 2001 not in data[str(userId)]['inventory']['umbrellas']:
+        data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'].append(2001)
+        data[str(userId)]['inventory']['umbrellas'].append(2001)
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)

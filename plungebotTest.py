@@ -1315,16 +1315,53 @@ async def giveaway(ctx):
     embed.add_field(name="Note", value="If the bot is removed from the server where you used `p.verify` you will lose the User role in the Plunge Development server.", inline=False)
     await ctx.send(embed=embed)
 
-#####################################################################
-#####################################################################
-##                                                                 ##
-##                      Battle Royale                              ##
-##                                                                 ##
-#####################################################################
-#####################################################################
+# Send the user their match summary (kills, xp, gold, items if any)
+async def matchSummary(userId, guildId):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+    
+    usersGuild = client.get_guild(guildId)
+    member = usersGuild.get_member(userId)
+    goldEmoji = client.get_emoji(736439923095109723)
+
+    placement = data[str(userId)]['matchStats'][str(guildId)]['placement']
+    killsEarned = data[str(userId)]['matchStats'][str(guildId)]['killsEarned']
+    goldEarned = data[str(userId)]['matchStats'][str(guildId)]['goldEarned']
+    expEarned = data[str(userId)]['matchStats'][str(guildId)]['expEarned']
+    
+    itemsEarned = data[str(userId)]['matchStats'][str(guildId)]['itemsEarned']
+    items = ''
+
+    if len(itemsEarned) == 1:
+        items = f'{len(itemsEarned)} item earned:\n'
+    elif len(itemsEarned) > 1:
+        items = f'{len(itemsEarned)} items earned:\n'
+    
+    if len(itemsEarned) > 0:
+        for itemId in itemsEarned:
+            item = await fetchItem(itemId)
+
+            itemEmoji = client.get_emoji(item['emojiId'])
+            itemName = item['name']
+
+            items += f'{itemEmoji} {itemName}\n'
 
 
-# TODO: Match summary (kills, xp, gold, items if any)
+    ordinal = 'th'
+    
+    if placement % 10 == 1 and placement != 11:
+        ordinal = 'st'
+    elif placement % 10 == 2 and placement != 12:
+        ordinal = 'nd'
+    elif placement % 10 == 3 and placement != 13:
+        ordinal = 'rd'
+
+    embed=discord.Embed(title=f"{usersGuild.name}\\'s Battle Royale", color=0xfd5d5d)
+    embed.set_thumbnail(url=usersGuild.icon_url)
+    embed.add_field(name=f"__Your Match Summary__", value=f"Placement: {placement}{ordinal}\nKills: {killsEarned}\nGold: {goldEarned} {goldEmoji}\nExp Earned: {expEarned*100}\n\n{items}", inline=False)
+
+    await member.send(embed=embed)
+
 
 # TODO: Add a shop with items
 ######### ITEMS/SHOP ITEMS ##########
@@ -1735,6 +1772,9 @@ async def addWin(userId, serverId):
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
+    
+    if userId > 20:
+        await matchSummary(userId, serverId)
 
 # Method that updates the users deaths
 async def addDeath(userId, serverId, placement):
@@ -1750,6 +1790,9 @@ async def addDeath(userId, serverId, placement):
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
+
+    if userId > 20:
+        await matchSummary(userId, serverId)
 
 ####################
 # End Battle commands

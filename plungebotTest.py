@@ -40,7 +40,23 @@ async def on_ready():
 # End Setup
 ####################
 
-#TODO: Re-write Embed Messages
+#TODO: Re-write some of the Embed Messages
+
+# TODO: make the chest command (Opens a chest and displays the item(s) you received)
+
+# TODO: Make the shop command (with scrolling pages Contact Me before you start)
+
+# TODO: Make the loadout command (Lets you choose your loadout weapons)
+
+# TODO: Make the perk command (Lets you choose your perk to equip)
+
+# TODO: Make the showcase command (Lets you choose what to display in your showcase.. Pickaxes, weapons, umbrellas, perks)
+
+# TODO: Make the title command (Lets you equip one of your titles that you own)
+
+# TODO: Make the leaderboard command (Displays the top 100 players for wins/gold/level)
+
+# TODO: Remove the drop command
 
 ####################
 # Start Bot Methods
@@ -1378,7 +1394,6 @@ async def matchSummary(userId, guildId):
 
 # Battle function
 async def battleStart(ctx, users):
-    # TODO: More custom messages... more related to fortnite I guess...
 
     # weapons = ['a Pistol', 'a Pickaxe', 'an Assault Rifle', 'an Auto Rifle', 'a Sniper Rifle', 'a Paintball Gun', 'a Rock', 'an Arrow', 'a Blow Dart Gun', 'a Rocket Launcher', 
     # 'a Grenade', 'a Grenade Launcher', 'a Shotgun', 'Hand to Hand Combat', 'a Submachine Gun', 'a Light Machine Gun', 'a Stick', 'an Eye Poke', 'a Karate Chop']

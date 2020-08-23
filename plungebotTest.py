@@ -42,8 +42,6 @@ async def on_ready():
 
 #TODO: Re-write Embed Messages
 
-#TODO: Handle gold boost perk and exp boost perk
-
 ####################
 # Start Bot Methods
 ####################
@@ -1372,8 +1370,6 @@ async def matchSummary(userId, guildId):
 #  Weapon Categories: Shotgun, Smg, Ar, Sniper
 #
 #  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
-#
-# TODO: Add special Umbrella when you win
 
 
 ####################
@@ -1745,12 +1741,20 @@ def addKill(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
+    goldToAdd = 10
+    expToAdd = 1
+
+    if data[str(userId)]['loadout']['perk'] == 1001:
+        goldToAdd = (10 * .1) + 10
+    elif data[str(userId)]['loadout']['perk'] == 1002:
+        expToAdd = (1 * .1) + 1
+
     data[str(userId)]['stats']['kills'] += 1
     data[str(userId)]['matchStats'][str(serverId)]['killsEarned'] += 1
-    data[str(userId)]['stats']['totalExp'] += 1
-    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 1
-    data[str(userId)]['inventory']['gold'] += 10
-    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 10
+    data[str(userId)]['stats']['totalExp'] += expToAdd
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += expToAdd
+    data[str(userId)]['inventory']['gold'] += goldToAdd
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += goldToAdd
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)
@@ -1760,12 +1764,20 @@ async def addWin(userId, serverId):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
+    goldToAdd = 150
+    expToAdd = 10
+
+    if data[str(userId)]['loadout']['perk'] == 1001:
+        goldToAdd = (150 * .1) + 150
+    elif data[str(userId)]['loadout']['perk'] == 1002:
+        expToAdd = (10 * .1) + 10
+
     data[str(userId)]['stats']['wins'] += 1
     data[str(userId)]['matchStats'][str(serverId)]['placement'] = 1
-    data[str(userId)]['stats']['totalExp'] += 10
-    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 10
-    data[str(userId)]['inventory']['gold'] += 150
-    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 150
+    data[str(userId)]['stats']['totalExp'] += expToAdd
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += expToAdd
+    data[str(userId)]['inventory']['gold'] += goldToAdd
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += goldToAdd
     
     if 2001 not in data[str(userId)]['inventory']['umbrellas']:
         data[str(userId)]['matchStats'][str(serverId)]['itemsEarned'].append(2001)
@@ -1782,12 +1794,21 @@ async def addDeath(userId, serverId, placement):
     with open('json/users.json', 'r') as f:
         data = json.load(f)
 
+    goldToAdd = 50
+    expToAdd = 5
+
+    if data[str(userId)]['loadout']['perk'] == 1001:
+        goldToAdd = (50 * .1) + 50
+    elif data[str(userId)]['loadout']['perk'] == 1002:
+        expToAdd = (5 * .1) + 5
+
     data[str(userId)]['matchStats'][str(serverId)]['placement'] = placement
     data[str(userId)]['stats']['deaths'] += 1
-    data[str(userId)]['stats']['totalExp'] += 5
-    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += 5
-    data[str(userId)]['inventory']['gold'] += 50
-    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += 50
+    data[str(userId)]['stats']['totalExp'] += expToAdd
+    data[str(userId)]['matchStats'][str(serverId)]['expEarned'] += expToAdd
+    data[str(userId)]['inventory']['gold'] += goldToAdd
+    data[str(userId)]['matchStats'][str(serverId)]['goldEarned'] += goldToAdd
+        
 
     with open('json/users.json', 'w') as f:
         json.dump(data, f, indent=4)

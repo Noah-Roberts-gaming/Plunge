@@ -42,7 +42,7 @@ async def on_ready():
 
 #TODO: Re-write some of the Embed Messages
 
-# TODO: make the chest command (Opens a chest and displays the item(s) you received)
+# TODO: Make the chest command (Opens a chest and displays the item(s) you received)
 
 # TODO: Make the shop command (with scrolling pages Contact Me before you start)
 
@@ -55,8 +55,6 @@ async def on_ready():
 # TODO: Make the title command (Lets you equip one of your titles that you own)
 
 # TODO: Make the leaderboard command (Displays the top 100 players for wins/gold/level)
-
-# TODO: Remove the drop command
 
 ####################
 # Start Bot Methods
@@ -911,6 +909,56 @@ async def fetchItem(itemId):
         else:
             print("Pick not found. fetchItem error.")
 
+# Adds an item to the users inventory
+async def addItem(userId, itemId):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+
+    if itemId < 1000:
+        # Add the weapon to the users inventory
+        if itemId in data[str(userId)]['inventory']['weapons']:
+            print(f'The item is already in {userId} inventory')
+            return True
+        else:
+            data[str(userId)]['inventory']['weapons'].append(itemId)
+
+    elif itemId > 999 and itemId < 2000:
+        # Add the perk to the users inventory
+        if itemId in data[str(userId)]['inventory']['perks']:
+            print(f'The item is already in {userId} inventory')
+        else:
+            data[str(userId)]['inventory']['perks'].append(itemId)
+
+    elif itemId > 1999 and itemId < 3000:
+        # Add an umbrealla to the users inventory
+        if itemId in data[str(userId)]['inventory']['umbrellas']:
+            print(f'The item is already in {userId} inventory')
+        else:
+            data[str(userId)]['inventory']['umbrellas'].append(itemId)
+
+    elif itemId > 2999 and itemId < 4000:
+        # Add a title to the users inventory
+        if itemId in data[str(userId)]['inventory']['titles']:
+            print(f'The item is already in {userId} inventory')
+        else:
+            data[str(userId)]['inventory']['titles'].append(itemId)
+
+    elif itemId > 3999 and itemId < 5000:
+        # Add a chest to the users inventory
+        # DO NOTHING
+        return False
+    else:
+        # Add a pickaxe to the users inventory
+        if itemId in data[str(userId)]['inventory']['pickaxes']:
+            print(f'The item is already in {userId} inventory')
+        else:
+            data[str(userId)]['inventory']['pickaxes'].append(itemId)
+
+    with open('json/users.json', 'w') as f:
+        json.dump(data, f, indent=4)
+    
+    return False
+
 # Create a new user in the users.json
 async def createNewUser(userId):
     # Opens the users.json file and read it
@@ -1378,6 +1426,86 @@ async def matchSummary(userId, guildId):
 
     await member.send(embed=embed)
 
+# Command that opens a chest
+# p.chest
+@client.command()
+async def chest(ctx):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+    
+    totalChests = data[str(ctx.author.id)]['inventory']['chests']
+
+    if totalChests > 0:
+        # Items you can get from a chest
+        # Gold 3000 - 8000 (multiple of 5)
+        goldInt = random.randint(600, 1601)*5
+        # Weapons Uncommon 1 in 50 chance - Rare 1 in 70 chance - Epic 1 in 75 chance - Legendary
+        weaponInt = random.randint(1, 1001)
+
+        # Weapon to give (default to nothing)
+        weaponId = 999
+
+        if weaponInt == 999:
+            # Give a random legendary weapon (IDs 16 - 19)
+            weaponId = random.randint(16, 20)
+        elif weaponInt < 701:
+            # Give an uncommon weapon (IDs 4 - 7)
+            weaponId = random.randint(4, 8)
+        elif weaponInt > 700 and weaponInt < 901:
+            # Give a rare weapon (IDs 8 - 11)
+            weaponId = random.randint(8, 12)
+        elif weaponInt > 900:
+            # Give an epic weapon (IDs 12 - 15)
+            weaponId = random.randint(12, 16)
+
+        # Get the footer message
+        chestsRemaining = f'{totalChests - 1} chests remaining'
+        if chestsRemaining == 1:
+            chestsRemaining = f'{totalChests - 1} chest remaining'
+        
+        # Get the gold message
+        goldEmoji = client.get_emoji(736439923095109723)
+        goldMessage = f'**Gold:** {goldInt} {goldEmoji}'
+
+        # Get the item message
+        weapon = await fetchItem(weaponId)
+        weaponName = weapon['name']
+        weaponEmojiId = weapon['emojiId']
+        weaponEmoji = client.get_emoji(weaponEmojiId)
+        weaponMessage = f'**Weapon:** {weaponName} {weaponEmoji}'
+
+        duplicateWeaponPrice = 0
+        
+        data[str(ctx.author.id)]['inventory']['chests'] -= 1
+
+        with open('json/users.json', 'w') as f:
+            json.dump(data, f, indent=4)
+
+        result = await addItem(ctx.author.id, weaponId)
+        if result == True:
+            # The weapon to add is duplicate
+            duplicateWeaponPrice = int(weapon['price'] / 2)
+            weaponMessage = f'**Weapon:** ~~{weaponName}~~ {weaponEmoji}\n``duplicate`` +{duplicateWeaponPrice} {goldEmoji}'
+        
+        totalGold = duplicateWeaponPrice + goldInt
+        await addGold(ctx.author.id, totalGold)
+
+
+
+        embed=discord.Embed(color=0xfd5d5d)
+        embed.add_field(name="Chest Opened", value=f"{ctx.author.mention} opened a chest and found...\n\n{goldMessage}\n{weaponMessage}", inline=False)
+        embed.set_footer(text=f"{chestsRemaining}")
+        await ctx.send(embed=embed)
+        # TODO: Decide if we want to delete this message or not
+        #await msg.delete(delay=120)
+
+    else:
+        embed=discord.Embed(color=0xfd5d5d)
+        embed.add_field(name="No Chests", value=f"Sorry {ctx.author.mention}, you do not have any chests to open.", inline=False)
+        embed.set_footer(text=f'participate in battles to earn chests')
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=120)
+
 
 # TODO: Add a shop with items
 ######### ITEMS/SHOP ITEMS ##########
@@ -1425,9 +1553,9 @@ async def battleStart(ctx, users):
         userId1 = random.choice(users)
         userId2 = random.choice(users)
 
-        battleRange = random.randint(1, 150)
+        battleRange = random.randint(1, 151)
 
-        chestNumber = random.randint(1, 1000)
+        chestNumber = random.randint(1, 1001)
 
         if chestNumber == 999:
             allPlayers = []
@@ -1449,6 +1577,7 @@ async def battleStart(ctx, users):
 
                 addChest(chestWinner, ctx.guild.id)
 
+                # TODO: Add chest emoji
                 embed=discord.Embed(color=0xfd5d5d)
                 embed.add_field(name="Chest Found", value=f"{chestUserName} found a chest!", inline=False)
                 embed.set_footer(text=f"use p.chest to open it")

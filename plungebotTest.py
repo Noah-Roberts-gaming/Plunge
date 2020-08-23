@@ -65,11 +65,11 @@ async def on_ready():
 # Updates and cycles the bots status
 async def change_status():
     while True:
-        await client.change_presence(
-            activity=discord.Game('Dropped ' + str(await getInfo('drops')) + " times!")
-        )
+        # await client.change_presence(
+        #     activity=discord.Game('Dropped ' + str(await getInfo('drops')) + " times!")
+        # )
 
-        await asyncio.sleep(15)
+        # await asyncio.sleep(15)
 
         guilds = str(len([g for g in client.guilds]))  # Gets length of all client's guilds
         
@@ -380,7 +380,7 @@ async def on_guild_remove(guild):
 
 @client.command()
 async def help(ctx):
-    commands = f"`p.info` Gives instructions on how to use this bot\n`p.drop` Picks a random place for you to drop in Fortnite\n`p.battle` Starts a battle royale\n`p.shop` Displays the current shop items\n`p.profile` Shows your profile\n`p.inventory` Shows your inventory\n`p.chest` Opens a chest which contains gold and items\n`p.loadout` Pick your loadout items\n`p.perk` Pick a perk to equip\n`p.showcase` Pick your showcase items\n`p.title` Pick a title to equip\n`p.color` At level 100, change your profile color\n`p.leaderboard` Shows some of the best battle royale players\n`p.invite` Sends an invite link to have the bot join your own server\n`p.discord` Sends an invite link to join our discord server\n`p.verify` Gives you the user role in our discord server\n`p.giveaway` Gives information about the active giveaway"
+    commands = f"`p.info` Gives instructions on how to use this bot\n`p.battle` Starts a battle royale\n`p.shop` Displays the current shop items\n`p.profile` Shows your profile\n`p.inventory` Shows your inventory\n`p.chest` Opens a chest which contains gold and items\n`p.loadout` Pick your loadout items\n`p.perk` Pick a perk to equip\n`p.showcase` Pick your showcase items\n`p.title` Pick a title to equip\n`p.color` At level 100, change your profile color\n`p.leaderboard` Shows some of the best battle royale players\n`p.invite` Sends an invite link to have the bot join your own server\n`p.discord` Sends an invite link to join our discord server\n`p.verify` Gives you the user role in our discord server\n`p.giveaway` Gives information about the active giveaway"
 
     embed=discord.Embed(title="Plunge Help Page", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
@@ -393,63 +393,63 @@ async def help(ctx):
 # Before we know it, we are getting kicked off the bus with little to no options to land. Luckily, Plunge Bot can help. With a simple command 
 # "p.drop", Plunge will randomly select a location for you to drop in Fortnite, making your next drop stress free.
 # p.drop
-@client.command()
-async def drop(ctx):
-    # Call the add drop command to add to the counter
-    await addDrop()
+# @client.command()
+# async def drop(ctx):
+#     # Call the add drop command to add to the counter
+#     await addDrop()
 
-    # Removed: "The Shark"
-    locations = ['Catty Corner', 'Frenzy Farm', 'Holly Hedges', 'Lazy Lake', 'Misty Meadows', 'Pleasant Park', 'Retail Row', 'Rickety Rig', 'Salty Springs', 'Steamy Stacks', 'Sweaty Sands', 'The Authority', 'The Fortilla', 'Risky Reels', 'The Yacht', 'Dirty Docks', 'Broken Castle', 'Pirate Barge']
-    location = random.choice(locations)
+#     # Removed: "The Shark"
+#     locations = ['Catty Corner', 'Frenzy Farm', 'Holly Hedges', 'Lazy Lake', 'Misty Meadows', 'Pleasant Park', 'Retail Row', 'Rickety Rig', 'Salty Springs', 'Steamy Stacks', 'Sweaty Sands', 'The Authority', 'The Fortilla', 'Risky Reels', 'The Yacht', 'Dirty Docks', 'Broken Castle', 'Pirate Barge']
+#     location = random.choice(locations)
 
-    # locationurl = f'http://www.genplus.xyz/plunge/images/{location.replace(" ", "%20")}.png'
-    locationurl = ''
+#     # locationurl = f'http://www.genplus.xyz/plunge/images/{location.replace(" ", "%20")}.png'
+#     locationurl = ''
 
-    # Based on the location, set the image url
-    if location == 'Catty Corner':
-        locationurl = 'https://i.imgur.com/IN3zcJJ.png'
-    elif location == 'Frenzy Farm':
-        locationurl = 'https://i.imgur.com/c1pYdgs.png'
-    elif location == 'Holly Hedges':
-        locationurl = 'https://i.imgur.com/GX2A97E.png'
-    elif location == 'Lazy Lake':
-        locationurl = 'https://i.imgur.com/cNlKs5b.png'
-    elif location == 'Misty Meadows':
-        locationurl = 'https://i.imgur.com/QneWdkB.png'
-    elif location == 'Pleasant Park':
-        locationurl = 'https://i.imgur.com/cuIXiTM.png'
-    elif location == 'Retail Row':
-        locationurl = 'https://i.imgur.com/sIuNMV4.png'
-    elif location == 'Rickety Rig':
-        locationurl = 'https://i.imgur.com/tsJPpyn.png'
-    elif location == 'Salty Springs':
-        locationurl = 'https://i.imgur.com/KBFUFPN.png'
-    elif location == 'Steamy Stacks':
-        locationurl = 'https://i.imgur.com/QLPw5Bb.png'
-    elif location == 'Sweaty Sands':
-        locationurl = 'https://i.imgur.com/9eQBa08.png'
-    elif location == 'The Authority':
-        locationurl = 'https://i.imgur.com/JXWhuzJ.png'
-    elif location == 'The Fortilla':
-        locationurl = 'https://i.imgur.com/EOeio4u.png'
-    elif location == 'Risky Reels':
-        locationurl = 'https://i.imgur.com/K6Zwis8.png'
-    elif location == 'The Yacht':
-        locationurl = 'https://i.imgur.com/OLyro4T.png'
-    elif location == 'Dirty Docks':
-        locationurl = 'https://i.imgur.com/sPrr5rY.png'
-    elif location == 'Broken Castle':
-        locationurl = 'https://i.imgur.com/DocMZvk.png'
-    elif location == 'Pirate Barge':
-        locationurl = 'https://i.imgur.com/qpcf2bd.png'
-    else:
-        locationurl = ''
+#     # Based on the location, set the image url
+#     if location == 'Catty Corner':
+#         locationurl = 'https://i.imgur.com/IN3zcJJ.png'
+#     elif location == 'Frenzy Farm':
+#         locationurl = 'https://i.imgur.com/c1pYdgs.png'
+#     elif location == 'Holly Hedges':
+#         locationurl = 'https://i.imgur.com/GX2A97E.png'
+#     elif location == 'Lazy Lake':
+#         locationurl = 'https://i.imgur.com/cNlKs5b.png'
+#     elif location == 'Misty Meadows':
+#         locationurl = 'https://i.imgur.com/QneWdkB.png'
+#     elif location == 'Pleasant Park':
+#         locationurl = 'https://i.imgur.com/cuIXiTM.png'
+#     elif location == 'Retail Row':
+#         locationurl = 'https://i.imgur.com/sIuNMV4.png'
+#     elif location == 'Rickety Rig':
+#         locationurl = 'https://i.imgur.com/tsJPpyn.png'
+#     elif location == 'Salty Springs':
+#         locationurl = 'https://i.imgur.com/KBFUFPN.png'
+#     elif location == 'Steamy Stacks':
+#         locationurl = 'https://i.imgur.com/QLPw5Bb.png'
+#     elif location == 'Sweaty Sands':
+#         locationurl = 'https://i.imgur.com/9eQBa08.png'
+#     elif location == 'The Authority':
+#         locationurl = 'https://i.imgur.com/JXWhuzJ.png'
+#     elif location == 'The Fortilla':
+#         locationurl = 'https://i.imgur.com/EOeio4u.png'
+#     elif location == 'Risky Reels':
+#         locationurl = 'https://i.imgur.com/K6Zwis8.png'
+#     elif location == 'The Yacht':
+#         locationurl = 'https://i.imgur.com/OLyro4T.png'
+#     elif location == 'Dirty Docks':
+#         locationurl = 'https://i.imgur.com/sPrr5rY.png'
+#     elif location == 'Broken Castle':
+#         locationurl = 'https://i.imgur.com/DocMZvk.png'
+#     elif location == 'Pirate Barge':
+#         locationurl = 'https://i.imgur.com/qpcf2bd.png'
+#     else:
+#         locationurl = ''
 
-    embed=discord.Embed(title="Plunge", color=0xfd5d5d)
-    embed.add_field(name="You are dropping at:", value=location, inline=False)
-    embed.set_thumbnail(url=logourl)
-    embed.set_image(url=locationurl)
-    await ctx.send(embed=embed)
+#     embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+#     embed.add_field(name="You are dropping at:", value=location, inline=False)
+#     embed.set_thumbnail(url=logourl)
+#     embed.set_image(url=locationurl)
+#     await ctx.send(embed=embed)
 
 # Command that simulates a battle royale
 # p.battle

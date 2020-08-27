@@ -42,8 +42,6 @@ async def on_ready():
 
 #TODO: Re-write some of the Embed Messages
 
-# TODO: Make the chest command (Opens a chest and displays the item(s) you received)
-
 # TODO: Make the shop command (with scrolling pages Contact Me before you start)
 
 # TODO: Make the loadout command (Lets you choose your loadout weapons)
@@ -654,6 +652,8 @@ async def battle(ctx):
         # removes the guild from the active battles check (this comes last)
         activeBattles.remove(ctx.guild.id)
 
+# Command that gets the users profile
+# p.profile
 @client.command()
 async def profile(ctx, args = None):
     # if no parameters, display the authors profile
@@ -685,6 +685,7 @@ async def displayProfile(ctx, userId):
     if userProfile is True:
         await ctx.send(f"{user.name}#{user.discriminator} has not yet played in a Battle Royale... Creating User...")
     else:
+
         # Get the users profile info
         name = userProfile["name"]
 
@@ -835,6 +836,9 @@ async def fetchUserProfile(userId):
 
     # Checks if userId is in the userData list
     if str(userId) in list(userData.keys()):
+        # update the users name
+        updateName(userId)
+        # return the user
         return userData[str(userId)]
     # else create new user
     else:
@@ -958,6 +962,19 @@ async def addItem(userId, itemId):
         json.dump(data, f, indent=4)
     
     return False
+
+# Update the users name field
+def updateName(userId):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+    
+    user = client.get_user(userId)
+
+    if user != None:
+        data[str(userId)]['name'] = user.name
+    
+    with open('json/users.json', 'w') as f:
+        json.dump(data, f, indent=4)
 
 # Create a new user in the users.json
 async def createNewUser(userId):
@@ -1425,6 +1442,67 @@ async def matchSummary(userId, guildId):
     embed.add_field(name=f"__Match Summary__", value=f"Placement: {placement}{ordinal}\nKills: {killsEarned}\nGold: {goldEarned} {goldEmoji}\nExp Earned: {expEarned*100}\n\n{items}", inline=False)
 
     await member.send(embed=embed)
+
+# Command that shows the top users on the leaderboard (Top Wins, Top Kills, Top Gold)
+# p.leaderboard
+@client.command()
+async def leaderboard(ctx):
+    with open('json/users.json', 'r') as f:
+        data = json.load(f)
+
+    userList = []
+
+    for user in data:
+        #If its not a bot and not Plunge
+        if int(user) > 20 and int(user) != 732864657932681278:
+            userList.append(data[user])
+    
+    userList.sort(reverse=True, key=goldValue)
+    sortedGold = list(userList)
+    topFiveGold = topUsers(sortedGold, 'gold', 5)
+
+    userList.sort(reverse=True, key=killsValue)
+    sortedKills = list(userList)
+    topFiveKills = topUsers(sortedKills, 'kills', 5)
+
+    userList.sort(reverse=True, key=winsValue)
+    sortedWins = list(userList)
+    topFiveWins = topUsers(sortedWins, 'wins', 5)
+
+    #TODO: Make this message pretty and also include the index (placement) of the user that called the function
+    await ctx.send(f'Wins: \n{topFiveWins}\n\nKills:\n{topFiveKills}\n\nGold:\n{topFiveGold}')
+
+# A function that returns the top users in a string (pass in the sorted list)
+def topUsers(userList, stat, total):
+    # Print the top 10
+    i = 0
+    topUsers = ''
+    while i < total:
+        name = userList[i]['name']
+        if stat.lower() == 'gold':
+            gold = userList[i]['inventory']['gold']
+            topUsers += f'{i + 1}. **{name}** Gold: {gold}\n'
+        elif stat.lower() == 'kills':
+            kills = userList[i]['stats']['kills']
+            topUsers += f'{i + 1}. **{name}** Kills: {kills}\n'
+        elif stat.lower() == 'wins':
+            wins = userList[i]['stats']['wins']
+            topUsers += f'{i + 1}. **{name}** Wins: {wins}\n'
+        i += 1
+    
+    return topUsers
+
+# A function that returns the gold value
+def goldValue(user):
+    return user['inventory']['gold']
+
+# A function that returns the kills value
+def killsValue(user):
+    return user['stats']['kills']
+
+# A function that returns the wins value
+def winsValue(user):
+    return user['stats']['wins']
 
 # Command that opens a chest
 # p.chest

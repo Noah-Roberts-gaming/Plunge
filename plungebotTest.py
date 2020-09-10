@@ -1585,7 +1585,96 @@ async def chest(ctx):
         await msg.delete(delay=120)
 
 
-# TODO: Add a shop with items
+# TODO: Update the shop items, to display the item and not the ID's
+@client.command()
+async def shop(ctx):
+    # Open up the shop.json file
+    with open('json/shop.json', 'r') as f:
+        data = json.load(f)
+    
+    shopPages = []
+
+    for page in data:
+        shopPages.append(page)
+    
+    # The total amount of pages
+    pages = len(shopPages)
+    # The current page
+    cur_page = 1
+
+    item = data[str(cur_page-1)]["items"]
+
+    itemList = f"{item}"
+
+    embed=discord.Embed(title="Item Shop", color=0xfd5d5d)
+    # embed.set_thumbnail(url=user.avatar_url)
+    embed.add_field(name=f"Page {cur_page}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{itemList}", inline=False),
+    embed.set_footer(text=f"Page {cur_page}/{pages}")
+
+    msg = await ctx.send(embed=embed)
+
+    await msg.add_reaction("◀️")
+    await msg.add_reaction("▶️")
+
+    # contents = ["This is page 1!", "This is page 2!", "This is page 3!", "This is page 4!"]
+    # pages = 4
+    # cur_page = 1
+    # message = await ctx.send(f"Page {cur_page}/{pages}:\n{contents[cur_page-1]}")
+    # getting the message object for editing and reacting
+
+    # await message.add_reaction("◀️")
+    # await message.add_reaction("▶️")
+
+    def check(reaction, user):
+        return user == ctx.author and str(reaction.emoji) in ["◀️", "▶️"]
+        # This makes sure nobody except the command sender can interact with the "menu"
+
+    while True:
+        try:
+            reaction, user = await client.wait_for("reaction_add", timeout=60, check=check)
+            # waiting for a reaction to be added - times out after x seconds, 60 in this
+            # example
+
+            if str(reaction.emoji) == "▶️" and cur_page != pages:
+                cur_page += 1
+
+                item = data[str(cur_page-1)]["items"]
+
+                itemList = f"{item}"
+
+                embed=discord.Embed(title="Item Shop", color=0xfd5d5d)
+                # embed.set_thumbnail(url=user.avatar_url)
+                embed.add_field(name=f"Page {cur_page}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{itemList}", inline=False),
+                embed.set_footer(text=f"Page {cur_page}/{pages}")
+
+                await msg.edit(embed=embed)
+                await msg.remove_reaction(reaction, user)
+
+            elif str(reaction.emoji) == "◀️" and cur_page > 1:
+                cur_page -= 1
+                
+                item = data[str(cur_page-1)]["items"]
+
+                itemList = f"{item}"
+
+                embed=discord.Embed(title="Item Shop", color=0xfd5d5d)
+                # embed.set_thumbnail(url=user.avatar_url)
+                embed.add_field(name=f"Page {cur_page}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{itemList}", inline=False),
+                embed.set_footer(text=f"Page {cur_page}/{pages}")
+
+                await msg.edit(embed=embed)
+
+                await msg.remove_reaction(reaction, user)
+
+            else:
+                await msg.remove_reaction(reaction, user)
+                # removes reactions if the user tries to go forward on the last page or
+                # backwards on the first page
+        except asyncio.TimeoutError:
+            await msg.delete()
+            break
+            # ending the loop if user doesn't react after x seconds
+
 ######### ITEMS/SHOP ITEMS ##########
 #  TIERS: Common - 0, Uncommon - 1, Rare - 2, Epic - 3, Legendary - 4, POSSIBLY MYTHIC - 5 (NOT RELEASED)
 #  
@@ -1650,7 +1739,7 @@ async def battleStart(ctx, users):
                 if chestUser is not None:
                     chestUserName = f'{chestUser.mention}'
                 else:
-                    print('but something went wrong 1354')
+                    print('something went wrong [addChest(chestWinner, ctx.guild.id)]')
                     chestUserName = data[str(chestWinner)]['name']
 
                 addChest(chestWinner, ctx.guild.id)

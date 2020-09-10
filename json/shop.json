@@ -1,0 +1,17 @@
+{
+    "0": {
+        "page": "Page 1",
+        "description": "Buy a starter weapon",
+        "items": [0, 1, 2, 3]
+    },
+    "1": {
+        "page": "Page 2",
+        "description": "These items rotate every week",
+        "items": [4, 5, 10, 11]
+    },
+    "2": {
+        "page": "Page 3",
+        "description": "Buy a pickaxe",
+        "items": [5000]
+    }
+}

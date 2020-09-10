@@ -9,8 +9,8 @@
         "stats": {
             "wins": 3,
             "kills": 71,
-            "deaths": 90,
-            "totalExp": 551
+            "deaths": 91,
+            "totalExp": 556
         },
         "matchStats": {
             "299742581972271104": {
@@ -61,7 +61,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6460,
+            "gold": 6510,
             "gems": 0
         }
     },
@@ -74,9 +74,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 5,
-            "kills": 67,
-            "deaths": 75,
-            "totalExp": 492
+            "kills": 68,
+            "deaths": 76,
+            "totalExp": 498
         },
         "matchStats": {
             "299742581972271104": {
@@ -129,7 +129,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 5970,
+            "gold": 6030,
             "gems": 0
         }
     },
@@ -143,8 +143,8 @@
         "stats": {
             "wins": 1,
             "kills": 78,
-            "deaths": 80,
-            "totalExp": 488
+            "deaths": 81,
+            "totalExp": 493
         },
         "matchStats": {
             "299742581972271104": {
@@ -195,7 +195,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 5730,
+            "gold": 5780,
             "gems": 0
         }
     },
@@ -208,9 +208,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 3,
-            "kills": 69,
-            "deaths": 80,
-            "totalExp": 499
+            "kills": 70,
+            "deaths": 81,
+            "totalExp": 505
         },
         "matchStats": {
             "299742581972271104": {
@@ -261,7 +261,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 5940,
+            "gold": 6000,
             "gems": 0
         }
     },
@@ -274,9 +274,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 4,
-            "kills": 63,
-            "deaths": 83,
-            "totalExp": 518
+            "kills": 64,
+            "deaths": 84,
+            "totalExp": 524
         },
         "matchStats": {
             "299742581972271104": {
@@ -327,7 +327,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6180,
+            "gold": 6240,
             "gems": 0
         }
     },
@@ -341,8 +341,74 @@
         "stats": {
             "wins": 2,
             "kills": 63,
-            "deaths": 84,
-            "totalExp": 503
+            "deaths": 85,
+            "totalExp": 508
+        },
+        "matchStats": {
+            "299742581972271104": {
+                "placement": 0,
+                "killsEarned": 0,
+                "goldEarned": 0,
+                "expEarned": 0,
+                "itemsEarned": []
+            },
+            "733551377611096195": {
+                "placement": 0,
+                "killsEarned": 0,
+                "goldEarned": 0,
+                "expEarned": 0,
+                "itemsEarned": []
+            },
+            "737111893772337192": {
+                "placement": 0,
+                "killsEarned": 0,
+                "goldEarned": 0,
+                "expEarned": 0,
+                "itemsEarned": []
+            },
+            "746944391377059982": {
+                "placement": 0,
+                "killsEarned": 0,
+                "goldEarned": 0,
+                "expEarned": 0,
+                "itemsEarned": []
+            }
+        },
+        "loadout": {
+            "pickaxe": 5000,
+            "slot1": 2,
+            "slot2": 999,
+            "slot3": 999,
+            "slot4": 999,
+            "perk": 1999
+        },
+        "inventory": {
+            "weapons": [
+                2
+            ],
+            "perks": [],
+            "umbrellas": [],
+            "titles": [],
+            "chests": 0,
+            "pickaxes": [
+                5000
+            ],
+            "gold": 5980,
+            "gems": 0
+        }
+    },
+    "6": {
+        "name": "Pam [bot]",
+        "title": 3999,
+        "color": "0c0d0c",
+        "showcase1": 999,
+        "showcase2": 999,
+        "showcase3": 999,
+        "stats": {
+            "wins": 1,
+            "kills": 53,
+            "deaths": 89,
+            "totalExp": 508
         },
         "matchStats": {
             "299742581972271104": {
@@ -397,72 +463,6 @@
             "gems": 0
         }
     },
-    "6": {
-        "name": "Pam [bot]",
-        "title": 3999,
-        "color": "0c0d0c",
-        "showcase1": 999,
-        "showcase2": 999,
-        "showcase3": 999,
-        "stats": {
-            "wins": 1,
-            "kills": 52,
-            "deaths": 88,
-            "totalExp": 502
-        },
-        "matchStats": {
-            "299742581972271104": {
-                "placement": 0,
-                "killsEarned": 0,
-                "goldEarned": 0,
-                "expEarned": 0,
-                "itemsEarned": []
-            },
-            "733551377611096195": {
-                "placement": 0,
-                "killsEarned": 0,
-                "goldEarned": 0,
-                "expEarned": 0,
-                "itemsEarned": []
-            },
-            "737111893772337192": {
-                "placement": 0,
-                "killsEarned": 0,
-                "goldEarned": 0,
-                "expEarned": 0,
-                "itemsEarned": []
-            },
-            "746944391377059982": {
-                "placement": 0,
-                "killsEarned": 0,
-                "goldEarned": 0,
-                "expEarned": 0,
-                "itemsEarned": []
-            }
-        },
-        "loadout": {
-            "pickaxe": 5000,
-            "slot1": 2,
-            "slot2": 999,
-            "slot3": 999,
-            "slot4": 999,
-            "perk": 1999
-        },
-        "inventory": {
-            "weapons": [
-                2
-            ],
-            "perks": [],
-            "umbrellas": [],
-            "titles": [],
-            "chests": 0,
-            "pickaxes": [
-                5000
-            ],
-            "gold": 5870,
-            "gems": 0
-        }
-    },
     "7": {
         "name": "Chris [bot]",
         "title": 3999,
@@ -472,9 +472,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 3,
-            "kills": 85,
-            "deaths": 76,
-            "totalExp": 495
+            "kills": 86,
+            "deaths": 77,
+            "totalExp": 501
         },
         "matchStats": {
             "299742581972271104": {
@@ -527,7 +527,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 5900,
+            "gold": 5960,
             "gems": 0
         }
     },
@@ -540,9 +540,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 3,
-            "kills": 62,
-            "deaths": 83,
-            "totalExp": 507
+            "kills": 63,
+            "deaths": 84,
+            "totalExp": 513
         },
         "matchStats": {
             "299742581972271104": {
@@ -593,7 +593,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6020,
+            "gold": 6080,
             "gems": 0
         }
     },
@@ -606,9 +606,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 5,
-            "kills": 62,
-            "deaths": 79,
-            "totalExp": 507
+            "kills": 63,
+            "deaths": 80,
+            "totalExp": 513
         },
         "matchStats": {
             "299742581972271104": {
@@ -661,7 +661,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6120,
+            "gold": 6180,
             "gems": 0
         }
     },
@@ -675,8 +675,8 @@
         "stats": {
             "wins": 5,
             "kills": 81,
-            "deaths": 78,
-            "totalExp": 521
+            "deaths": 79,
+            "totalExp": 526
         },
         "matchStats": {
             "299742581972271104": {
@@ -727,7 +727,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6260,
+            "gold": 6310,
             "gems": 0
         }
     },
@@ -741,8 +741,8 @@
         "stats": {
             "wins": 4,
             "kills": 92,
-            "deaths": 79,
-            "totalExp": 527
+            "deaths": 80,
+            "totalExp": 532
         },
         "matchStats": {
             "299742581972271104": {
@@ -795,7 +795,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6270,
+            "gold": 6320,
             "gems": 0
         }
     },
@@ -808,9 +808,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 3,
-            "kills": 70,
-            "deaths": 84,
-            "totalExp": 520
+            "kills": 71,
+            "deaths": 85,
+            "totalExp": 526
         },
         "matchStats": {
             "299742581972271104": {
@@ -861,7 +861,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6150,
+            "gold": 6210,
             "gems": 0
         }
     },
@@ -874,9 +874,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 7,
-            "kills": 68,
-            "deaths": 91,
-            "totalExp": 593
+            "kills": 70,
+            "deaths": 92,
+            "totalExp": 600
         },
         "matchStats": {
             "299742581972271104": {
@@ -927,7 +927,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 7080,
+            "gold": 7150,
             "gems": 0
         }
     },
@@ -941,8 +941,8 @@
         "stats": {
             "wins": 1,
             "kills": 68,
-            "deaths": 80,
-            "totalExp": 478
+            "deaths": 81,
+            "totalExp": 483
         },
         "matchStats": {
             "299742581972271104": {
@@ -993,7 +993,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 5630,
+            "gold": 5680,
             "gems": 0
         }
     },
@@ -1007,8 +1007,8 @@
         "stats": {
             "wins": 2,
             "kills": 70,
-            "deaths": 86,
-            "totalExp": 520
+            "deaths": 87,
+            "totalExp": 525
         },
         "matchStats": {
             "299742581972271104": {
@@ -1061,7 +1061,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6100,
+            "gold": 6150,
             "gems": 0
         }
     },
@@ -1074,9 +1074,9 @@
         "showcase3": 999,
         "stats": {
             "wins": 0,
-            "kills": 63,
-            "deaths": 83,
-            "totalExp": 478
+            "kills": 64,
+            "deaths": 84,
+            "totalExp": 484
         },
         "matchStats": {
             "299742581972271104": {
@@ -1127,7 +1127,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 5580,
+            "gold": 5640,
             "gems": 0
         }
     },
@@ -1141,8 +1141,8 @@
         "stats": {
             "wins": 3,
             "kills": 62,
-            "deaths": 89,
-            "totalExp": 537
+            "deaths": 90,
+            "totalExp": 542
         },
         "matchStats": {
             "299742581972271104": {
@@ -1193,7 +1193,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 6320,
+            "gold": 6370,
             "gems": 0
         }
     },
@@ -1205,10 +1205,10 @@
         "showcase2": 999,
         "showcase3": 999,
         "stats": {
-            "wins": 3,
-            "kills": 81,
+            "wins": 4,
+            "kills": 84,
             "deaths": 81,
-            "totalExp": 516
+            "totalExp": 529
         },
         "matchStats": {
             "299742581972271104": {
@@ -1239,13 +1239,15 @@
                 2
             ],
             "perks": [],
-            "umbrellas": [],
+            "umbrellas": [
+                2001
+            ],
             "titles": [],
             "chests": 0,
             "pickaxes": [
                 5000
             ],
-            "gold": 6110,
+            "gold": 6290,
             "gems": 0
         }
     },
@@ -1450,9 +1452,9 @@
         "showcase3": 23,
         "stats": {
             "wins": 70,
-            "kills": 427,
-            "deaths": 854,
-            "totalExp": 10605
+            "kills": 431,
+            "deaths": 855,
+            "totalExp": 10614
         },
         "matchStats": {
             "299742581972271104": {
@@ -1523,7 +1525,7 @@
             "pickaxes": [
                 5000
             ],
-            "gold": 644266,
+            "gold": 648835,
             "gems": 20
         }
     },

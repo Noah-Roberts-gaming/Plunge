@@ -40,7 +40,7 @@ async def on_ready():
 # End Setup
 ####################
 
-#TODO: Re-write some of the Embed Messages
+# TODO: Re-write some of the Embed Messages
 
 # TODO: Make the shop command (with scrolling pages Contact Me before you start)
 
@@ -1967,9 +1967,9 @@ def addKill(userId, serverId):
     expToAdd = 1
 
     if data[str(userId)]['loadout']['perk'] == 1001:
-        goldToAdd = (10 * .1) + 10
+        goldToAdd = int(round((10 * .1) + 10))
     elif data[str(userId)]['loadout']['perk'] == 1002:
-        expToAdd = (1 * .1) + 1
+        expToAdd = int(round((1 * .1) + 1))
 
     data[str(userId)]['stats']['kills'] += 1
     data[str(userId)]['matchStats'][str(serverId)]['killsEarned'] += 1
@@ -1990,9 +1990,9 @@ async def addWin(userId, serverId):
     expToAdd = 10
 
     if data[str(userId)]['loadout']['perk'] == 1001:
-        goldToAdd = (150 * .1) + 150
+        goldToAdd = int(round((150 * .1) + 150))
     elif data[str(userId)]['loadout']['perk'] == 1002:
-        expToAdd = (10 * .1) + 10
+        expToAdd = int(round((10 * .1) + 10))
 
     data[str(userId)]['stats']['wins'] += 1
     data[str(userId)]['matchStats'][str(serverId)]['placement'] = 1
@@ -2020,9 +2020,9 @@ async def addDeath(userId, serverId, placement):
     expToAdd = 5
 
     if data[str(userId)]['loadout']['perk'] == 1001:
-        goldToAdd = (50 * .1) + 50
+        goldToAdd = int(round((50 * .1) + 50))
     elif data[str(userId)]['loadout']['perk'] == 1002:
-        expToAdd = (5 * .1) + 5
+        expToAdd = int(round((5 * .1) + 5))
 
     data[str(userId)]['matchStats'][str(serverId)]['placement'] = placement
     data[str(userId)]['stats']['deaths'] += 1

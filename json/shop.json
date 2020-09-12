@@ -1,16 +1,21 @@
 {
     "0": {
-        "page": "Page 1",
+        "title": "Common Weapons",
         "description": "Buy a starter weapon",
         "items": [0, 1, 2, 3]
     },
     "1": {
-        "page": "Page 2",
+        "title": "Uncommon Weapons",
         "description": "These items rotate every week",
-        "items": [4, 5, 10, 11]
+        "items": [4, 5, 6, 7]
     },
     "2": {
-        "page": "Page 3",
+        "title": "Rare Weapons",
+        "description": "These items rotate every week",
+        "items": [8, 9, 10, 11]
+    },
+    "3": {
+        "title": "Pickaxes",
         "description": "Buy a pickaxe",
         "items": [5000]
     }

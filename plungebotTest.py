@@ -1176,6 +1176,26 @@ def fetchWeapons(weapons):
     else:
         return value
 
+# Takes a weaponID and returns a formated string
+def fetchWeapon(weaponId):
+    value = ''
+
+    with open('json/weapons.json', 'r') as f:
+        data = json.load(f)
+
+    with open('json/rarity.json', 'r') as r:
+        rarity = json.load(r)
+
+    emojiId = data[str(weaponId)]['emojiId']
+    emoji = client.get_emoji(emojiId)
+    name = data[str(weaponId)]['name']
+    rarityId = data[str(weaponId)]['rarityId']
+    threat = rarity[str(rarityId)]['threat'] * 10
+
+    value += f'{emoji} {name} `+{threat} threat`'
+    
+    return value
+
 
 # Takes a list of perks and returns a formated string
 def fetchPerks(perks):
@@ -1292,7 +1312,7 @@ async def updates(ctx):
 # p.invite
 @client.command()
 async def invite(ctx):
-    embed=discord.Embed(title="Plunge Invite Link", description="If you'd like to invite this bot to your own server, [click here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=313408&scope=bot) for an invite", color=0xfd5d5d)
+    embed=discord.Embed(title="Plunge Invite Link", description="If you'd like to invite this bot to your own server, [click here](https://discord.com/api/oauth2/authorize?client_id=732864657932681278&permissions=288832&scope=bot) for an invite", color=0xfd5d5d)
     embed.set_thumbnail(url=logourl)
     await ctx.send(embed=embed)
 
@@ -1586,6 +1606,7 @@ async def chest(ctx):
 
 
 # TODO: Update the shop items, to display the item and not the ID's
+# p.shop
 @client.command()
 async def shop(ctx):
     # Open up the shop.json file
@@ -1593,6 +1614,9 @@ async def shop(ctx):
         data = json.load(f)
     
     shopPages = []
+
+    allItems = getShopItems()
+    itemStrings = await getShopStrings(allItems)
 
     for page in data:
         shopPages.append(page)
@@ -1602,28 +1626,28 @@ async def shop(ctx):
     # The current page
     cur_page = 1
 
-    item = data[str(cur_page-1)]["items"]
+    cur_pageTMP = cur_page
+    itemsToSkip = 0
+    itemsCount = len(data[str(cur_page-1)]["items"])
+    displayItems = f''
+    pageTitle = data[str(cur_page-1)]["title"]
 
-    itemList = f"{item}"
+    while cur_pageTMP > 1:
+        itemsToSkip += len(data[str(cur_pageTMP-2)]["items"])
+        cur_pageTMP -= 1
+    
+    for item in itemStrings[itemsToSkip:itemsToSkip+itemsCount]:
+        displayItems += item
 
     embed=discord.Embed(title="Item Shop", color=0xfd5d5d)
     # embed.set_thumbnail(url=user.avatar_url)
-    embed.add_field(name=f"Page {cur_page}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{itemList}", inline=False),
+    embed.add_field(name=f"{pageTitle}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{displayItems}", inline=False),
     embed.set_footer(text=f"Page {cur_page}/{pages}")
 
     msg = await ctx.send(embed=embed)
 
     await msg.add_reaction("◀️")
     await msg.add_reaction("▶️")
-
-    # contents = ["This is page 1!", "This is page 2!", "This is page 3!", "This is page 4!"]
-    # pages = 4
-    # cur_page = 1
-    # message = await ctx.send(f"Page {cur_page}/{pages}:\n{contents[cur_page-1]}")
-    # getting the message object for editing and reacting
-
-    # await message.add_reaction("◀️")
-    # await message.add_reaction("▶️")
 
     def check(reaction, user):
         return user == ctx.author and str(reaction.emoji) in ["◀️", "▶️"]
@@ -1638,13 +1662,22 @@ async def shop(ctx):
             if str(reaction.emoji) == "▶️" and cur_page != pages:
                 cur_page += 1
 
-                item = data[str(cur_page-1)]["items"]
+                cur_pageTMP = cur_page
+                itemsToSkip = 0
+                itemsCount = len(data[str(cur_page-1)]["items"])
+                displayItems = f''
+                pageTitle = data[str(cur_page-1)]["title"]
 
-                itemList = f"{item}"
+                while cur_pageTMP > 1:
+                    itemsToSkip += len(data[str(cur_pageTMP-2)]["items"])
+                    cur_pageTMP -= 1
+                
+                for item in itemStrings[itemsToSkip:itemsToSkip+itemsCount]:
+                    displayItems += item
 
                 embed=discord.Embed(title="Item Shop", color=0xfd5d5d)
                 # embed.set_thumbnail(url=user.avatar_url)
-                embed.add_field(name=f"Page {cur_page}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{itemList}", inline=False),
+                embed.add_field(name=f"{pageTitle}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{displayItems}", inline=False),
                 embed.set_footer(text=f"Page {cur_page}/{pages}")
 
                 await msg.edit(embed=embed)
@@ -1653,13 +1686,22 @@ async def shop(ctx):
             elif str(reaction.emoji) == "◀️" and cur_page > 1:
                 cur_page -= 1
                 
-                item = data[str(cur_page-1)]["items"]
+                cur_pageTMP = cur_page
+                itemsToSkip = 0
+                itemsCount = len(data[str(cur_page-1)]["items"])
+                displayItems = f''
+                pageTitle = data[str(cur_page-1)]["title"]
 
-                itemList = f"{item}"
+                while cur_pageTMP > 1:
+                    itemsToSkip += len(data[str(cur_pageTMP-2)]["items"])
+                    cur_pageTMP -= 1
+                
+                for item in itemStrings[itemsToSkip:itemsToSkip+itemsCount]:
+                    displayItems += item
 
                 embed=discord.Embed(title="Item Shop", color=0xfd5d5d)
                 # embed.set_thumbnail(url=user.avatar_url)
-                embed.add_field(name=f"Page {cur_page}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{itemList}", inline=False),
+                embed.add_field(name=f"{pageTitle}", value=f"\nTo buy an item from the shop, do ``p.buy (number)``\n\n{displayItems}", inline=False),
                 embed.set_footer(text=f"Page {cur_page}/{pages}")
 
                 await msg.edit(embed=embed)
@@ -1674,6 +1716,49 @@ async def shop(ctx):
             await msg.delete()
             break
             # ending the loop if user doesn't react after x seconds
+
+def getShopItems():
+    with open('json/shop.json', 'r') as f:
+        data = json.load(f)
+
+    allItems = []
+
+    for i in data:
+        for item in data[i]['items']:
+            allItems.append(item)
+    
+    return allItems
+
+async def getShopStrings(items):
+    shopStrings = []
+    i = 1
+    for item in items:
+        myItem = await fetchItem(item)
+
+        itemPrice = myItem['price']
+        goldEmoji = client.get_emoji(736439923095109723)
+
+        itemEmojiId = myItem['emojiId']
+        itemEmoji = client.get_emoji(itemEmojiId)
+
+        itemName = myItem['name']
+
+        if item < 1000:
+            weapon = fetchWeapon(item)
+            shopStrings.append(f'**{i}**: {weapon} | {itemPrice} {goldEmoji}\n')
+        else:
+            shopStrings.append(f'**{i}**: {itemEmoji} {itemName} | {itemPrice} {goldEmoji}\n')
+        
+        i += 1
+
+        # emojiId = myItem['emojiId']
+        # emoji = client.get_emoji(emojiId)
+        # itemName = myItem['name']
+
+
+        # shopString += f'**{i}**: {emoji} {itemName}'
+
+    return shopStrings
 
 ######### ITEMS/SHOP ITEMS ##########
 #  TIERS: Common - 0, Uncommon - 1, Rare - 2, Epic - 3, Legendary - 4, POSSIBLY MYTHIC - 5 (NOT RELEASED)

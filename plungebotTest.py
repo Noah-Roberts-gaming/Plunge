@@ -1604,8 +1604,6 @@ async def chest(ctx):
         msg = await ctx.send(embed=embed)
         await msg.delete(delay=120)
 
-
-# TODO: Update the shop items, to display the item and not the ID's
 # p.shop
 @client.command()
 async def shop(ctx):
@@ -1757,7 +1755,6 @@ async def getShopStrings(items):
 
 
         # shopString += f'**{i}**: {emoji} {itemName}'
-
     return shopStrings
 
 ######### ITEMS/SHOP ITEMS ##########
@@ -1766,6 +1763,22 @@ async def getShopStrings(items):
 #  Weapon Categories: Shotgun, Smg, Ar, Sniper
 #
 #  Perks: Extra gold at end of game, Extra Threat for the game, Extra Experience per game
+
+
+# Command that buys you the weapon from the shop
+# p.buy number
+@client.command()
+async def buy(ctx, number = None):
+    if number == None:
+        embed=discord.Embed(title="Plunge", color=0xfd5d5d)
+        embed.set_thumbnail(url=logourl)
+        embed.add_field(name="Invalid Command Format", value="Please provide a number that correlates to the item in the shop that you want to buy. \nExample: `p.buy 5`", inline=False)
+        await ctx.send(embed=embed)
+    else:
+        allShopItems = getShopItems()
+        itemToGrab = int(number) - 1
+
+        print(allShopItems[itemToGrab])
 
 
 ####################
@@ -1807,9 +1820,9 @@ async def battleStart(ctx, users):
 
         battleRange = random.randint(1, 151)
 
-        chestNumber = random.randint(1, 1001)
+        chestNumber = random.randint(1, 501)
 
-        if chestNumber == 999:
+        if chestNumber == 499:
             allPlayers = []
 
             # Gives an actual player a chest

@@ -1775,10 +1775,40 @@ async def buy(ctx, number = None):
         embed.add_field(name="Invalid Command Format", value="Please provide a number that correlates to the item in the shop that you want to buy. \nExample: `p.buy 5`", inline=False)
         await ctx.send(embed=embed)
     else:
+        user = await fetchUserProfile(ctx.author.id)
+        usersGold = user['inventory']['gold']
+        usersInventory = user['inventory']['weapons'] + user['inventory']['perks'] + user['inventory']['umbrellas'] + user['inventory']['titles'] + user['inventory']['pickaxes']
+
         allShopItems = getShopItems()
         itemToGrab = int(number) - 1
 
-        print(allShopItems[itemToGrab])
+        itemToBuy = allShopItems[itemToGrab]
+
+        item = await fetchItem(itemToBuy)
+
+        itemName = item['name']
+        itemEmojiId = item['emojiId']
+        itemEmoji = client.get_emoji(itemEmojiId)
+        itemPrice = item['price']
+        goldEmoji = client.get_emoji(736439923095109723)
+
+        if itemToBuy in usersInventory:
+            embed=discord.Embed(color=0xfd5d5d)
+            embed.add_field(name="**Purchase Failed**", value=f"You already own the item you are trying to buy.", inline=False)
+            failed = await ctx.send(embed=embed)
+            await failed.delete(delay=60)
+        elif usersGold < itemPrice:
+            embed=discord.Embed(color=0xfd5d5d)
+            embed.add_field(name="**Purchase Failed**", value=f"You do not have enough gold to buy the item.", inline=False)
+            failed = await ctx.send(embed=embed)
+            await failed.delete(delay=60)
+        else:
+            await removeGold(ctx.author.id, itemPrice)
+            await addItem(ctx.author.id, itemToBuy)
+            embed=discord.Embed(color=0xfd5d5d)
+            embed.add_field(name="**Purchase Complete**", value=f"**Weapon:** {itemName} {itemEmoji}\n**Gold:** -{itemPrice} {goldEmoji}", inline=False)
+            complete = await ctx.send(embed=embed)
+            await complete.delete(delay=60)
 
 
 ####################

@@ -673,6 +673,11 @@ async def profile(ctx, args = None):
             await displayProfile(ctx, user.id)
         else:
             print("User not found. Profile Command.")
+            # Don't purchase the item
+            embed=discord.Embed(color=0xfd5d5d)
+            embed.add_field(name="**User Not Found**", value=f"Make sure you are looking up someone from the server you are in.", inline=False)
+            failed = await ctx.send(embed=embed)
+            await failed.delete(delay=60)
 
 # Displays the users profile
 async def displayProfile(ctx, userId):
@@ -1112,7 +1117,8 @@ async def color(ctx, color = None):
             embed=discord.Embed(title=f"Invalid Color", description=f"Please provide a valid hex color code. You can choose a color [here](https://www.google.com/search?q=color+picker).", color=0xfd5d5d)
             await ctx.send(embed=embed)
 
-# Command that gets the users inventory
+# Command that gets the users inventory #TODO: Rework it, so the items are organized and also get their items ID attached to the end of the string. Also Include the gold, gem, chest emoji
+# p.inventory
 @client.command()
 async def inventory(ctx):
     # Fetch the user from the list
@@ -1775,40 +1781,72 @@ async def buy(ctx, number = None):
         embed.add_field(name="Invalid Command Format", value="Please provide a number that correlates to the item in the shop that you want to buy. \nExample: `p.buy 5`", inline=False)
         await ctx.send(embed=embed)
     else:
-        user = await fetchUserProfile(ctx.author.id)
-        usersGold = user['inventory']['gold']
-        usersInventory = user['inventory']['weapons'] + user['inventory']['perks'] + user['inventory']['umbrellas'] + user['inventory']['titles'] + user['inventory']['pickaxes']
+        try:
+        
+            user = await fetchUserProfile(ctx.author.id)
+            usersGold = user['inventory']['gold']
+            usersInventory = user['inventory']['weapons'] + user['inventory']['perks'] + user['inventory']['umbrellas'] + user['inventory']['titles'] + user['inventory']['pickaxes']
 
-        allShopItems = getShopItems()
-        itemToGrab = int(number) - 1
+            allShopItems = getShopItems()
+            itemToGrab = int(number) - 1
 
-        itemToBuy = allShopItems[itemToGrab]
+            if itemToGrab >= len(allShopItems):
+                # Don't purchase the item
+                embed=discord.Embed(color=0xfd5d5d)
+                embed.add_field(name="**Purchase Failed**", value=f"Make sure you are entering the correct number from the shop.", inline=False)
+                failed = await ctx.send(embed=embed)
+                await failed.delete(delay=60)
+            else:
+                itemToBuy = allShopItems[itemToGrab]
 
-        item = await fetchItem(itemToBuy)
+                item = await fetchItem(itemToBuy)
 
-        itemName = item['name']
-        itemEmojiId = item['emojiId']
-        itemEmoji = client.get_emoji(itemEmojiId)
-        itemPrice = item['price']
-        goldEmoji = client.get_emoji(736439923095109723)
+                itemName = item['name']
+                itemEmojiId = item['emojiId']
+                itemEmoji = client.get_emoji(itemEmojiId)
+                itemPrice = item['price']
+                goldEmoji = client.get_emoji(736439923095109723)
+                
 
-        if itemToBuy in usersInventory:
+                # If user has the item...
+                if itemToBuy in usersInventory:
+                    # Don't purchase the item
+                    embed=discord.Embed(color=0xfd5d5d)
+                    embed.add_field(name="**Purchase Failed**", value=f"You already own the item you are trying to buy.", inline=False)
+                    failed = await ctx.send(embed=embed)
+                    await failed.delete(delay=60)
+                # If user doesn't have enough gold
+                elif usersGold < itemPrice:
+                    # Dont purchase the item
+                    embed=discord.Embed(color=0xfd5d5d)
+                    embed.add_field(name="**Purchase Failed**", value=f"You do not have enough gold to buy the item.", inline=False)
+                    failed = await ctx.send(embed=embed)
+                    await failed.delete(delay=60)
+                else:
+                    # Buy the item
+                    await removeGold(ctx.author.id, itemPrice)
+                    await addItem(ctx.author.id, itemToBuy)
+                    embed=discord.Embed(color=0xfd5d5d)
+                    embed.add_field(name="**Purchase Complete**", value=f"**Weapon:** {itemName} {itemEmoji}\n**Gold:** -{itemPrice} {goldEmoji}", inline=False)
+                    complete = await ctx.send(embed=embed)
+                    await complete.delete(delay=60)
+        except:
+            # Don't purchase the item
             embed=discord.Embed(color=0xfd5d5d)
-            embed.add_field(name="**Purchase Failed**", value=f"You already own the item you are trying to buy.", inline=False)
+            embed.add_field(name="**Purchase Failed**", value=f"Make sure you are entering the correct number from the shop.", inline=False)
             failed = await ctx.send(embed=embed)
             await failed.delete(delay=60)
-        elif usersGold < itemPrice:
-            embed=discord.Embed(color=0xfd5d5d)
-            embed.add_field(name="**Purchase Failed**", value=f"You do not have enough gold to buy the item.", inline=False)
-            failed = await ctx.send(embed=embed)
-            await failed.delete(delay=60)
-        else:
-            await removeGold(ctx.author.id, itemPrice)
-            await addItem(ctx.author.id, itemToBuy)
-            embed=discord.Embed(color=0xfd5d5d)
-            embed.add_field(name="**Purchase Complete**", value=f"**Weapon:** {itemName} {itemEmoji}\n**Gold:** -{itemPrice} {goldEmoji}", inline=False)
-            complete = await ctx.send(embed=embed)
-            await complete.delete(delay=60)
+
+# Command that lets you equip an item from your inventory
+# p.equip [id]
+
+# Command that lets you unequip a certain item from your loadout or all items
+# p.unequip [id/all]
+
+# Command that equips the showcase items
+
+# Command that removes the showcase items
+
 
 
 ####################

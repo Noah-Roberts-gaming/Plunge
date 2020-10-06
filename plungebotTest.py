@@ -654,7 +654,7 @@ async def battle(ctx):
 
 # Command that gets the users profile
 # p.profile
-@client.command()
+@client.command(aliases=['stats'])
 async def profile(ctx, args = None):
     # if no parameters, display the authors profile
     if args == None:
@@ -1119,7 +1119,7 @@ async def color(ctx, color = None):
 
 # Command that gets the users inventory #TODO: Rework it, so the items are organized and also get their items ID attached to the end of the string. Also Include the gold, gem, chest emoji
 # p.inventory
-@client.command()
+@client.command(aliases=['inv'])
 async def inventory(ctx):
     # Fetch the user from the list
     userProfile = await fetchUserProfile(ctx.author.id)

@@ -1117,7 +1117,7 @@ async def color(ctx, color = None):
             embed=discord.Embed(title=f"Invalid Color", description=f"Please provide a valid hex color code. You can choose a color [here](https://www.google.com/search?q=color+picker).", color=0xfd5d5d)
             await ctx.send(embed=embed)
 
-# Command that gets the users inventory #TODO: Rework it, so the items are organized and also get their items ID attached to the end of the string. Also Include the gold, gem, chest emoji
+# Command that gets the users inventory #TODO: Include the chest emoji
 # p.inventory
 @client.command(aliases=['inv'])
 async def inventory(ctx):
@@ -1149,13 +1149,17 @@ async def inventory(ctx):
         titles = fetchTitles(titleList)
         pickaxes = fetchPickaxes(pickaxeList)
 
+        # gets the gold and gem emoji
+        goldEmoji = client.get_emoji(736439923095109723)
+        gemEmoji = client.get_emoji(736451870016405655)
+
         embed=discord.Embed(title=f"{title} {name}\'s Inventory", color=0xfd5d5d)
         embed.set_thumbnail(url=ctx.author.avatar_url)
         embed.add_field(name=f"__Weapons__", value=f"{weapons}", inline=False)
         embed.add_field(name=f"__Pickaxes__", value=f"{pickaxes}", inline=False)
         embed.add_field(name=f"__Perks__", value=f"{perks}", inline=False)
         embed.add_field(name=f"__Umbrellas__", value=f"{umbrellas}", inline=False)
-        embed.add_field(name=f"__Titles__", value=f"{titles}\n\n**Gold:** {gold}\n**Gems:** {gems}\n**Chests:** {chests}", inline=False)
+        embed.add_field(name=f"__Titles__", value=f"{titles}\n\n**Gold:** {gold} {goldEmoji}\n**Gems:** {gems} {gemEmoji}\n**Chests:** {chests}", inline=False)
         await ctx.send(embed=embed)
 
 # Takes a list of weapons and returns a formated string

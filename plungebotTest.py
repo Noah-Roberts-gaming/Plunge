@@ -1168,7 +1168,7 @@ def fetchWeapons(weapons):
     with open('json/rarity.json', 'r') as r:
         rarity = json.load(r)
 
-    for weaponId in weapons:
+    for weaponId in sorted(weapons):
         emojiId = data[str(weaponId)]['emojiId']
         emoji = client.get_emoji(emojiId)
         name = data[str(weaponId)]['name']
@@ -1210,7 +1210,7 @@ def fetchPerks(perks):
     with open('json/perks.json', 'r') as f:
         data = json.load(f)
     
-    for perkId in perks:
+    for perkId in sorted(perks):
         emojiId = data[str(perkId)]['emojiId']
         emoji = client.get_emoji(emojiId)
         name = data[str(perkId)]['name']
@@ -1237,7 +1237,7 @@ def fetchUmbrellas(umbrellas):
     with open('json/umbrellas.json', 'r') as f:
         data = json.load(f)
 
-    for umbrellaId in umbrellas:
+    for umbrellaId in sorted(umbrellas):
         emojiId = data[str(umbrellaId)]['emojiId']
         # Get emoji here
         name = data[str(umbrellaId)]['name']
@@ -1256,7 +1256,7 @@ def fetchTitles(titles):
     with open('json/titles.json', 'r') as f:
         data = json.load(f)
 
-    for titleId in titles:
+    for titleId in sorted(titles):
         name = data[str(titleId)]['title']
 
         value += f'`{name}` [*#{titleId}*]\n'
@@ -1274,7 +1274,7 @@ def fetchPickaxes(pickaxes):
     with open('json/pickaxes.json', 'r') as f:
         data = json.load(f)
 
-    for pickaxeId in pickaxes:
+    for pickaxeId in sorted(pickaxes):
         emojiId = data[str(pickaxeId)]['emojiId']
         emoji = client.get_emoji(emojiId)
         name = data[str(pickaxeId)]['name']

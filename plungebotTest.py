@@ -1175,7 +1175,7 @@ def fetchWeapons(weapons):
         rarityId = data[str(weaponId)]['rarityId']
         threat = rarity[str(rarityId)]['threat'] * 10
 
-        value += f'{emoji} {name} `+{threat} threat`\n'
+        value += f'{emoji} {name} `+{threat} threat` [*#{weaponId}*]\n'
     
     if value == '':
         return 'None'
@@ -1222,7 +1222,7 @@ def fetchPerks(perks):
         elif perkId == 1002:
             bonus = f'`+10% exp`'
 
-        value += f'{emoji} {name} {bonus}\n'
+        value += f'{emoji} {name} {bonus} [*#{perkId}*]\n'
 
     if value == '':
         return 'None'
@@ -1242,7 +1242,7 @@ def fetchUmbrellas(umbrellas):
         # Get emoji here
         name = data[str(umbrellaId)]['name']
 
-        value += f'{name}\n'
+        value += f'{name} [*#{umbrellaId}*]\n'
 
     if value == '':
         return 'None'
@@ -1259,7 +1259,7 @@ def fetchTitles(titles):
     for titleId in titles:
         name = data[str(titleId)]['title']
 
-        value += f'`{name}` '
+        value += f'`{name}` [*#{titleId}*]\n'
 
     if value == '':
         return 'None'
@@ -1279,7 +1279,7 @@ def fetchPickaxes(pickaxes):
         emoji = client.get_emoji(emojiId)
         name = data[str(pickaxeId)]['name']
 
-        value += f'{emoji} {name}\n'
+        value += f'{emoji} {name} [*#{pickaxeId}*]\n'
 
     if value == '':
         return 'None'
